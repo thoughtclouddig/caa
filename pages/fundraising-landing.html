@@ -83,7 +83,8 @@
 
   .alloc-bar{max-width:900px;margin:0 auto 10px;display:flex;height:14px;border-radius:100px;overflow:hidden}
   .alloc-bar span{height:100%}
-  .alloc-legend{max-width:900px;margin:0 auto 40px;display:flex;flex-wrap:wrap;gap:18px;justify-content:center;font-family:var(--sans);font-size:.8rem;color:var(--slate)}
+  .alloc-legend{max-width:640px;margin:0 auto 40px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px 28px;font-family:var(--sans);font-size:.92rem;color:var(--slate);text-align:left}
+  @media(max-width:520px){.alloc-legend{grid-template-columns:1fr}}
   .alloc-legend .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
 
   .mission-note{max-width:720px;margin:44px auto 0;padding:28px 32px;background:#fff;border-left:2px solid var(--red);text-align:left}
