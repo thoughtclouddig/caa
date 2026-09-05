@@ -106,14 +106,15 @@
   .logo-compare p{font-family:var(--sans);font-size:.85rem;color:var(--slate)}
 
   /* brand: color + type */
-  .swatch-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:28px}
-  @media(max-width:700px){.swatch-row{grid-template-columns:repeat(2,1fr)}}
+  .swatch-row{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:28px}
+  @media(max-width:700px){.swatch-row{grid-template-columns:1fr}}
   .swatch{background:#fff;padding:0 0 20px}
   .swatch .chip{height:110px;display:block}
   .swatch .body{padding:16px 18px 0}
   .swatch h4{font-family:var(--serif);color:var(--navy);font-size:1rem;margin-bottom:4px}
   .swatch .hex{font-family:var(--sans);font-size:.82rem;color:var(--slate);letter-spacing:.02em}
-  .swatch p{font-family:var(--sans);font-size:.82rem;color:var(--slate);margin-top:8px}
+  .swatch p{font-family:var(--sans);font-size:.88rem;line-height:1.5;color:var(--slate);margin-top:8px}
+  .swatch .meaning{font-family:var(--serif);font-size:.92rem;line-height:1.5;color:var(--navy);margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
 
   .type-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:28px}
   @media(max-width:700px){.type-row{grid-template-columns:1fr}}
@@ -161,7 +162,7 @@
       break-inside:avoid;page-break-inside:avoid
     }
     /* small fixed-size groups stay whole */
-    .swatch-row,.type-row,.logo-compare,.stack-diagram,.layer-stack,.phase-list,.need-list{
+    .type-row,.logo-compare,.stack-diagram,.layer-stack,.phase-list,.need-list{
       break-inside:avoid;page-break-inside:avoid
     }
     /* the long site map flows, but its heading never strands at a page foot */
@@ -219,9 +220,10 @@
   </section>
 
 
-  <section>
+  <section class="print-break">
     <h2>The CAA color palette.</h2>
     <p>Four colors, used consistently. Navy carries the weight of the brand, gold is used sparingly for accents and the halo, and white does most of the work in between.</p>
+    <p>Three of these four carry meaning the Church has used for centuries, so the palette can be explained rather than just chosen. The fourth is a practical neutral, and it is noted as such. Where a color has a real tradition behind it, that is worth saying plainly; where it does not, inventing one would cheapen the rest.</p>
     <div class="swatch-row">
       <div class="swatch">
         <span class="chip" style="background:#082D5B"></span>
@@ -229,6 +231,7 @@
           <h4>CAA Navy</h4>
           <div class="hex">#082D5B</div>
           <p>The primary brand color. Headlines, buttons, navigation, and any moment that needs authority.</p>
+          <div class="meaning">Blue is the color long associated with Our Lady, and Our Lady of Loreto is a patroness of aviators, already honored on CAA's own homepage. Scripture gives blue as a deliberate reminder as well: Israel was told to put a blue cord on the fringe of their garments, "to look upon and remember all the commandments of the Lord" (Numbers 15:38&ndash;39). It is also, plainly, the color of the sky CAA works in.</div>
         </div>
       </div>
       <div class="swatch">
@@ -237,6 +240,7 @@
           <h4>CAA Gold</h4>
           <div class="hex">#D4A23A</div>
           <p>Sacred warmth and heritage. Used deliberately for small accents, never as a large background.</p>
+          <div class="meaning">Gold is the color of glory and kingship. It is what the Magi carried to the infant Christ (Matthew 2:11), what the Church reserves for her highest feasts, and the light she places around the heads of the saints. In this mark it is the halo. Used sparingly everywhere else, it keeps that weight.</div>
         </div>
       </div>
       <div class="swatch">
@@ -245,6 +249,7 @@
           <h4>White</h4>
           <div class="hex">#FFFFFF</div>
           <p>The main canvas. Generous white space is part of the brand, not empty filler.</p>
+          <div class="meaning">White is the Church's color for the great feasts of Our Lord and the garment of the newly baptized. It is how Scripture describes Christ transfigured, his garments "white as light" (Matthew 17:2), and how Revelation shows the saints before the throne, "clothed in white robes" (Revelation 7:9).</div>
         </div>
       </div>
       <div class="swatch">
@@ -253,6 +258,7 @@
           <h4>Warm Off-White</h4>
           <div class="hex">#F8F6F3</div>
           <p>An optional section background when a page needs subtle warmth or separation.</p>
+          <div class="meaning">This one is practical rather than theological. It is the tone of parchment and old manuscript pages, which suits an organization with roots worth showing. It carries no doctrinal weight and should not be given any.</div>
         </div>
       </div>
     </div>
