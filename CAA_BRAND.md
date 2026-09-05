@@ -1,69 +1,333 @@
-# CAA Brand & Art Direction
+# Catholic Aviation Association — Brand Direction
 
-Authoritative. Overrides any generic recommendation from a design skill or tool. A skill may improve execution; it may not redefine this brand.
+> **Purpose of this file:** This is the visual and UX source of truth for the CAA website rebuild. Read this before designing or changing any page. The goal is not to make the existing association website prettier. The goal is to build a distinctive, premium, international Catholic aviation brand.
 
-## Identity
+## 1. Brand ambition
 
-Catholic institution meets premium aviation editorial. Established, international, human, aviation-literate, distinctly Catholic, editorial, confident, timeless, mission-driven.
+CAA should feel like a serious, modern, international Catholic organization at the intersection of **faith, aviation, fellowship, and mission**.
 
-Must not feel like: a parish website, a flying-club website, a SaaS startup, a generic nonprofit template, an AI-generated website, a component library, a dashboard, a Tailwind demo.
+The website must **not** look like:
+- a typical association website
+- a church bulletin website
+- a flying-club website
+- a nonprofit template
+- a SaaS landing page
+- a collection of generic cards
+- an AI-generated website
 
-## Typography
+The benchmark is a **$100K custom institutional/editorial website**: confident art direction, cinematic aviation imagery, exceptional typography, strong pacing, generous whitespace, and memorable visual moments.
 
-- **Libre Baskerville** — primary serif. Editorial headlines, major statements, institutional typography.
-- **Source Sans 3** — primary sans. Body copy, navigation, labels, buttons, captions, interface text.
+Think more **premium editorial institution / global mission organization / aviation brand** than “membership association.”
 
-Never substitute Inter, Roboto, Arial, Geist, or another generic UI font.
+## 2. Core brand idea
 
-## Color
+CAA brings together Catholics throughout aviation around a shared faith and a shared calling.
 
-- CAA Navy `#082D5B` (`--navy`), Navy Deep `#061F3E` (`--navy-deep`)
-- Sky `#1D4EDB` (`--sky`)
-- Mission Red `#D71920` (`--red`) — accent only. Never a large-field background color.
-- Warm White / Cream `#F8F6F3` (`--cream`), Cream 2 `#EEF1F5` (`--cream-2`)
-- Slate `#4B5563` (`--slate`) — body copy on light backgrounds only. Verify contrast on every background it's paired with; do not reuse it on dark backgrounds without checking (see Known Issues).
-- Line `#DCE3EC` (`--line`)
+Current core expressions:
 
-**Open item:** Logo Concept 3 (current approved mark, see below) introduces **CAA Gold** as a brand color — swatch sheet states `#D4A23A`, the actual delivered artwork renders it closer to a warmer gold/amber and the delivered navy in the artwork is `#042F59` (brand sheet states `#0B315E`, the site CSS uses `#082D5B`). Three slightly different navnavy values now exist across brand sheet / artwork / site CSS. None of this has been reconciled into the site's CSS variables yet — do not silently pick one. Confirm with the client which navy is canonical and whether gold formally replaces or supplements red as the secondary accent before touching site-wide color tokens.
+**Heritage line:**
+> Faith. Flying. Fellowship.
 
-## Logo
+**Hero/brand expression being explored:**
+> Where Faith Takes Flight
 
-**Current approved mark: Logo Concept 3.** Full standing figure, feet visible (per client request), gold halo and accent details, wordmark "CATHOLIC AVIATION ASSOCIATION" with gold "ASSOCIATION" and gold double-line accents, tagline lockup "FAITH. FLYING. FELLOWSHIP." (with periods, in that word order, per client preference). Approved via `CAA_Approved_Logo_Master_Sheet.png`.
+**Strategic themes:**
+- Faith
+- Aviation
+- Fellowship / community
+- Mission / witness
+- Service
+- Worldwide connection
 
-Provenance note: this concept originated from an AI-assisted image reference, then was adapted and finalized by hand in Adobe Illustrator (native `.ai` file with real vector paths exists). Treat the Illustrator file and its exported SVGs as the master artwork going forward.
+Do not casually replace **Faith. Flying. Fellowship.** It is part of CAA's heritage.
 
-The master artwork is immutable. Never redraw, regenerate, invert, simplify, compress, or recolor it. Never alter Christ, the halo, or the aircraft wing proportions.
+## 3. Logo system — LOCKED
 
-Approved forms, used by shape of available space, not preference:
-- **Full mark** (vertical, full figure, feet visible) — tall/narrow spaces: letterhead, app icon, merchandise, vertical signage. Light-background version has a transparent background; do not add a background fill behind it.
-- **Horizontal lockup** — wide/short spaces: website header, navigation.
-- **Dark-background variant** — a legitimate reversed-color version (white figure, navy field baked into the master art) exists for genuine dark backgrounds. This is different from applying a CSS invert filter to the light version, which remains prohibited.
+The supplied, approved CAA logo artwork is master artwork.
 
-Footer logo must never render with a negative/inverted CSS filter on the Christ figure. This is a standing, non-negotiable constraint. Use the dark-background master variant if a dark footer is ever needed, never a filter hack on the light variant.
+### Non-negotiable logo rules
 
-## Standing Constraints
+- **DO NOT redraw the logo.**
+- **DO NOT regenerate the logo with AI.**
+- **DO NOT reinterpret Jesus.**
+- **DO NOT change Jesus' anatomy, robe, face, hands, arms, or proportions.**
+- **DO NOT shorten, narrow, reshape, or redraw the aircraft wings.**
+- **DO NOT change the relationship between Jesus and the aircraft.**
+- Jesus' shoulders/upper body remain visually **above/in front of the wings** as established in the approved master.
+- **DO NOT change halo size, thickness, position, or color.**
+- **DO NOT squash, stretch, compress, or crop the master logo to make it fit.**
+- Never create a new “responsive” logo by rearranging its pieces without explicit approval.
 
-- Free Community / CAA Member / Patron tier framing is a **proposed model**, not adopted governance. Do not present dues/pricing as settled fact without a qualifier until the board confirms it.
-- Do not overpromise Cupertino Aviation Clubs, flight training, or scholarships as currently operating at scale — these are heritage mission / growing initiative, not live services, unless told otherwise.
-- Do not present illustrative/placeholder statistics (member counts, chapter counts, country counts, TAM figures) as verified fact. Label them or replace with real numbers before anything ships externally.
-- No fabricated photography, people, Masses, events, or activities presented as real in any donor-facing or board-facing document. Mockup pages may use clearly-representative placeholder imagery only until real CAA photography is supplied.
-- Distinctly Catholic identity must be substantively present, not just implied by the logo: reference to the Trinity, Mary, saints relevant to aviation, fidelity to the Magisterium, and CAA's actual founding mission language ("witnessing to the Good News of Jesus Christ," "Faith, Flying and Fellowship") belong in the experience, not just this document.
-- "Faith, Flying and Fellowship" is CAA's heritage tagline (do not casually replace it). "Where Faith Takes Flight" is the primary outward-facing brand promise. Do not introduce additional competing taglines.
+Use the actual supplied artwork files as assets. Treat them like photography: **place them; do not recreate them.**
 
-## Zero AI Design Tells
+### Approved logo configurations
 
-Actively eliminate: excessive rounded/bordered cards, cards-inside-cards, endless card grids, repetitive three-column layouts, pill-shaped labels everywhere, tiny eyebrow/kicker text above every heading, decorative statistics, giant numbers without editorial reason, gradient blobs, glow/glassmorphism effects, excessive shadows, icon-above-every-heading, generic stock photography, enormous empty hero areas, identical repeating section compositions.
+1. **Primary / vertical logo** — formal/full brand presentation.
+2. **Compact / horizontal logo** — website headers, digital headers, email signatures, and wide spaces.
+3. **Approved dark-background/reversed artwork** — use the supplied dark version; do not automatically invert the light logo.
+4. **Mark only** — exact approved Jesus + aircraft symbol when appropriate.
+5. **Profile icon** — Jesus head + gold halo treatment for avatars/profile/favicons. This is the preferred small-format icon concept.
 
-If a section doesn't need a container, don't give it one. If typography can create hierarchy, don't add a box.
+When in doubt, use the supplied compact/horizontal logo rather than inventing another configuration.
 
-## Zero AI Copy Tells
+## 4. Color system
 
-Avoid: "More than...", "It's not just...", "Whether you're...", "Built for...", "Designed to...", "At the intersection of...", "Where X meets Y...", "Empowering...", "Unlock...", "Elevate...", "Seamlessly...", "Experience the future of...". No em dashes as a sentence-connecting crutch. Plain, specific language over polished brand filler.
+### CAA Navy
+`#082D5B`
 
-## Catholic Without Cliché
+Role: institutional authority, aviation, trust, permanence. This is the primary brand color.
 
-No gratuitous cross motifs, stained-glass patterns, gold religious ornament, praying-hands imagery, generic light-ray/cloud religious clip art. Catholic identity comes through mission, language, people, and community, not decoration in every section.
+### CAA Gold
+`#D4A23A`
 
-## Aviation Without Cliché
+Role: sacred warmth, heritage, premium detail, halo/accent. Use deliberately rather than flooding pages with gold.
 
-No airplane icons scattered as decoration, runway-line dividers, fake cockpit HUD graphics, radar motifs, blueprint overlays, contrail dividers. Use real aviation photography and authentic context; the logo already establishes aviation.
+### White
+`#FFFFFF`
+
+Role: primary canvas and breathing room.
+
+### Warm off-white
+`#F8F6F3`
+
+Role: optional editorial section background when subtle warmth is useful. **Do not make the entire website beige.** White should remain a major canvas.
+
+### Supporting neutrals
+Use dark navy/charcoal for readable body text and restrained neutral grays for secondary UI. Avoid low-contrast light-gray body copy.
+
+## 5. Typography
+
+### Primary serif — Libre Baskerville
+Use for:
+- major headlines
+- H1/H2 editorial statements
+- mission statements
+- selected pull quotes
+- high-value institutional moments
+
+It should create heritage, dignity, authority, and editorial character.
+
+### Primary sans — Source Sans 3
+Use for:
+- navigation
+- body copy
+- buttons
+- labels
+- eyebrows
+- metadata
+- forms
+- UI
+- supporting text
+
+### Typography principles
+
+- Large, confident editorial headlines.
+- Strong contrast between display serif and functional sans.
+- Avoid excessive all-caps. Reserve tracked uppercase for short labels/eyebrows.
+- Body copy must be highly legible. Do not use pale gray text.
+- Avoid tiny type to manufacture sophistication.
+- Do not use generic geometric sans typography everywhere.
+- Do not introduce additional fonts without approval.
+
+## 6. Website art direction
+
+### Overall feeling
+
+**Cinematic. Reverent. Human. Aviation-first. International. Premium.**
+
+The site should create moments of awe without becoming theatrical or kitschy. Faith should feel integral, not pasted onto an aviation website.
+
+### Visual hierarchy
+
+Use a deliberate rhythm of:
+- large cinematic photography
+- bold editorial typography
+- white space
+- immersive full-width moments
+- asymmetric compositions
+- selective information grids
+- strong transitions between storytelling and utility
+
+Avoid making every section the same centered headline + three cards pattern.
+
+### Layout
+
+Prefer:
+- strong grid systems
+- wide editorial compositions
+- intentional asymmetry
+- large image crops
+- occasional overlapping layers when they add depth
+- varied section heights and pacing
+- full-bleed moments
+- generous whitespace
+
+Avoid:
+- endless rounded cards
+- oversized pill-shaped containers
+- repetitive three-column feature blocks
+- excessive floating boxes
+- generic icon grids
+- gratuitous gradients
+- glassmorphism
+- template-like alternating image/text rows for the entire page
+
+Corners should generally be restrained. The brand is institutional and aviation-oriented, not bubbly.
+
+## 7. Photography
+
+Photography is a major brand asset, not decoration.
+
+### Desired imagery
+
+Prioritize authentic images of:
+- pilots and aviation professionals
+- aircraft in flight
+- ramps, hangars, cockpits and airports
+- Catholic community and fellowship
+- chapels/Mass where genuinely relevant
+- service and mission
+- chapters and real CAA people
+- human connection within aviation
+
+Use existing CAA photography selectively when it carries authenticity or history.
+
+Hero imagery may be more cinematic and aspirational, but aircraft must be physically believable and aviation details must look real.
+
+### Photography treatment
+
+- cinematic natural light
+- editorial documentary quality
+- real environments
+- authentic people
+- restrained grading
+- rich navy-compatible shadows
+- room for typography where needed
+
+Avoid:
+- obvious AI imagery
+- generic stock-photo handshakes
+- fake-looking airplanes
+- overprocessed HDR
+- cheesy religious composites
+- random crosses added to aviation imagery
+- staged corporate diversity stock photography
+
+## 8. Iconography
+
+Use icons sparingly.
+
+For the brand/profile icon, use the approved **Jesus head + gold halo** treatment.
+
+Functional website icons should be:
+- simple
+- consistent
+- refined
+- line-based or restrained solid forms
+- subordinate to typography
+
+Do not turn every idea into an icon. Do not create cartoon aviation/religious pictograms.
+
+## 9. UI components
+
+Components should feel custom to CAA rather than imported from a generic design system.
+
+### Buttons
+- strong, simple geometry
+- modest radius
+- clear hierarchy
+- navy primary treatment
+- gold used selectively as accent
+- excellent hover/focus states
+
+### Cards
+Cards are allowed only when the content genuinely needs containment. Do not put every piece of content inside a card.
+
+### Navigation
+Navigation should feel premium, calm and exceptionally clear. Use the approved compact/horizontal logo. Avoid overcrowding the header.
+
+### Forms / membership flows
+These may become more utilitarian, but they must remain visually consistent with the editorial brand system and meet accessibility expectations.
+
+## 10. Motion and interaction
+
+Motion should reinforce quality and storytelling.
+
+Good:
+- subtle image reveals
+- controlled parallax
+- elegant type/image transitions
+- restrained scroll choreography
+- thoughtful hover behavior
+
+Bad:
+- animation everywhere
+- bouncing elements
+- gimmicky aircraft paths
+- gratuitous scroll hijacking
+- effects that compromise accessibility or performance
+
+## 11. Messaging and visual tone must agree
+
+The visual system should reinforce that CAA is more than a directory or club. It is building a worldwide Catholic aviation community.
+
+The site should communicate:
+
+**People** — find Catholics who understand both your faith and your world of aviation.
+
+**Planes** — aviation is not a decorative metaphor; it is the shared profession/passion connecting the community.
+
+**Purpose** — faith should lead to fellowship, witness, service and mission.
+
+Do not make membership administration the emotional center of the homepage.
+
+## 12. Accessibility is part of premium design
+
+Premium does not mean low contrast.
+
+- Maintain WCAG-appropriate contrast.
+- Body text should be easy to read.
+- Do not use light gray body copy on white.
+- Preserve visible focus states.
+- Maintain comfortable touch targets.
+- Respect reduced-motion preferences.
+- Ensure editorial layouts collapse intelligently on mobile.
+
+## 13. Design test
+
+Before proposing any major section, ask:
+
+1. Could this section belong to any nonprofit or association if the logo were removed?
+2. Does it feel custom-designed for Catholic aviation?
+3. Is there a clear visual idea, or is it just content inside boxes?
+4. Is the typography doing enough of the design work?
+5. Does the photography feel authentic and premium?
+6. Is there enough white space?
+7. Are navy and gold being used with restraint?
+8. Does this feel like a worldwide organization with ambition?
+9. Would this still feel premium five years from now?
+10. Does it look AI-generated?
+
+If #1 or #10 is yes, redesign it.
+
+## 14. Claude implementation rules
+
+When working on the website:
+
+1. **Inspect the current page and assets before editing.**
+2. **Use the supplied CAA logo files. Never recreate the logo in SVG/CSS/AI.**
+3. Use **Libre Baskerville + Source Sans 3** as the brand typography system.
+4. Use the approved navy/gold/white palette.
+5. Preserve existing real CAA photography where selected; do not replace authentic imagery with generic generated imagery without explicit instruction.
+6. Design desktop and mobile intentionally; do not merely stack desktop blocks.
+7. Avoid generic component-library aesthetics.
+8. Do not solve visual hierarchy by adding more cards, pills, gradients, shadows, or decorative UI.
+9. Favor typography, photography, composition, spacing, and art direction.
+10. Before considering a page complete, compare it against this file and explicitly identify anything that still feels like a conventional association template.
+
+## 15. North-star statement
+
+> **CAA should look like the worldwide Catholic aviation organization it intends to become — not the small association it has historically been.**
+
+The design should make a pilot, aviation professional, donor, Catholic leader, sponsor, or prospective member immediately feel that this organization has **purpose, credibility, permanence and ambition**.
+
