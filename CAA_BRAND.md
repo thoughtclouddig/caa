@@ -24,15 +24,22 @@ Never substitute Inter, Roboto, Arial, Geist, or another generic UI font.
 - Slate `#4B5563` (`--slate`) — body copy on light backgrounds only. Verify contrast on every background it's paired with; do not reuse it on dark backgrounds without checking (see Known Issues).
 - Line `#DCE3EC` (`--line`)
 
+**Open item:** Logo Concept 3 (current approved mark, see below) introduces **CAA Gold** as a brand color — swatch sheet states `#D4A23A`, the actual delivered artwork renders it closer to a warmer gold/amber and the delivered navy in the artwork is `#042F59` (brand sheet states `#0B315E`, the site CSS uses `#082D5B`). Three slightly different navnavy values now exist across brand sheet / artwork / site CSS. None of this has been reconciled into the site's CSS variables yet — do not silently pick one. Confirm with the client which navy is canonical and whether gold formally replaces or supplements red as the secondary accent before touching site-wide color tokens.
+
 ## Logo
+
+**Current approved mark: Logo Concept 3.** Full standing figure, feet visible (per client request), gold halo and accent details, wordmark "CATHOLIC AVIATION ASSOCIATION" with gold "ASSOCIATION" and gold double-line accents, tagline lockup "FAITH. FLYING. FELLOWSHIP." (with periods, in that word order, per client preference). Approved via `CAA_Approved_Logo_Master_Sheet.png`.
+
+Provenance note: this concept originated from an AI-assisted image reference, then was adapted and finalized by hand in Adobe Illustrator (native `.ai` file with real vector paths exists). Treat the Illustrator file and its exported SVGs as the master artwork going forward.
 
 The master artwork is immutable. Never redraw, regenerate, invert, simplify, compress, or recolor it. Never alter Christ, the halo, or the aircraft wing proportions.
 
-Two approved forms, used by shape of available space, not preference:
-- **Full mark** (vertical, full figure, feet visible) — tall/narrow spaces: letterhead, app icon, merchandise, vertical signage.
+Approved forms, used by shape of available space, not preference:
+- **Full mark** (vertical, full figure, feet visible) — tall/narrow spaces: letterhead, app icon, merchandise, vertical signage. Light-background version has a transparent background; do not add a background fill behind it.
 - **Horizontal lockup** — wide/short spaces: website header, navigation.
+- **Dark-background variant** — a legitimate reversed-color version (white figure, navy field baked into the master art) exists for genuine dark backgrounds. This is different from applying a CSS invert filter to the light version, which remains prohibited.
 
-Footer logo must never render with a negative/inverted filter on the Christ figure. This is a standing, non-negotiable constraint.
+Footer logo must never render with a negative/inverted CSS filter on the Christ figure. This is a standing, non-negotiable constraint. Use the dark-background master variant if a dark footer is ever needed, never a filter hack on the light variant.
 
 ## Standing Constraints
 
