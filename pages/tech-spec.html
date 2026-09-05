@@ -66,6 +66,22 @@
   .stack-diagram p{font-family:var(--sans);font-size:.82rem;color:var(--slate)}
   .stack-diagram .arrow{display:flex;align-items:center;justify-content:center;padding:0 6px;color:var(--slate);font-size:1.2rem;flex:0 0 auto}
 
+  .funnel{margin-top:28px;display:flex;align-items:stretch;border:1px solid var(--line)}
+  .funnel .stage{flex:1;padding:22px 18px;text-align:center;border-right:1px solid var(--line);background:#fff}
+  .funnel .stage:last-child{border-right:none}
+  .funnel .stage.here{background:var(--navy);color:#fff}
+  .funnel .k{font-family:var(--sans);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sky);margin-bottom:6px}
+  .funnel .stage.here .k{color:#8FB1E6}
+  .funnel h4{font-family:var(--serif);font-size:.98rem;color:var(--navy);margin-bottom:6px}
+  .funnel .stage.here h4{color:#fff}
+  .funnel p{font-family:var(--sans);font-size:.78rem;color:var(--slate)}
+  .funnel .stage.here p{color:#C6D3E8}
+
+  .callout{margin-top:24px;padding:22px 26px;background:var(--cream-2);border-left:2px solid var(--red)}
+  .callout .k{font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+  .callout p{font-family:var(--sans);font-size:.92rem;color:var(--slate)}
+  .callout strong{color:var(--navy)}
+
   .logo-compare{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
   @media(max-width:640px){.logo-compare{grid-template-columns:1fr}}
   .logo-compare .cell{background:#fff;padding:28px 26px;text-align:center}
@@ -108,6 +124,34 @@
     <div class="num">Why This Document Exists</div>
     <h2>Separating "what it looks like" from "how it works."</h2>
     <p>The mockups you've seen so far were about look and feel — layout, tone, navigation. This document is about the machinery underneath: where content lives, who can edit what, and how the pieces fit together. Nothing here changes CAA's mission, membership structure, or content — it's the technical plan for building what we've already discussed.</p>
+  </section>
+
+  <section>
+    <div class="num">The Homepage's One Job</div>
+    <h2>Understanding the marketing funnel.</h2>
+    <p>A "marketing funnel" just describes the stages someone goes through on the way to joining anything — wide at the top (people who've never heard of you), narrow at the bottom (people who've actually taken action). Every page on the site has a different job depending on where it sits in that funnel.</p>
+    <div class="funnel">
+      <div class="stage here">
+        <div class="k">Homepage</div>
+        <h4>Awareness</h4>
+        <p>Someone has never heard of CAA. The only job here is: explain what this is, in a few seconds, and get them to become a free member.</p>
+      </div>
+      <div class="stage">
+        <div class="k">Member Portal</div>
+        <h4>Engagement</h4>
+        <p>Someone already joined. Now the job is to give them a reason to come back — chapter, mentorship, prayer, formation.</p>
+      </div>
+      <div class="stage">
+        <div class="k">Give / Membership</div>
+        <h4>Commitment</h4>
+        <p>Someone already engaged. Now the job is inviting deeper commitment — paid membership, giving, Patron.</p>
+      </div>
+    </div>
+    <p>This matters because it changes what "good" looks like on the homepage specifically. It isn't there to explain every program CAA runs or show everything at once — it's there to convert a cold visitor into a free member as fast and clearly as possible. Anything that slows that down or dilutes the message works against the page's actual job, even if it looks nice.</p>
+    <div class="callout">
+      <div class="k">Why No Image Slider In The Header</div>
+      <p>Rotating hero sliders are a common request, but the research on them is consistent: <strong>most visitors never see past the first slide</strong> — they either act on the first message or leave within a few seconds, well before a slider rotates. A slider that cycles through 3–4 messages effectively means 2–3 of them are seen by almost nobody, and it splits attention away from the one thing the homepage actually needs someone to do. A single, static, strong message with one clear call to action converts better at the top of the funnel than a rotating carousel does — which is why the homepage mock uses one headline and one CTA, not a slideshow.</p>
+    </div>
   </section>
 
   <section>
