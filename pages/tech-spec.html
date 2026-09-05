@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>CAA Digital Platform — Technical Overview</title>
+<title>CAA Digital Platform: Technical Overview</title>
 <style>
   :root{
     --navy:#082D5B;
@@ -55,6 +55,17 @@
   .sm-col ul{margin:0;padding-left:18px;font-family:var(--sans);font-size:.88rem;color:var(--ink)}
   .sm-col li{margin-bottom:8px;line-height:1.4}
   .sm-col li span{display:block;color:var(--slate);font-size:.82rem;margin-top:2px}
+
+  .sm-group{margin-top:40px}
+  .sm-group:first-child{margin-top:0}
+  .sm-group-label{font-family:var(--sans);font-size:.78rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--red);padding-bottom:10px;border-bottom:2px solid var(--navy);margin-bottom:4px}
+  .sm-page{padding:18px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:220px 1fr;gap:20px}
+  .sm-group .sm-page:first-of-type{border-top:none}
+  @media(max-width:640px){.sm-page{grid-template-columns:1fr;gap:6px}}
+  .sm-page h4{font-family:var(--serif);font-size:1.02rem;color:var(--navy)}
+  .sm-page .desc p{font-family:var(--sans);font-size:.9rem;color:var(--ink);margin-bottom:8px}
+  .sm-page .desc ul{margin:0;padding-left:18px;font-family:var(--sans);font-size:.85rem;color:var(--slate)}
+  .sm-page .desc li{margin-bottom:4px}
 
   .stack-diagram{margin-top:28px;display:flex;align-items:stretch;gap:0;border:1px solid var(--line)}
   .stack-diagram .cell{flex:1;padding:22px 20px;text-align:center;border-right:1px solid var(--line)}
@@ -123,13 +134,13 @@
   <section>
     <div class="num">Why This Document Exists</div>
     <h2>Separating "what it looks like" from "how it works."</h2>
-    <p>The mockups you've seen so far were about look and feel — layout, tone, navigation. This document is about the machinery underneath: where content lives, who can edit what, and how the pieces fit together. Nothing here changes CAA's mission, membership structure, or content — it's the technical plan for building what we've already discussed.</p>
+    <p>The mockups you've seen so far were about look and feel: layout, tone, navigation. This document is about the machinery underneath, where content lives, who can edit what, and how the pieces fit together. Nothing here changes CAA's mission, membership structure, or content. It's the technical plan for building what we've already discussed.</p>
   </section>
 
   <section>
     <div class="num">The Homepage's One Job</div>
     <h2>Understanding the marketing funnel.</h2>
-    <p>A "marketing funnel" just describes the stages someone goes through on the way to joining anything — wide at the top (people who've never heard of you), narrow at the bottom (people who've actually taken action). Every page on the site has a different job depending on where it sits in that funnel.</p>
+    <p>A "marketing funnel" just describes the stages someone goes through on the way to joining anything: wide at the top, meaning people who've never heard of you, narrow at the bottom, meaning people who've actually taken action. Every page on the site has a different job depending on where it sits in that funnel.</p>
     <div class="funnel">
       <div class="stage here">
         <div class="k">Homepage</div>
@@ -139,18 +150,18 @@
       <div class="stage">
         <div class="k">Member Portal</div>
         <h4>Engagement</h4>
-        <p>Someone already joined. Now the job is to give them a reason to come back — chapter, mentorship, prayer, formation.</p>
+        <p>Someone already joined. Now the job is to give them a reason to come back: chapter, mentorship, prayer, formation.</p>
       </div>
       <div class="stage">
         <div class="k">Give / Membership</div>
         <h4>Commitment</h4>
-        <p>Someone already engaged. Now the job is inviting deeper commitment — paid membership, giving, Patron.</p>
+        <p>Someone already engaged. Now the job is inviting deeper commitment: paid membership, giving, Patron.</p>
       </div>
     </div>
-    <p>This matters because it changes what "good" looks like on the homepage specifically. It isn't there to explain every program CAA runs or show everything at once — it's there to convert a cold visitor into a free member as fast and clearly as possible. Anything that slows that down or dilutes the message works against the page's actual job, even if it looks nice.</p>
+    <p>This matters because it changes what "good" looks like on the homepage specifically. It isn't there to explain every program CAA runs or show everything at once. It's there to convert a cold visitor into a free member as fast and clearly as possible. Anything that slows that down or dilutes the message works against the page's actual job, even if it looks nice.</p>
     <div class="callout">
       <div class="k">Why No Image Slider In The Header</div>
-      <p>Rotating hero sliders are a common request, but the research on them is consistent: <strong>most visitors never see past the first slide</strong> — they either act on the first message or leave within a few seconds, well before a slider rotates. A slider that cycles through 3–4 messages effectively means 2–3 of them are seen by almost nobody, and it splits attention away from the one thing the homepage actually needs someone to do. A single, static, strong message with one clear call to action converts better at the top of the funnel than a rotating carousel does — which is why the homepage mock uses one headline and one CTA, not a slideshow.</p>
+      <p>Rotating hero sliders are a common request, but the research on them is consistent: <strong>most visitors never see past the first slide</strong>. They either act on the first message or leave within a few seconds, well before a slider rotates. A slider that cycles through 3-4 messages effectively means 2-3 of them are seen by almost nobody, and it splits attention away from the one thing the homepage actually needs someone to do. A single, static, strong message with one clear call to action converts better at the top of the funnel than a rotating carousel does. That is why the homepage mock uses one headline and one CTA, not a slideshow.</p>
     </div>
   </section>
 
@@ -161,15 +172,15 @@
     <div class="layer-stack">
       <div class="layer">
         <div class="who">Layer 1</div>
-        <div><h3>Public Website</h3><p>What anyone finds through Google before they've ever heard of CAA — Home, Participate, Resources, About, Chapters. Its entire job is to explain what CAA is and get someone to register or join.</p></div>
+        <div><h3>Public Website</h3><p>What anyone finds through Google before they've ever heard of CAA: Home, Participate, Resources, About, Chapters. Its entire job is to explain what CAA is and get someone to register or join.</p></div>
       </div>
       <div class="layer">
         <div class="who">Layer 2</div>
-        <div><h3>Member Portal</h3><p>What a member sees after logging in — the directory, chapter tools, mentorship, Witness formation, prayer requests, event RSVPs, and their own membership/dues status.</p></div>
+        <div><h3>Member Portal</h3><p>What a member sees after logging in: the directory, chapter tools, mentorship, Witness formation, prayer requests, event RSVPs, and their own membership/dues status.</p></div>
       </div>
       <div class="layer">
         <div class="who">Layer 3</div>
-        <div><h3>Content &amp; Admin Tools</h3><p>The behind-the-scenes tools staff use to update the public site, publish articles, manage chapters and events, and review new member registrations — without needing a developer.</p></div>
+        <div><h3>Content &amp; Admin Tools</h3><p>The behind-the-scenes tools staff use to update the public site, publish articles, manage chapters and events, and review new member registrations, without needing a developer.</p></div>
       </div>
     </div>
   </section>
@@ -177,7 +188,7 @@
   <section>
     <div class="num">How Content Gets Managed</div>
     <h2>You control the words. The design stays consistent.</h2>
-    <p>We're using a content tool called <strong>Sanity</strong> to manage everything editable. The important thing isn't the name — it's what it does: it lets staff change specific pieces of text, swap photos, and write full articles with a normal rich-text editor (bold, links, headings, images — like writing an email), <em>without</em> being able to accidentally break the page layout or the brand design.</p>
+    <p>We're using a content tool called <strong>Sanity</strong> to manage everything editable. The important thing isn't the name. It's what it does: it lets staff change specific pieces of text, swap photos, and write full articles with a normal rich-text editor (bold, links, headings, images, like writing an email), <em>without</em> being able to accidentally break the page layout or the brand design.</p>
     <p class="pull">Staff get control over content. The design stays exactly as it was built, every time.</p>
     <p>This is a deliberate choice. A tool that lets anyone freely rearrange sections and layouts (like some popular website builders) also lets anyone accidentally make the site look inconsistent or off-brand over time. Locking the layout down and opening up only the content keeps CAA's site looking professional permanently, not just on launch day.</p>
   </section>
@@ -189,13 +200,13 @@
       <div class="cell stays">
         <div class="k">Continues, Billing Only</div>
         <h4>eCatholic</h4>
-        <p>The eCatholic <em>website</em> is fully replaced. Only its dues billing and payment processing keeps running behind the scenes — the part that's genuinely risky and expensive to rebuild, so there's no reason to touch it yet.</p>
+        <p>The eCatholic <em>website</em> is fully replaced. Only its dues billing and payment processing keeps running behind the scenes. That's the part that's genuinely risky and expensive to rebuild, so there's no reason to touch it yet.</p>
       </div>
       <div class="arrow">+</div>
       <div class="cell new">
         <div class="k">New Build</div>
         <h4>New Site &amp; Member Portal</h4>
-        <p>Everything visible — the public website and the member experience — gets built fresh, modern, and fast, independent of eCatholic's design limitations.</p>
+        <p>Everything visible, the public website and the member experience, gets built fresh, modern, and fast, independent of eCatholic's design limitations.</p>
       </div>
     </div>
     <p>Later, once the new system is proven out, we can revisit whether payment processing should move too. There's no need to decide that now, and no risk in waiting.</p>
@@ -203,43 +214,175 @@
 
   <section>
     <div class="num">Full Site Map</div>
-    <h2>Every page and tool, organized by who sees it.</h2>
-    <div class="sitemap">
-      <div class="sm-col">
-        <div class="k">Public Site</div>
-        <ul>
-          <li>Home<span>Hero, Faith/Flying/Fellowship, CAA Every Day, primary calls to action</span></li>
-          <li>Participate<span>Join/renew/register, donate, starting a chapter, product catalog</span></li>
-          <li>Resources</li>
-          <li>About Us / Contact Us<span>Mission, Magisterium fidelity, leadership</span></li>
-          <li>CAA Chapters<span>Public chapter list</span></li>
-        </ul>
+    <h2>Every page and tool this system includes, in detail.</h2>
+    <p>This is deliberately thorough. The goal is for you to be able to react to specifics now, page by page, rather than approving a general idea and being surprised by a detail later. If something below should not exist, should be combined with something else, or is missing entirely, this is the right time to say so.</p>
+
+    <div class="sm-group">
+      <div class="sm-group-label">Public Site (no login required)</div>
+
+      <div class="sm-page">
+        <h4>Home</h4>
+        <div class="desc">
+          <p>Single hero message and one call to action (no slider, see above). Then, in order:</p>
+          <ul>
+            <li>A short explanation of the three mission areas: Faith, Fellowship, Flying</li>
+            <li>Member benefits, written to explain the actual spiritual/vocational value, not a features list</li>
+            <li>"CAA Every Day" content block: daily Scripture reading link (USCCB), feast days, existing news</li>
+            <li>Recent stories teaser, linking to the full Stories page</li>
+            <li>A single closing call to action to join</li>
+          </ul>
+        </div>
       </div>
-      <div class="sm-col">
-        <div class="k">Member Portal (login required)</div>
-        <ul>
-          <li>Dashboard</li>
-          <li>My Profile &amp; Membership Status</li>
-          <li>Member Directory &amp; Map</li>
-          <li>My Chapter / Browse Chapters</li>
-          <li>Mentorship</li>
-          <li>Witness / Formation</li>
-          <li>Prayer Requests</li>
-          <li>Events &amp; RSVPs</li>
-          <li>Give / Billing History</li>
-        </ul>
+
+      <div class="sm-page">
+        <h4>Participate</h4>
+        <div class="desc">
+          <p>Likely four distinct pages under this heading, not one long page:</p>
+          <ul>
+            <li>Join / Renew / Register, with real pricing ($35 standard, free for clergy/religious/students, hardship exceptions on request)</li>
+            <li>Donate / Give, separate from membership dues</li>
+            <li>Starting a Chapter, a guide plus a request form</li>
+            <li>CAA Product Catalog, the merch store</li>
+          </ul>
+        </div>
       </div>
-      <div class="sm-col">
-        <div class="k">Admin Tools (staff only)</div>
-        <ul>
-          <li>Member Management<span>Approvals, tier verification, dues status</span></li>
-          <li>Chapter Management</li>
-          <li>Content &amp; Article Publishing</li>
-          <li>Event Management</li>
-          <li>Donation Records</li>
-          <li>Product Catalog</li>
-          <li>Roles &amp; Permissions</li>
-        </ul>
+
+      <div class="sm-page">
+        <h4>Resources</h4>
+        <div class="desc"><p>Public-facing formation and educational content. Needs a real content audit of what exists today before we define this fully.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Stories</h4>
+        <div class="desc"><p>Public index of member stories and articles, plus individual article pages. Source and cadence still need to be settled (member contributions, staff-written, or both).</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>CAA Chapters</h4>
+        <div class="desc"><p>Public chapter list, framed honestly around today's actual chapter count, with a clear path to start a new one rather than only "find" one.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Events</h4>
+        <div class="desc"><p>Public calendar, featuring the worldwide Aviation Mass and any chapter events open to the public.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Sponsors &amp; Partners</h4>
+        <div class="desc"><p>Public page for aviation and Catholic-aligned businesses CAA partners with, framed around shared mission fit rather than discounts alone.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>About Us</h4>
+        <div class="desc"><p>Mission, fidelity to the Magisterium, leadership, history. This is where CAA's Catholic identity needs to be explicit and unmistakable.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Contact Us</h4>
+        <div class="desc"><p>Simple contact form and information.</p></div>
+      </div>
+    </div>
+
+    <div class="sm-group">
+      <div class="sm-group-label">Member Portal (login required)</div>
+
+      <div class="sm-page">
+        <h4>Dashboard</h4>
+        <div class="desc"><p>Landing page after login: chapter snapshot, upcoming events, recent activity.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>My Profile &amp; Membership Status</h4>
+        <div class="desc"><p>Contact info, aviation role, current tier, renewal date.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Member Directory &amp; Map</h4>
+        <div class="desc"><p>Find other members. Member-only, matching how this works on the current site today.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>My Chapter / Browse &amp; Start a Chapter</h4>
+        <div class="desc"><p>Chapter roster and meeting schedule for a member's own chapter, plus the ability to browse other chapters or start a new one.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Mentorship</h4>
+        <div class="desc"><p>Request or offer mentorship, matched by aviation role.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Witness / Formation</h4>
+        <div class="desc"><p>A real content library, not a placeholder link. Needs actual formation content defined before this is more than a folder name.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Prayer Requests</h4>
+        <div class="desc"><p>Post and view requests, with a simple "praying for this" count.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Events &amp; RSVPs</h4>
+        <div class="desc"><p>Same calendar as the public Events page, plus the ability to RSVP once logged in.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Give / Billing History</h4>
+        <div class="desc"><p>A member's own dues payment history and any one-time gifts made.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Account Settings</h4>
+        <div class="desc"><p>Password, notification preferences, privacy settings.</p></div>
+      </div>
+    </div>
+
+    <div class="sm-group">
+      <div class="sm-group-label">Admin / CMS Tools (staff only)</div>
+
+      <div class="sm-page">
+        <h4>Member Management</h4>
+        <div class="desc"><p>Approve new registrations, verify clergy/religious/student status for the free tier, track dues status.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Chapter Management</h4>
+        <div class="desc"><p>Approve new chapter requests, assign chapter leaders, oversee chapter rosters.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Content &amp; Article Publishing</h4>
+        <div class="desc"><p>Where staff write and publish Stories and update the editable text on public pages, through Sanity.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Event Management</h4>
+        <div class="desc"><p>Create and edit events, track RSVPs, coordinate the worldwide Aviation Mass.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Donation &amp; Payment Records</h4>
+        <div class="desc"><p>Transaction history and reporting for tax-deductible giving.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Product Catalog Management</h4>
+        <div class="desc"><p>Merch inventory, pricing, and order tracking.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Sponsor &amp; Partner Management</h4>
+        <div class="desc"><p>Manage the public Sponsors &amp; Partners page and partner-tier records.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Roles &amp; Permissions</h4>
+        <div class="desc"><p>Chapter leader access versus national admin access versus super-admin access, kept separate.</p></div>
+      </div>
+
+      <div class="sm-page">
+        <h4>Reporting</h4>
+        <div class="desc"><p>Membership growth, chapter health, and engagement, for the board and leadership.</p></div>
       </div>
     </div>
   </section>
@@ -247,7 +390,7 @@
   <section>
     <div class="num">A Note on the Logo</div>
     <h2>One mark, two shapes, used in the right place.</h2>
-    <p>The full figure — Christ's whole body, feet visible — stays the primary version of the logo. It just needs a horizontal companion version for places that are wide and short, like a website header, the same way any organization's full logo gets a simplified lockup for a business card or letterhead. This is a standard practice, not a compromise on the artwork itself.</p>
+    <p>The full figure, Christ's whole body with feet visible, stays the primary version of the logo. It just needs a horizontal companion version for places that are wide and short, like a website header, the same way any organization's full logo gets a simplified lockup for a business card or letterhead. This is a standard practice, not a compromise on the artwork itself.</p>
     <div class="logo-compare">
       <div class="cell">
         <div class="k">Full Mark</div>
@@ -257,7 +400,7 @@
       <div class="cell">
         <div class="k">Horizontal Lockup</div>
         <h4>Website Header &amp; Wide Spaces</h4>
-        <p>A cropped, wide version for navigation bars and other short/wide placements — same mark, same figure, adapted to fit the space.</p>
+        <p>A cropped, wide version for navigation bars and other short/wide placements. Same mark, same figure, adapted to fit the space.</p>
       </div>
     </div>
   </section>
@@ -276,7 +419,7 @@
       </div>
       <div class="phase">
         <div class="when">Phase 3</div>
-        <div><h3>Member Portal</h3><p>Build the authenticated member experience — directory, chapters, mentorship, dashboard.</p></div>
+        <div><h3>Member Portal</h3><p>Build the authenticated member experience: directory, chapters, mentorship, dashboard.</p></div>
       </div>
       <div class="phase">
         <div class="when">Phase 4</div>
@@ -290,7 +433,7 @@
     <h2>To keep this moving without guesswork.</h2>
     <div class="need-list">
       <div class="need"><div class="n">1</div><p>Confirmation on the real membership tiers/pricing to build around ($35 standard, free for clergy/religious/students, hardship exceptions).</p></div>
-      <div class="need"><div class="n">2</div><p>Real photography — chapter gatherings, members, events — to replace placeholder imagery.</p></div>
+      <div class="need"><div class="n">2</div><p>Real photography (chapter gatherings, members, events) to replace placeholder imagery.</p></div>
       <div class="need"><div class="n">3</div><p>An accurate current chapter count and locations, so the site never overstates where CAA actually is today.</p></div>
       <div class="need"><div class="n">4</div><p>Any existing written content (About page, mission statements, saint/devotional write-ups) you want carried over rather than rewritten.</p></div>
       <div class="need"><div class="n">5</div><p>Sign-off on the logo system above, so Phase 1 can actually close out.</p></div>
