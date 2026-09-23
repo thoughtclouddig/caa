@@ -6,7 +6,7 @@ import { eq, and } from "drizzle-orm";
 import { db } from "./db";
 import {
   users, prayerRequests, prayerPledges, eventRsvps, donations,
-  chapters, events, stories,
+  chapters, events, articles,
 } from "./schema";
 import {
   authenticate, createSession, destroySession, registerUser,
@@ -200,37 +200,37 @@ export async function upsertChapterAction(_prev: FormState, form: FormData): Pro
 }
 
 /**
- * Marks one story as the homepage lead. Only one can hold it, so this
+ * Marks one article as the homepage lead. Only one can hold it, so this
  * clears the flag everywhere else in the same breath. Passing the id of
- * the story that already leads clears it, and the homepage falls back to
- * the most recent published story.
+ * the article that already leads clears it, and the homepage falls back to
+ * the most recent published article.
  */
-export async function setFeaturedStoryAction(id: number): Promise<void> {
+export async function setFeaturedArticleAction(id: number): Promise<void> {
   await requireAdmin();
 
-  const [current] = await db.select({ isFeatured: stories.isFeatured })
-    .from(stories).where(eq(stories.id, id)).limit(1);
+  const [current] = await db.select({ isFeatured: articles.isFeatured })
+    .from(articles).where(eq(articles.id, id)).limit(1);
 
-  await db.update(stories).set({ isFeatured: false });
+  await db.update(articles).set({ isFeatured: false });
   if (!current?.isFeatured) {
-    await db.update(stories).set({ isFeatured: true }).where(eq(stories.id, id));
+    await db.update(articles).set({ isFeatured: true }).where(eq(articles.id, id));
   }
 
-  revalidatePath("/admin/stories");
+  revalidatePath("/admin/articles");
   revalidatePath("/");
 }
 
-export async function setStoryStatusAction(
+export async function setArticleStatusAction(
   id: number,
   status: "draft" | "published" | "archived",
 ): Promise<void> {
   await requireAdmin();
-  await db.update(stories).set({
+  await db.update(articles).set({
     status,
     publishedAt: status === "published" ? new Date() : null,
-  }).where(eq(stories.id, id));
-  revalidatePath("/admin/stories");
-  revalidatePath("/stories");
+  }).where(eq(articles.id, id));
+  revalidatePath("/admin/articles");
+  revalidatePath("/articles");
   revalidatePath("/");
 }
 

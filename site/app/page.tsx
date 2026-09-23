@@ -1,21 +1,22 @@
 import Link from "next/link";
 import PhotoSlot from "@/components/PhotoSlot";
+import ArticleImage from "@/components/ArticleImage";
 import {
   hero,
   missionIntro,
   missionAreas,
   benefits,
   everyDay,
-  storiesTeaser,
+  articlesTeaser,
   closing,
 } from "@/content/home";
-import { getHomeStories } from "@/lib/queries";
+import { getHomeArticles } from "@/lib/queries";
 import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const { featured, rest } = await getHomeStories(3);
+  const { featured, rest } = await getHomeArticles(3);
 
   return (
     <>
@@ -113,28 +114,29 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Stories. One lead carried large, three beneath it, then the
+      {/* Articles. One lead carried large, three beneath it, then the
           way through to everything else. Real articles, not photo tiles. */}
       <section className="section">
         <div className="shell">
-          <div className={styles.storiesHead}>
+          <div className={styles.articlesHead}>
             <div>
-              <p className="eyebrow">{storiesTeaser.eyebrow}</p>
-              <h2>{storiesTeaser.heading}</h2>
-              <p className={`prose ${styles.storiesLede}`}>
-                {storiesTeaser.lede}
+              <p className="eyebrow">{articlesTeaser.eyebrow}</p>
+              <h2>{articlesTeaser.heading}</h2>
+              <p className={`prose ${styles.articlesLede}`}>
+                {articlesTeaser.lede}
               </p>
             </div>
-            <Link href={storiesTeaser.cta.href} className="btn btn--ghost">
-              {storiesTeaser.cta.label}
+            <Link href={articlesTeaser.cta.href} className="btn btn--ghost">
+              {articlesTeaser.cta.label}
             </Link>
           </div>
 
           {featured && (
-            <Link href={`/stories/${featured.slug}`} className={styles.lead}>
-              <PhotoSlot
-                brief={featured.photoBrief ?? ""}
+            <Link href={`/articles/${featured.slug}`} className={styles.lead}>
+              <ArticleImage
+                article={featured}
                 ratio="16 / 9"
+                sizes="(min-width: 52rem) 40rem, 100vw"
                 className={styles.leadPhoto}
               />
               <div className={styles.leadCopy}>
@@ -143,23 +145,27 @@ export default async function HomePage() {
                 {featured.excerpt && (
                   <p className={`lede ${styles.leadExcerpt}`}>{featured.excerpt}</p>
                 )}
-                <span className={styles.readOn}>Read the Story</span>
+                <span className={styles.readOn}>Read the Article</span>
               </div>
             </Link>
           )}
 
           {rest.length > 0 && (
-            <div className={styles.storiesGrid}>
-              {rest.map((story) => (
+            <div className={styles.articlesGrid}>
+              {rest.map((article) => (
                 <Link
-                  key={story.id}
-                  href={`/stories/${story.slug}`}
+                  key={article.id}
+                  href={`/articles/${article.slug}`}
                   className={styles.card}
                 >
-                  <PhotoSlot brief={story.photoBrief ?? ""} ratio="3 / 2" />
-                  <h4 className={styles.cardTitle}>{story.title}</h4>
-                  {story.excerpt && (
-                    <p className={styles.cardExcerpt}>{story.excerpt}</p>
+                  <ArticleImage
+                    article={article}
+                    ratio="3 / 2"
+                    sizes="(min-width: 46rem) 22rem, 100vw"
+                  />
+                  <h4 className={styles.cardTitle}>{article.title}</h4>
+                  {article.excerpt && (
+                    <p className={styles.cardExcerpt}>{article.excerpt}</p>
                   )}
                 </Link>
               ))}

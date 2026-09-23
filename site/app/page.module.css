@@ -145,7 +145,7 @@
 
 /* --- stories ------------------------------------------------------------- */
 
-.storiesHead {
+.articlesHead {
   display: flex;
   flex-wrap: wrap;
   align-items: end;
@@ -153,7 +153,7 @@
   gap: 1.5rem;
 }
 
-.storiesLede {
+.articlesLede {
   margin-top: 1rem;
 }
 
@@ -208,7 +208,7 @@
   opacity: 0.75;
 }
 
-.storiesGrid {
+.articlesGrid {
   display: grid;
   grid-template-columns: 1fr;
   gap: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
@@ -253,7 +253,7 @@
     gap: 2.5rem;
   }
 
-  .storiesGrid {
+  .articlesGrid {
     grid-template-columns: repeat(3, 1fr);
   }
 }

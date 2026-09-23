@@ -3,7 +3,7 @@
  *
  * Structure follows the approved brand and website overview: one hero
  * message and one call to action (no slider), then the three mission areas,
- * member benefits, CAA Every Day, a stories teaser, and a single closing
+ * member benefits, CAA Every Day, a articles teaser, and a single closing
  * call to action.
  *
  * Copy source: wherever CAA has already said a thing in its own words on
@@ -110,11 +110,11 @@ export const everyDay = {
   cta: { label: "See Today's Readings", href: "/resources/every-day" },
 };
 
-export const storiesTeaser = {
-  eyebrow: "Stories",
+export const articlesTeaser = {
+  eyebrow: "Articles",
   heading: "The People Behind the Association",
   lede: "Members, chapters, and the ordinary working life of Catholics in aviation.",
-  cta: { label: "See All Articles", href: "/stories" },
+  cta: { label: "See All Articles", href: "/articles" },
 };
 
 export const closing = {

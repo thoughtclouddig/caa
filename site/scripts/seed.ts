@@ -2,12 +2,12 @@
  * Seed data.
  *
  * Deliberately conservative: real chapter counts, no invented membership
- * numbers, no fabricated member stories. Terry's note was that only three
+ * numbers, no fabricated member articles. Terry's note was that only three
  * chapters are actually functioning, so that is what this reflects.
  */
 import { db } from "../lib/db";
 import {
-  users, chapters, membershipTiers, events, stories, resources,
+  users, chapters, membershipTiers, events, articles, resources,
   prayerRequests, sponsors, products, pages,
 } from "../lib/schema";
 import { hashPassword } from "../lib/passwords";
@@ -74,10 +74,12 @@ async function main() {
 
   // Articles. BRING ONE! is the current membership drive and leads the
   // homepage; the rest are real chapter and member news from CAA.
+  // Photographs are CAA's own, carried over from catholicaviation.org and
+  // credited where the existing site credits them.
   const now = Date.now();
   const daysAgo = (n: number) => new Date(now - 1000 * 60 * 60 * 24 * n);
 
-  await db.insert(stories).values([
+  await db.insert(articles).values([
     {
       slug: "bring-one",
       title: "Bring One!",
@@ -89,11 +91,12 @@ async function main() {
         "Please take part in the membership drive and help us fill what we need to fulfill our aviation vocation as servants of other Christs, and to fill in what is needed in our Catholic lives, for ourselves, for those we love, and for one another.\n\n" +
         "BRING ONE!",
       authorName: "CAA",
+      imagePath: "/articles/bring-one.jpg",
+      imageAlt:
+        "A carved relief of Christ above two airliners, with people carried upward beneath them. The base reads: Bring one. Together we fly to Christ. Catholic Aviation Association.",
       isFeatured: true,
       status: "published",
       publishedAt: daysAgo(3),
-      photoBrief:
-        "Two CAA members talking on a ramp or in a hangar. The invitation is the subject, so show the conversation rather than the aircraft.",
     },
     {
       slug: "indianapolis-flight-simulator",
@@ -105,25 +108,11 @@ async function main() {
         "It is the kind of project a chapter can actually carry: real airframe, real work, and something a visitor can sit in at the end of it. Chapter members are doing the build themselves.\n\n" +
         "Full write-up and photographs to follow from the chapter.",
       authorName: "CAA Indianapolis",
+      imagePath: "/articles/indianapolis-flight-simulator.jpg",
+      imageAlt:
+        "Three CAA Indianapolis members standing around a glider fuselage section in a workshop.",
       status: "published",
       publishedAt: daysAgo(12),
-      photoBrief:
-        "Chapter members working on the glider fuselage section. Hands and airframe, in the space where the build is happening.",
-    },
-    {
-      slug: "jessica-cox-airventure",
-      title: "Meeting Jessica Cox at AirVenture",
-      excerpt:
-        "Chairman Tom Beckenbauer and Christian Tombers with the first armless private pilot in history, at EAA AirVenture.",
-      body:
-        "Chairman Tom Beckenbauer and Christian Tombers met Jessica Cox at the 2026 EAA AirVenture in Oshkosh.\n\n" +
-        "Jessica is the first armless private pilot in history. She also scuba dives and holds a black belt in tae kwon do, and she was recently inducted into the Arizona Aviation Hall of Fame.\n\n" +
-        "She heads the Rightfooted Foundation, which promotes independence and ability for armless and other handicapped people. That work sits close to something CAA chapters already do: assisting with the design and manufacture of adaptive tools for the handicapped.",
-      authorName: "CAA",
-      status: "published",
-      publishedAt: daysAgo(26),
-      photoBrief:
-        "Tom Beckenbauer and Christian Tombers with Jessica Cox at AirVenture. CAA holds this photograph.",
     },
     {
       slug: "why-a-catholic-aviation-association",
@@ -135,10 +124,59 @@ async function main() {
         "The Catholic Aviation Association was founded to answer that directly: to unite the People of God involved in every aspect of aviation so that we can support one another, and so that nobody is doing this alone.\n\n" +
         "A fuller account from members belongs here. If you have one, write to us.",
       authorName: "CAA",
+      imagePath: "/articles/citabria-sunset.jpg",
+      imageAlt:
+        "The view out under the wing of a Citabria at sunset, over Indiana farmland.",
+      imageCredit: "Photo: Laura Stants",
       status: "published",
-      publishedAt: daysAgo(48),
+      publishedAt: daysAgo(26),
+    },
+    {
+      slug: "blessing-of-an-aircraft",
+      title: "The Blessing of an Aircraft",
+      excerpt:
+        "A priest, a bottle of holy water, and an Aeronca Chief on the grass.",
+      body:
+        "An aircraft blessing is a small thing to arrange and a hard thing to forget. A priest, a bottle of holy water, and whatever is parked on the grass that morning.\n\n" +
+        "It is one of the most direct answers to what CAA is for. The work and the faith are not kept in separate compartments, brought together only when something goes wrong. The aircraft is part of the life, so the aircraft is blessed.\n\n" +
+        "If your chapter has arranged one, send us the photographs and the details and we will run them here.",
+      authorName: "CAA",
+      imagePath: "/articles/airplane-blessing.jpg",
+      imageAlt:
+        "A priest holding holy water stands beside an owner in front of a blue and white Aeronca Chief.",
+      status: "published",
+      publishedAt: daysAgo(40),
+    },
+    {
+      slug: "meeting-jessica-cox-at-airventure",
+      title: "Meeting Jessica Cox at AirVenture",
+      excerpt:
+        "Chairman Tom Beckenbauer and Christian Tombers with the first armless private pilot in history.",
+      body:
+        "Chairman Tom Beckenbauer and Christian Tombers met Jessica Cox at the 2026 EAA AirVenture in Oshkosh.\n\n" +
+        "Jessica is the first armless private pilot in history. She also scuba dives and holds a black belt in tae kwon do, and she was recently inducted into the Arizona Aviation Hall of Fame.\n\n" +
+        "She heads the Rightfooted Foundation, which promotes independence and ability for armless and other handicapped people. That work sits close to something CAA chapters already do: assisting with the design and manufacture of adaptive tools for the handicapped.",
+      authorName: "CAA",
       photoBrief:
-        "A member at work in aviation: ramp, hangar, flight deck or tower.",
+        "Tom Beckenbauer and Christian Tombers with Jessica Cox at AirVenture 2026. CAA holds this photograph; it is on the CAA Every Day page of the existing site.",
+      status: "published",
+      publishedAt: daysAgo(54),
+    },
+    {
+      slug: "caa-at-ncyc",
+      title: "CAA at the National Catholic Youth Conference",
+      excerpt:
+        "Tom Beckenbauer and Christian Tombers working the CAA stand, under a banner reading Faith, Flying and Fellowship.",
+      body:
+        "Tom Beckenbauer and Christian Tombers took CAA to the National Catholic Youth Conference, with a sailplane wing, a table of aviation material and a stand full of people asking what the association is.\n\n" +
+        "Young people are the part of the founding vision with the furthest still to go. Getting in front of them at an event like this is how a chapter starts somewhere new.\n\n" +
+        "A fuller account belongs here. If you were there, write to us.",
+      authorName: "CAA",
+      imagePath: "/articles/tom-and-christian-ncyc.jpg",
+      imageAlt:
+        "Tom Beckenbauer and Christian Tombers at the Catholic Aviation Association stand, holding a sailplane component beneath CAA banners.",
+      status: "published",
+      publishedAt: daysAgo(70),
     },
   ]);
 

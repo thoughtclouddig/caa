@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { PageHero } from "@/components/ui";
 
 export const metadata = { title: "Our Patron Saints" };
@@ -12,6 +13,8 @@ const patrons = [
   {
     name: "Our Lady of Loreto",
     patronage: "Patroness of aviators and air travelers",
+    image: "/about/house-of-loreto.jpg",
+    imageAlt: "The Holy House of Loreto, enclosed within its marble screen inside the basilica at Loreto.",
     body:
       "The title refers to the Holy House of Loreto, the house in which Mary was born and where the Annunciation occurred. Tradition holds that angels carried the little house from the Holy Land to Tersato in 1291, to Recanati in 1294, and finally to Loreto, where it has stood for centuries. It was that flight that led to her patronage of everyone involved in aviation. The shrine is the first of international renown dedicated to the Blessed Virgin, and has been held in special esteem by the Popes.",
     source: "catholicsaints.info",
@@ -19,6 +22,8 @@ const patrons = [
   {
     name: "St. Joseph of Cupertino",
     patronage: "Patron of pilots and air passengers",
+    image: "/about/st-joseph-of-cupertino.jpg",
+    imageAlt: "A painting of St. Joseph of Cupertino raised from the ground in prayer.",
     body:
       "A Franciscan mystic born at Cupertino in Italy and ordained among the Conventual Franciscans in 1628. He became known for many gifts, the most famous being his levitation in prayer, which drew such crowds that he was moved repeatedly between friaries and finally confined. He died at Osimo and was canonised in 1767.",
     source: "catholic.org",
@@ -36,6 +41,23 @@ export default function PatronSaintsPage() {
       <section className="section shell shell--narrow">
         {patrons.map((p) => (
           <article key={p.name} style={{ marginBottom: "3.5rem" }}>
+            <div
+              style={{
+                position: "relative",
+                aspectRatio: "2 / 1",
+                overflow: "hidden",
+                marginBottom: "1.5rem",
+                background: "var(--warm)",
+              }}
+            >
+              <Image
+                src={p.image}
+                alt={p.imageAlt}
+                fill
+                sizes="(min-width: 60rem) 48rem, 100vw"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
             <h2>{p.name}</h2>
             <p className="eyebrow">{p.patronage}</p>
             <hr className="rule" />

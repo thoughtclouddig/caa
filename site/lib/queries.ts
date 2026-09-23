@@ -3,39 +3,39 @@ import "server-only";
 import { eq, and, desc, asc, gte, sql, count } from "drizzle-orm";
 import { db } from "./db";
 import {
-  users, chapters, events, eventRsvps, stories, resources,
+  users, chapters, events, eventRsvps, articles, resources,
   prayerRequests, prayerPledges, sponsors, products, pages,
   membershipTiers, donations, mentorshipProfiles,
 } from "./schema";
 
 /* ----------------------------- public reads ----------------------------- */
 
-export async function getPublishedStories(limit = 12) {
-  return db.select().from(stories)
-    .where(eq(stories.status, "published"))
-    .orderBy(desc(stories.publishedAt)).limit(limit);
+export async function getPublishedArticles(limit = 12) {
+  return db.select().from(articles)
+    .where(eq(articles.status, "published"))
+    .orderBy(desc(articles.publishedAt)).limit(limit);
 }
 
 /**
- * The homepage lead plus the stories that sit under it.
+ * The homepage lead plus the articles that sit under it.
  *
- * Falls back to the most recent published story when staff have not marked
+ * Falls back to the most recent published article when staff have not marked
  * one as featured, so the homepage always has a lead. The three below it
  * are the next most recent, with the lead itself filtered out.
  */
-export async function getHomeStories(count = 3) {
-  const recent = await db.select().from(stories)
-    .where(eq(stories.status, "published"))
-    .orderBy(desc(stories.isFeatured), desc(stories.publishedAt))
+export async function getHomeArticles(count = 3) {
+  const recent = await db.select().from(articles)
+    .where(eq(articles.status, "published"))
+    .orderBy(desc(articles.isFeatured), desc(articles.publishedAt))
     .limit(count + 1);
 
   const [featured, ...rest] = recent;
   return { featured: featured ?? null, rest };
 }
 
-export async function getStoryBySlug(slug: string) {
-  const [row] = await db.select().from(stories)
-    .where(and(eq(stories.slug, slug), eq(stories.status, "published"))).limit(1);
+export async function getArticleBySlug(slug: string) {
+  const [row] = await db.select().from(articles)
+    .where(and(eq(articles.slug, slug), eq(articles.status, "published"))).limit(1);
   return row ?? null;
 }
 
@@ -176,8 +176,8 @@ export async function adminPendingPrayers() {
     .orderBy(desc(prayerRequests.createdAt));
 }
 
-export async function adminListStories() {
-  return db.select().from(stories).orderBy(desc(stories.createdAt));
+export async function adminListArticles() {
+  return db.select().from(articles).orderBy(desc(articles.createdAt));
 }
 
 export async function adminListEvents() {

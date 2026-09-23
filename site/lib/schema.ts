@@ -262,8 +262,13 @@ export const eventRsvps = pgTable(
 /* content                                                                    */
 /* -------------------------------------------------------------------------- */
 
-export const stories = pgTable(
-  "stories",
+/**
+ * Articles. CAA's blog: chapter news, member articles, and the association's
+ * own announcements. Called "articles" throughout, in the site navigation
+ * and here.
+ */
+export const articles = pgTable(
+  "articles",
   {
     id: serial("id").primaryKey(),
     slug: text("slug").notNull(),
@@ -271,19 +276,27 @@ export const stories = pgTable(
     excerpt: text("excerpt"),
     body: text("body").notNull(),
     authorName: text("author_name"),
-    /** Real photography only; brief describes what is still needed. */
+    /**
+     * Lead image. `imagePath` is a path under /public once CAA has supplied
+     * the photograph; until then `photoBrief` describes what is needed and
+     * the layout renders a brief in its place. Credit lines matter here:
+     * CAA's photographs are taken by members and are credited by name.
+     */
+    imagePath: text("image_path"),
+    imageAlt: text("image_alt"),
+    imageCredit: text("image_credit"),
     photoBrief: text("photo_brief"),
     /**
-     * The one story carried large on the homepage. Staff set it in admin;
-     * if none is set, the most recent published story is used instead, so
-     * the homepage is never missing its lead.
+     * The one article carried large on the homepage and at the top of the
+     * articles index. Staff set it in admin; if none is set, the most
+     * recent published article is used, so the lead is never empty.
      */
     isFeatured: boolean("is_featured").notNull().default(false),
     status: publishStatus("status").notNull().default("draft"),
     publishedAt: timestamp("published_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   },
-  (t) => [uniqueIndex("stories_slug_idx").on(t.slug)],
+  (t) => [uniqueIndex("articles_slug_idx").on(t.slug)],
 );
 
 /** Resources section: formation and educational material, kept on CAA's own pages. */
@@ -392,6 +405,6 @@ export const prayerRequestsRelations = relations(prayerRequests, ({ one, many })
 
 export type User = typeof users.$inferSelect;
 export type Chapter = typeof chapters.$inferSelect;
-export type Story = typeof stories.$inferSelect;
+export type Article = typeof articles.$inferSelect;
 export type EventRow = typeof events.$inferSelect;
 export type PrayerRequest = typeof prayerRequests.$inferSelect;

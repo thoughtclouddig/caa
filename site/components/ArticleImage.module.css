@@ -1,0 +1,36 @@
+.figure {
+  margin: 0;
+}
+
+/* The frame carries the ratio so the image never reflows as it loads, and
+   clips the fill so a portrait photograph cannot break the grid. */
+.frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--warm);
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 500ms ease;
+}
+
+/* Photographs lift very slightly under the cursor. Links wrapping an image
+   set .hoverable on themselves. */
+:global(a:hover) .image {
+  transform: scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image { transition: none; }
+  :global(a:hover) .image { transform: none; }
+}
+
+.credit {
+  margin-top: 0.5rem;
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
