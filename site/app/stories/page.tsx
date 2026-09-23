@@ -20,7 +20,17 @@ export default async function StoriesPage() {
         ) : (
           <Rows>
             {stories.map((s) => (
-              <Row key={s.id} title={s.title} href={`/stories/${s.slug}`} meta={s.authorName ?? undefined}>
+              <Row
+                key={s.id}
+                title={s.title}
+                href={`/stories/${s.slug}`}
+                meta={[
+                  s.authorName,
+                  s.publishedAt?.toLocaleDateString("en-US", {
+                    month: "long", day: "numeric", year: "numeric",
+                  }),
+                ].filter(Boolean).join(" · ")}
+              >
                 <p>{s.excerpt}</p>
               </Row>
             ))}

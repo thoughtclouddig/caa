@@ -72,12 +72,74 @@ async function main() {
       chapterId: ch[1].id, isPublic: true, status: "published" },
   ]);
 
+  // Articles. BRING ONE! is the current membership drive and leads the
+  // homepage; the rest are real chapter and member news from CAA.
+  const now = Date.now();
+  const daysAgo = (n: number) => new Date(now - 1000 * 60 * 60 * 24 * n);
+
   await db.insert(stories).values([
-    { slug: "why-a-catholic-aviation-association", title: "Why a Catholic aviation association",
-      excerpt: "Aviation keeps hours no parish calendar was built around. That is the problem CAA was founded to answer.",
-      body: "Placeholder. Real member writing replaces this before launch.",
-      authorName: "CAA", status: "published", publishedAt: new Date(),
-      photoBrief: "A member at work in aviation: ramp, hangar, flight deck or tower." },
+    {
+      slug: "bring-one",
+      title: "Bring One!",
+      excerpt:
+        "Our goal is to bring one new member to CAA by the end of October. One each. That is the whole drive.",
+      body:
+        "BRING ONE! Our goal is to bring just one new member to CAA by the end of October, extended from the end of September.\n\n" +
+        "One is a small number on purpose. It is not a quota and it is not a campaign target handed down from headquarters. It is the person you already know: the one in the next hangar, on the other end of the radio, in the seat beside you on the jumpseat. You already know who they are.\n\n" +
+        "Please take part in the membership drive and help us fill what we need to fulfill our aviation vocation as servants of other Christs, and to fill in what is needed in our Catholic lives, for ourselves, for those we love, and for one another.\n\n" +
+        "BRING ONE!",
+      authorName: "CAA",
+      isFeatured: true,
+      status: "published",
+      publishedAt: daysAgo(3),
+      photoBrief:
+        "Two CAA members talking on a ramp or in a hangar. The invitation is the subject, so show the conversation rather than the aircraft.",
+    },
+    {
+      slug: "indianapolis-flight-simulator",
+      title: "A Glider Fuselage Becomes a Flight Simulator",
+      excerpt:
+        "CAA Indianapolis is building a flight simulator out of a section of glider fuselage.",
+      body:
+        "CAA Indianapolis is developing a flight simulator from a glider fuselage section.\n\n" +
+        "It is the kind of project a chapter can actually carry: real airframe, real work, and something a visitor can sit in at the end of it. Chapter members are doing the build themselves.\n\n" +
+        "Full write-up and photographs to follow from the chapter.",
+      authorName: "CAA Indianapolis",
+      status: "published",
+      publishedAt: daysAgo(12),
+      photoBrief:
+        "Chapter members working on the glider fuselage section. Hands and airframe, in the space where the build is happening.",
+    },
+    {
+      slug: "jessica-cox-airventure",
+      title: "Meeting Jessica Cox at AirVenture",
+      excerpt:
+        "Chairman Tom Beckenbauer and Christian Tombers with the first armless private pilot in history, at EAA AirVenture.",
+      body:
+        "Chairman Tom Beckenbauer and Christian Tombers met Jessica Cox at the 2026 EAA AirVenture in Oshkosh.\n\n" +
+        "Jessica is the first armless private pilot in history. She also scuba dives and holds a black belt in tae kwon do, and she was recently inducted into the Arizona Aviation Hall of Fame.\n\n" +
+        "She heads the Rightfooted Foundation, which promotes independence and ability for armless and other handicapped people. That work sits close to something CAA chapters already do: assisting with the design and manufacture of adaptive tools for the handicapped.",
+      authorName: "CAA",
+      status: "published",
+      publishedAt: daysAgo(26),
+      photoBrief:
+        "Tom Beckenbauer and Christian Tombers with Jessica Cox at AirVenture. CAA holds this photograph.",
+    },
+    {
+      slug: "why-a-catholic-aviation-association",
+      title: "Why a Catholic Aviation Association",
+      excerpt:
+        "Aviation keeps hours no parish calendar was built around. That is the problem CAA was founded to answer.",
+      body:
+        "Aviation does not keep parish hours. Crews are away on Sundays, mechanics work nights, controllers rotate through shifts that put Mass out of reach for weeks at a time. People who would never describe themselves as having left the faith find they have simply stopped being able to practice it.\n\n" +
+        "The Catholic Aviation Association was founded to answer that directly: to unite the People of God involved in every aspect of aviation so that we can support one another, and so that nobody is doing this alone.\n\n" +
+        "A fuller account from members belongs here. If you have one, write to us.",
+      authorName: "CAA",
+      status: "published",
+      publishedAt: daysAgo(48),
+      photoBrief:
+        "A member at work in aviation: ramp, hangar, flight deck or tower.",
+    },
   ]);
 
   await db.insert(resources).values([

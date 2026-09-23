@@ -273,6 +273,12 @@ export const stories = pgTable(
     authorName: text("author_name"),
     /** Real photography only; brief describes what is still needed. */
     photoBrief: text("photo_brief"),
+    /**
+     * The one story carried large on the homepage. Staff set it in admin;
+     * if none is set, the most recent published story is used instead, so
+     * the homepage is never missing its lead.
+     */
+    isFeatured: boolean("is_featured").notNull().default(false),
     status: publishStatus("status").notNull().default("draft"),
     publishedAt: timestamp("published_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),

@@ -9,9 +9,14 @@ import {
   storiesTeaser,
   closing,
 } from "@/content/home";
+import { getHomeStories } from "@/lib/queries";
 import styles from "./page.module.css";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const { featured, rest } = await getHomeStories(3);
+
   return (
     <>
       {/* Hero — one message, one call to action. No slider: most visitors
@@ -108,7 +113,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stories — people carry the page from here down. */}
+      {/* Stories. One lead carried large, three beneath it, then the
+          way through to everything else. Real articles, not photo tiles. */}
       <section className="section">
         <div className="shell">
           <div className={styles.storiesHead}>
@@ -123,11 +129,42 @@ export default function HomePage() {
               {storiesTeaser.cta.label}
             </Link>
           </div>
-          <div className={styles.storiesGrid}>
-            {storiesTeaser.photos.map((photo) => (
-              <PhotoSlot key={photo.brief} brief={photo.brief} ratio="3 / 2" />
-            ))}
-          </div>
+
+          {featured && (
+            <Link href={`/stories/${featured.slug}`} className={styles.lead}>
+              <PhotoSlot
+                brief={featured.photoBrief ?? ""}
+                ratio="16 / 9"
+                className={styles.leadPhoto}
+              />
+              <div className={styles.leadCopy}>
+                <p className="eyebrow">{featured.authorName ?? "CAA"}</p>
+                <h3 className={styles.leadTitle}>{featured.title}</h3>
+                {featured.excerpt && (
+                  <p className={`lede ${styles.leadExcerpt}`}>{featured.excerpt}</p>
+                )}
+                <span className={styles.readOn}>Read the Story</span>
+              </div>
+            </Link>
+          )}
+
+          {rest.length > 0 && (
+            <div className={styles.storiesGrid}>
+              {rest.map((story) => (
+                <Link
+                  key={story.id}
+                  href={`/stories/${story.slug}`}
+                  className={styles.card}
+                >
+                  <PhotoSlot brief={story.photoBrief ?? ""} ratio="3 / 2" />
+                  <h4 className={styles.cardTitle}>{story.title}</h4>
+                  {story.excerpt && (
+                    <p className={styles.cardExcerpt}>{story.excerpt}</p>
+                  )}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

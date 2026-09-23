@@ -199,6 +199,27 @@ export async function upsertChapterAction(_prev: FormState, form: FormData): Pro
   return { ok: "Saved." };
 }
 
+/**
+ * Marks one story as the homepage lead. Only one can hold it, so this
+ * clears the flag everywhere else in the same breath. Passing the id of
+ * the story that already leads clears it, and the homepage falls back to
+ * the most recent published story.
+ */
+export async function setFeaturedStoryAction(id: number): Promise<void> {
+  await requireAdmin();
+
+  const [current] = await db.select({ isFeatured: stories.isFeatured })
+    .from(stories).where(eq(stories.id, id)).limit(1);
+
+  await db.update(stories).set({ isFeatured: false });
+  if (!current?.isFeatured) {
+    await db.update(stories).set({ isFeatured: true }).where(eq(stories.id, id));
+  }
+
+  revalidatePath("/admin/stories");
+  revalidatePath("/");
+}
+
 export async function setStoryStatusAction(
   id: number,
   status: "draft" | "published" | "archived",
@@ -210,6 +231,7 @@ export async function setStoryStatusAction(
   }).where(eq(stories.id, id));
   revalidatePath("/admin/stories");
   revalidatePath("/stories");
+  revalidatePath("/");
 }
 
 export async function setEventStatusAction(

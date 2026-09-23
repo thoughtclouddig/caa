@@ -157,11 +157,79 @@
   margin-top: 1rem;
 }
 
+/* The lead story. Photograph and copy side by side on wide screens so it
+   reads as the one article being pushed, not as a fourth card. */
+.lead {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.25rem, 0.8rem + 1.6vw, 2.5rem);
+  margin-top: clamp(2rem, 1.4rem + 2vw, 3rem);
+  padding-bottom: clamp(2rem, 1.4rem + 2vw, 3rem);
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+
+.leadPhoto {
+  margin: 0;
+}
+
+.leadCopy {
+  align-self: center;
+}
+
+.leadTitle {
+  margin-top: 0.5rem;
+  font-size: var(--step-h2);
+  line-height: 1.15;
+}
+
+.leadExcerpt {
+  margin-top: 1rem;
+}
+
+/* Reads as a link without being one: the whole lead is the anchor. */
+.readOn {
+  display: inline-block;
+  margin-top: 1.4rem;
+  font-family: var(--sans);
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--navy);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 2px;
+}
+
+.lead:hover .readOn,
+.card:hover .cardTitle {
+  color: var(--navy-700, var(--navy));
+  opacity: 0.75;
+}
+
 .storiesGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
   margin-top: clamp(2rem, 1.4rem + 2vw, 3rem);
+}
+
+.card {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cardTitle {
+  margin-top: 1rem;
+  font-size: var(--step-h3);
+  line-height: 1.25;
+}
+
+.cardExcerpt {
+  margin-top: 0.6rem;
+  color: var(--slate);
+  font-size: var(--step-body);
 }
 
 /* --- closing ------------------------------------------------------------- */
@@ -187,6 +255,13 @@
 
   .storiesGrid {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 52rem) {
+  .lead {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: start;
   }
 }
 

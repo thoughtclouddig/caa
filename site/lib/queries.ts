@@ -16,6 +16,23 @@ export async function getPublishedStories(limit = 12) {
     .orderBy(desc(stories.publishedAt)).limit(limit);
 }
 
+/**
+ * The homepage lead plus the stories that sit under it.
+ *
+ * Falls back to the most recent published story when staff have not marked
+ * one as featured, so the homepage always has a lead. The three below it
+ * are the next most recent, with the lead itself filtered out.
+ */
+export async function getHomeStories(count = 3) {
+  const recent = await db.select().from(stories)
+    .where(eq(stories.status, "published"))
+    .orderBy(desc(stories.isFeatured), desc(stories.publishedAt))
+    .limit(count + 1);
+
+  const [featured, ...rest] = recent;
+  return { featured: featured ?? null, rest };
+}
+
 export async function getStoryBySlug(slug: string) {
   const [row] = await db.select().from(stories)
     .where(and(eq(stories.slug, slug), eq(stories.status, "published"))).limit(1);

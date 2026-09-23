@@ -114,21 +114,7 @@ export const storiesTeaser = {
   eyebrow: "Stories",
   heading: "The People Behind the Association",
   lede: "Members, chapters, and the ordinary working life of Catholics in aviation.",
-  cta: { label: "Read the Stories", href: "/stories" },
-  photos: [
-    {
-      brief: "A real CAA chapter gathering. People, not an empty room.",
-      alt: "",
-    },
-    {
-      brief: "A member at work in aviation: ramp, hangar, flight deck or tower.",
-      alt: "",
-    },
-    {
-      brief: "Mass or prayer at an aviation gathering, where genuinely relevant.",
-      alt: "",
-    },
-  ] satisfies PhotoSlot[],
+  cta: { label: "See All Articles", href: "/stories" },
 };
 
 export const closing = {
