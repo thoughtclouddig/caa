@@ -14,12 +14,20 @@ export type NavItem = {
 export const org = {
   name: "Catholic Aviation Association",
   shortName: "CAA",
-  heritageLine: "Faith. Flying. Fellowship.",
-  brandPromise: "Where Faith Takes Flight",
+  /** CAA's own tagline, as it appears on catholicaviation.org. */
+  heritageLine: "Faith, Flying and Fellowship",
+  brandPromise: "Faith, Flying and Fellowship",
   descriptor: "The worldwide Catholic aviation community",
-  /** From CAA's founding documents (2012). */
+  /** CAA copy — mission statement as published on the existing site. */
   mission:
-    "Witnessing to the Good News of Jesus Christ in the world of aviation.",
+    "To connect Catholics interested or involved in any aspect of aviation, to facilitate networking and support one another as we journey through these challenging times.",
+  /** CAA copy — vision statement as published on the existing site. */
+  vision:
+    "To be a witness for Jesus Christ and the Christian values that are the necessary foundation for a strong and fruitful society.",
+  email: "CAA@CatholicAviation.org",
+  /** Required on every page. CAA is an Indiana nonprofit corporation. */
+  taxLine:
+    "Catholic Aviation Association is a not-for-profit tax exempt organization organized under 501(c)(3) of the Internal Revenue Code. Contributions made to Catholic Aviation Association are tax deductible for federal income tax purposes.",
 } as const;
 
 /**
@@ -40,10 +48,10 @@ export const footerNav: { heading: string; items: NavItem[] }[] = [
   {
     heading: "Participate",
     items: [
-      { label: "Join or Renew", href: "/participate/join" },
-      { label: "Donate", href: "/participate/donate" },
-      { label: "Start a Chapter", href: "/participate/start-a-chapter" },
-      { label: "CAA Store", href: "/participate/store" },
+      { label: "Join, Renew or Register", href: "/participate/join" },
+      { label: "Donate to CAA", href: "/participate/donate" },
+      { label: "Starting a Chapter", href: "/participate/start-a-chapter" },
+      { label: "CAA Product Catalog", href: "/participate/store" },
     ],
   },
   {
@@ -75,4 +83,7 @@ export const memberArea: NavItem = { label: "Member Login", href: "/login" };
  * (see "What We Need From You" in the brand and website overview), so the
  * homepage does not commit to "join free" or to a price.
  */
-export const primaryCta: NavItem = { label: "Join CAA", href: "/participate/join" };
+export const primaryCta: NavItem = {
+  label: "Begin Your Journey Here",
+  href: "/participate/join",
+};

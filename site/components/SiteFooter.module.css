@@ -62,12 +62,22 @@
   text-underline-offset: 3px;
 }
 
+/* Legal standing, not a design element: quiet, but above the colophon
+   rather than buried beside the copyright line. */
+.legal {
+  margin-top: 3rem;
+  max-width: 62ch;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--slate);
+}
+
 .bottom {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 0.6rem;
-  margin-top: 3rem;
+  margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--line);
   font-size: 0.85rem;

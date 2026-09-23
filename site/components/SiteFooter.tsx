@@ -46,6 +46,9 @@ export default function SiteFooter() {
           </nav>
         </div>
 
+        {/* Required on every page: CAA is a 501(c)(3) and says so sitewide. */}
+        <p className={styles.legal}>{org.taxLine}</p>
+
         <div className={styles.bottom}>
           <p>
             © {year} {org.name}

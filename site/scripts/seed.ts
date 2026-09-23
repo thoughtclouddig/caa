@@ -23,16 +23,20 @@ async function main() {
     { slug: "hardship", name: "Hardship", description: "Dues waived on request. No one is turned away.", amountCents: 0, requiresVerification: true, sortOrder: 4 },
   ]).returning();
 
+  // The three chapters CAA actually has today, as listed on catholicaviation.org.
   const ch = await db.insert(chapters).values([
-    { slug: "carmel-indiana", name: "Carmel, Indiana", city: "Carmel", region: "Indiana", status: "active",
-      description: "The founding chapter, near CAA's headquarters.", meetingSchedule: "Monthly",
-      photoBrief: "The Carmel chapter gathered. Real members, not an empty room." },
-    { slug: "dallas-fort-worth", name: "Dallas–Fort Worth", city: "Dallas", region: "Texas", status: "active",
-      description: "Serving crews and maintenance staff across the DFW area.", meetingSchedule: "Monthly",
-      photoBrief: "DFW chapter gathering or a member at work airside." },
-    { slug: "phoenix", name: "Phoenix", city: "Phoenix", region: "Arizona", status: "active",
-      description: "General aviation and airline members across the Valley.", meetingSchedule: "Monthly",
-      photoBrief: "Phoenix chapter members, ideally with general aviation context." },
+    { slug: "caa-dallas", name: "CAA Dallas", city: "Dallas", region: "Texas", status: "active",
+      description: "Serving crews, maintenance staff and general aviation across North Texas.",
+      meetingSchedule: "Monthly",
+      photoBrief: "CAA Dallas chapter gathering, or a member at work airside." },
+    { slug: "caa-indianapolis", name: "CAA Indianapolis", city: "Indianapolis", region: "Indiana", status: "active",
+      description: "The chapter nearest CAA headquarters. Currently building a flight simulator from a glider fuselage section.",
+      meetingSchedule: "Monthly",
+      photoBrief: "CAA Indianapolis members at work on the simulator build." },
+    { slug: "caa-kansas-city", name: "CAA Kansas City", city: "Kansas City", region: "Missouri", status: "active",
+      description: "Catholics across the Kansas City aviation community.",
+      meetingSchedule: "Monthly",
+      photoBrief: "CAA Kansas City chapter members gathered." },
   ]).returning();
 
   const memberTier = tiers.find((t) => t.slug === "member")!;
@@ -42,7 +46,7 @@ async function main() {
     passwordHash: await hashPassword("changeme-in-production"),
     name: "CAA Administrator", role: "admin",
     membershipStatus: "active", membershipTierId: memberTier.id,
-    chapterId: ch[0].id, showInDirectory: false,
+    chapterId: ch[1].id, showInDirectory: false,
     aviationRole: "Association staff", city: "Carmel", region: "Indiana", country: "United States",
     memberSince: new Date("2012-07-27"),
   }).returning();
@@ -52,7 +56,7 @@ async function main() {
     passwordHash: await hashPassword("changeme-in-production"),
     name: "Chapter Leader (example)", role: "chapter_leader",
     membershipStatus: "active", membershipTierId: memberTier.id,
-    chapterId: ch[1].id, showInDirectory: true,
+    chapterId: ch[0].id, showInDirectory: true,
     aviationRole: "Airline pilot", city: "Dallas", region: "Texas", country: "United States",
     memberSince: new Date("2019-03-01"),
   });
@@ -62,10 +66,10 @@ async function main() {
       description: "Offered for everyone who works in aviation, and for those who have died in it.",
       startsAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 45), location: "To be confirmed",
       isPublic: true, status: "published" },
-    { slug: "carmel-monthly", title: "Carmel chapter meeting",
+    { slug: "caa-indianapolis-monthly", title: "CAA Indianapolis chapter meeting",
       description: "Monthly gathering: prayer, formation, and time together.",
-      startsAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14), location: "Carmel, Indiana",
-      chapterId: ch[0].id, isPublic: true, status: "published" },
+      startsAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14), location: "Indianapolis, Indiana",
+      chapterId: ch[1].id, isPublic: true, status: "published" },
   ]);
 
   await db.insert(stories).values([
@@ -104,7 +108,7 @@ async function main() {
 
   await db.insert(pages).values([
     { slug: "about", title: "About CAA",
-      body: "CAA exists to witness to the Good News of Jesus Christ in the world of aviation. Fidelity to the Magisterium, leadership and history belong on this page." },
+      body: "CAA exists to be a witness for Jesus Christ and the Christian values that are the necessary foundation for a strong and fruitful society. Fidelity to the Magisterium, leadership and history belong on this page." },
     { slug: "contact", title: "Contact", body: "A simple contact form and information." },
   ]);
 
