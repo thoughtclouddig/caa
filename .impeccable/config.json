@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "site/components/ui.module.css"
+        ],
+        "createdAt": "2026-09-23T22:52:04.828Z",
+        "reason": "Not a card: .notice is a form status admonition (info/warn/ok) at 3px, the blockquote convention. It is the sole status signal because CAA's direction rules out icons and gold fails contrast as text on light grounds."
+      }
+    ]
+  }
+}
