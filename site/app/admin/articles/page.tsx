@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 const STATES = ["draft", "published", "archived"] as const;
 
-export default async function AdminStories() {
+export default async function AdminArticles() {
   const rows = await adminListArticles();
   return (
     <>
