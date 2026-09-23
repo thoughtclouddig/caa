@@ -48,7 +48,7 @@ export default function ProfileForm({ user, chapters }: Props) {
           label="List me in the member directory"
           name="showInDirectory"
           defaultChecked={user.showInDirectory}
-          help="Other signed-in members would see your name, role and city. Never your address or email."
+          help="Signed-in members would see your name, your role and your city. Never your address or your email."
         />
 
         <SubmitButton>Save</SubmitButton>

@@ -11,7 +11,7 @@ export const metadata = { title: "Our Patron Saints" };
 const patrons = [
   {
     name: "Our Lady of Loreto",
-    patronage: "Patroness of aviators and air travellers",
+    patronage: "Patroness of aviators and air travelers",
     body:
       "The title refers to the Holy House of Loreto, the house in which Mary was born and where the Annunciation occurred. Tradition holds that angels carried the little house from the Holy Land to Tersato in 1291, to Recanati in 1294, and finally to Loreto, where it has stood for centuries. It was that flight that led to her patronage of everyone involved in aviation. The shrine is the first of international renown dedicated to the Blessed Virgin, and has been held in special esteem by the Popes.",
     source: "catholicsaints.info",

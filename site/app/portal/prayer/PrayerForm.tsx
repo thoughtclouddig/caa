@@ -14,7 +14,7 @@ export default function PrayerForm() {
         <TextArea label="Your intention" name="intention" required rows={3} />
         <Field label="First name to show" name="displayName" help="Leave blank to use your first name." />
         <Checkbox label="Show this publicly once approved" name="isPublic"
-          help="If unchecked it is kept for CAA's own prayer, not published." />
+          help="Leave this unchecked and CAA prays for the intention without publishing it." />
         <SubmitButton>Send intention</SubmitButton>
       </form>
     </FormCard>

@@ -21,7 +21,7 @@ export default async function PortalLayout({ children }: { children: React.React
   return (
     <>
       <SectionNav
-        title="Member area"
+        title="Member Area"
         items={items}
         action={
           <form action={signOutAction}>

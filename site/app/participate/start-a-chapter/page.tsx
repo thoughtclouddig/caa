@@ -51,9 +51,9 @@ export default function StartChapterPage() {
         </ol>
 
         <p className="prose" style={{ maxWidth: "none" }}>
-          Headquarters will provide promotional materials to advertise the formation
-          of a chapter. A Chapter Handbook to guide you in chapter management is in
-          development. For more information, write to {org.email}.
+          A Chapter Handbook to guide you in chapter management is in development.
+          For more information, or to tell us you are starting a chapter, write to{" "}
+          {org.email}.
         </p>
       </section>
     </>

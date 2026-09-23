@@ -14,8 +14,8 @@ export default function ChapterForm() {
         {state.error && <Notice tone="warn">{state.error}</Notice>}
         {state.ok && <Notice tone="ok">{state.ok}</Notice>}
 
-        <Field label="Name" name="name" required placeholder="Dallas–Fort Worth" />
-        <Field label="URL slug" name="slug" required placeholder="dallas-fort-worth"
+        <Field label="Name" name="name" required placeholder="CAA Kansas City" />
+        <Field label="URL slug" name="slug" required placeholder="caa-kansas-city"
           help="Lowercase, hyphenated. Becomes /chapters/your-slug." />
         <Field label="City" name="city" />
         <Field label="State or region" name="region" />

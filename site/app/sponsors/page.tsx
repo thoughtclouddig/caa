@@ -10,8 +10,8 @@ export default async function SponsorsPage() {
     <>
       <PageHero
         eyebrow="Sponsors & Partners"
-        title="Businesses that share the mission"
-        lede="Aviation and Catholic-aligned organisations that support CAA, framed around shared mission rather than discounts alone."
+        title="Businesses That Share the Mission"
+        lede="Aviation and Catholic businesses that support CAA. We ask them for partnership in the mission, not a discount code."
       />
       <section className="section shell">
         {rows.length === 0 ? <Empty>No partners are listed yet.</Empty> : (

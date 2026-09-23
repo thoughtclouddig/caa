@@ -12,8 +12,8 @@ export default async function ChaptersPage() {
     <>
       <PageHero
         eyebrow="Chapters"
-        title="Find a chapter, or start one"
-        lede="A chapter is a few Catholics in aviation who meet, pray and know each other by name. If there is not one near you, starting one is the normal way they begin."
+        title="Find a Chapter, or Start One"
+        lede="A chapter is a handful of Catholics in aviation who meet, pray and know each other by name. If there is none near you, five or six people are enough to start one."
       >
         <Link className="btn btn--primary" href="/participate/start-a-chapter">Start a chapter</Link>
       </PageHero>

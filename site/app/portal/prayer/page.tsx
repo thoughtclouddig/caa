@@ -11,8 +11,8 @@ export default async function PrayerPage() {
 
   return (
     <>
-      <PageHero eyebrow="Prayer" title="Prayer requests"
-        lede="Intentions are shown with a first name only, and are reviewed before they appear." />
+      <PageHero eyebrow="Prayer" title="Prayer Requests"
+        lede="Intentions carry a first name only, and a person reads each one before it appears." />
 
       <section className="section shell">
         <PrayerForm />

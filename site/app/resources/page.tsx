@@ -11,8 +11,8 @@ export default async function ResourcesPage() {
     <>
       <PageHero
         eyebrow="Resources"
-        title="Formation, prayer and practical help"
-        lede="Kept on CAA's own pages rather than sending you somewhere else."
+        title="Formation, Prayer and Practical Help"
+        lede="Everything here lives on CAA's own pages, so you are not sent off somewhere else to find it."
       />
       <section className="section shell">
         {rows.length === 0 ? <Empty>Nothing here yet.</Empty> : (

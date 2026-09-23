@@ -11,7 +11,7 @@ export default async function MentorshipPage() {
 
   return (
     <>
-      <PageHero eyebrow="Mentorship" title="Mentors and those looking"
+      <PageHero eyebrow="Mentorship" title="Mentors and Those Looking"
         lede="Matched by the part of aviation you work in." />
       <section className="section shell">
         <h2>Offering mentorship</h2>

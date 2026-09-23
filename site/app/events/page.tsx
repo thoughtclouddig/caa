@@ -13,8 +13,8 @@ export default async function EventsPage() {
     <>
       <PageHero
         eyebrow="Events"
-        title="What is coming up"
-        lede="The worldwide Aviation Mass and chapter events that are open to anyone."
+        title="What Is Coming Up"
+        lede="The worldwide Aviation Mass, and the chapter events anyone may attend."
       />
       <section className="section shell">
         {events.length === 0 ? (

@@ -18,8 +18,8 @@ export default async function JoinPage() {
     <>
       <PageHero
         eyebrow="Join or renew"
-        title="Membership"
-        lede="Membership is how CAA is sustained. No one is turned away for cost."
+        title="Join, Renew or Register"
+        lede="Membership is how CAA is sustained. Nobody is turned away for cost."
       >
         <Link className="btn btn--primary" href="/register">Create an account</Link>
       </PageHero>

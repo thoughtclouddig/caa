@@ -8,7 +8,7 @@ export default async function StorePage() {
   const products = await getProducts();
   return (
     <>
-      <PageHero eyebrow="CAA Store" title="Association merchandise" />
+      <PageHero eyebrow="CAA Store" title="CAA Product Catalog" />
       <section className="section shell">
         <Notice>Checkout is not connected yet. Items are listed, but nothing can be purchased.</Notice>
         {products.length === 0 ? <Empty>Nothing listed yet.</Empty> : (

@@ -13,8 +13,8 @@ export default async function MyChapterPage() {
     const chapters = await getActiveChapters();
     return (
       <>
-        <PageHero eyebrow="My chapter" title="You are not in a chapter yet"
-          lede="Pick one under Profile, or start a new one where you are." />
+        <PageHero eyebrow="My chapter" title="You Are Not in a Chapter Yet"
+          lede="Choose one under Profile, or start a new one where you live." />
         <section className="section shell">
           <Rows>
             {chapters.map((c) => (
@@ -34,7 +34,7 @@ export default async function MyChapterPage() {
   const members = await getChapterMembers(user.chapterId);
   return (
     <>
-      <PageHero eyebrow="My chapter" title="Your chapter" />
+      <PageHero eyebrow="My chapter" title="Your Chapter" />
       <section className="section shell">
         <h2>Members who are listed</h2>
         {members.length === 0 ? <Empty>No one in this chapter has opted into the directory.</Empty> : (

@@ -21,6 +21,9 @@ export default function HomePage() {
           <div className={styles.heroCopy}>
             <p className="eyebrow">{hero.eyebrow}</p>
             <h1 className={styles.heroHeading}>{hero.heading}</h1>
+            {/* CAA's own tagline sits under the headline rather than
+                competing with it. */}
+            <p className={styles.heroSubhead}>{hero.subhead}</p>
             <hr className="rule" />
             <p className={`lede ${styles.heroLede}`}>{hero.lede}</p>
             <div className={styles.heroActions}>

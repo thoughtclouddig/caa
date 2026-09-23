@@ -13,7 +13,7 @@ export default async function AdminMembers() {
 
   return (
     <>
-      <PageHero eyebrow="Members" title="Accounts and membership" />
+      <PageHero eyebrow="Members" title="Accounts and Membership" />
       <section className="section shell">
         {members.length === 0 ? <Empty>No accounts yet.</Empty> : (
           <Rows>

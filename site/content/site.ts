@@ -67,6 +67,7 @@ export const footerNav: { heading: string; items: NavItem[] }[] = [
     heading: "About",
     items: [
       { label: "About CAA", href: "/about" },
+      { label: "Where We Stand", href: "/about#where-we-stand" },
       { label: "Our Patron Saints", href: "/about/patron-saints" },
       { label: "Sponsors & Partners", href: "/sponsors" },
       { label: "Contact", href: "/contact" },

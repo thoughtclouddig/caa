@@ -14,7 +14,7 @@ export default async function GivingPage() {
 
   return (
     <>
-      <PageHero eyebrow="Giving" title="Your giving history">
+      <PageHero eyebrow="Giving" title="Your Giving History">
         <Link className="btn btn--primary" href="/participate/donate">Make a gift</Link>
       </PageHero>
       <section className="section shell">

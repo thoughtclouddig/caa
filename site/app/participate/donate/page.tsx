@@ -13,7 +13,7 @@ export default function DonatePage() {
       <PageHero
         eyebrow="Donate"
         title="Giving to CAA"
-        lede="Gifts are separate from membership dues and go toward the mission: chapters, formation, and the work of the association."
+        lede="Gifts are separate from membership dues. They pay for the chapters, the formation and the daily work of the association."
       />
 
       <section className="section shell">

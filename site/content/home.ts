@@ -23,15 +23,17 @@ export type MissionArea = {
   name: string;
   heading: string;
   body: string;
-  /** Set when the area is largely founding intent rather than current operation. */
+  /** Set when the area varies by place or is not yet running everywhere. */
   status?: string;
 };
 
 export const hero = {
-  eyebrow: "The worldwide Catholic aviation community",
-  heading: "Faith, Flying and Fellowship",
-  /** CAA copy — homepage, condensed. */
-  lede: "Wherever you are in your aviation journey, be part of a community where faith matters first, where you are never flying alone, and where you are soaring with something larger than all of us.",
+  eyebrow: "The Worldwide Catholic Aviation Community",
+  heading: "Where Faith Takes Flight",
+  /** CAA's own tagline, carried under the headline. */
+  subhead: "Faith, Flying and Fellowship",
+  /** CAA copy, condensed from the homepage. */
+  lede: "Wherever you are in your aviation journey, join a community where faith comes first and you are never flying alone.",
   cta: { label: "Begin Your Journey Here", href: "/participate/join" },
   secondary: { label: "Find a Chapter", href: "/chapters" },
   photo: {
@@ -44,8 +46,8 @@ export const hero = {
 export const missionIntro = {
   eyebrow: "Our Vision and Mission",
   heading: "The Meeting Place for Catholics in Aviation",
-  /** CAA copy — mission statement, "Come Follow Me". */
-  lede: "Our vision is to be a witness for Jesus Christ and the Christian values that are the necessary foundation for a strong and fruitful society. Our mission is to connect Catholics interested or involved in any aspect of aviation, to facilitate networking and support one another as we journey through these challenging times.",
+  /** CAA copy, from the published mission statement. */
+  lede: "Our vision is to be a witness for Jesus Christ and the Christian values that are the necessary foundation for a strong and fruitful society. Our mission is to connect Catholics involved in any aspect of aviation, and to support one another as we journey through these challenging times.",
 };
 
 export const missionAreas: MissionArea[] = [
@@ -53,43 +55,43 @@ export const missionAreas: MissionArea[] = [
     name: "Faith",
     heading: "Bringing the Good News to the World of Aviation",
     /** Drawn from the Chairman's letter. */
-    body: "CAA was founded to unite the People of God involved in every aspect of aviation, so that we may support each other and help rebuild the moral foundation of our nation. Prayer, the Sacraments and formation, shaped for a working life that does not follow a parish calendar.",
+    body: "CAA was founded to unite the People of God who work in aviation, so that we can support each other and help rebuild the moral foundation of our nation. Aviation keeps hours that no parish calendar was built around. Prayer, the Sacraments and formation have to reach you where the work actually puts you.",
   },
   {
     name: "Fellowship",
     heading: "Catholics Who Understand Your World",
     /** Drawn from "Come Follow Me" and the chapters page. */
-    body: "To act in concert with fellow aviation people on a mission of mercy, to counsel young people, to pray together, to worship together in spirit and in truth. Join a chapter, start one where there is none, or take part as a member at large.",
+    body: "To act in concert with fellow aviation people on a mission of mercy, to counsel young people, to pray together and to worship together in spirit and in truth. Join a chapter where one exists, start one where none does, or take part as a member at large.",
   },
   {
     name: "Flying",
     heading: "There Are No Limitations",
-    /** CAA copy — chapters page, lightly condensed. */
-    body: "Chapters engage in flight training, teach aviation at Catholic schools, arrange guest speakers and field trips, set up internships, build flight simulators, take the Sacraments to disaster areas, do career counseling, and assist with adaptive tools for the handicapped. For those who believe and strive to love, the sky truly is the limit.",
-    status: "Chapter-led — varies by location",
+    /** CAA copy, from the chapters page, lightly condensed. */
+    body: "Chapters run flight training, teach aviation at Catholic schools, arrange guest speakers and field trips, set up internships, build flight simulators, carry the Sacraments to disaster areas, and help design adaptive tools for the handicapped. For those who believe and strive to love, the sky truly is the limit.",
+    status: "Chapter-led, so the work varies by place",
   },
 ];
 
 export const benefits = {
   eyebrow: "Why Members Join",
   heading: "What Belonging to CAA Gives You",
-  lede: "Not a list of perks. The reasons people stay are close to why they joined in the first place.",
+  lede: "The reasons people stay are close to the reasons they joined.",
   items: [
     {
       heading: "Growth in Holiness",
-      body: "Formation and prayer shaped for a life spent in irregular hours and constant travel.",
+      body: "Formation and prayer that hold up against irregular hours and constant travel.",
     },
     {
       heading: "Mutual Support",
-      body: "People who understand both the demands of the work and the practice of the faith, and who will pray for you by name.",
+      body: "People who understand the demands of the work and the practice of the faith, and who will pray for you by name.",
     },
     {
-      heading: "A Chapter or a Home Without One",
-      body: "Join a chapter, form a new one, or take part as a member at large. No one is left out for want of a chapter nearby.",
+      heading: "A Chapter, or a Home Without One",
+      body: "Join a chapter, form a new one, or take part as a member at large. Nobody is left out for want of a chapter nearby.",
     },
     {
       heading: "Networking Across the Industry",
-      body: "Catholic topics and job and career networking alike, among people who already share your work.",
+      body: "Career and job conversations among people who already share your work and your faith.",
     },
   ],
 };
@@ -97,8 +99,8 @@ export const benefits = {
 export const everyDay = {
   eyebrow: "CAA Every Day",
   heading: "A Reason to Come Back Tomorrow",
-  /** CAA copy — "CAA Every Day", condensed. */
-  lede: "The daily Scripture readings, the latest Catholic news from reputable sources, and a community always waiting to hear from you. Everything from Catholic topics to job and career networking, all in one place.",
+  /** CAA copy, from the "CAA Every Day" page. */
+  lede: "The daily Scripture readings, the latest Catholic news from reputable sources, and a community always waiting to hear from you.",
   /**
    * Citations are shown rather than full reading text. The USCCB translation
    * is copyrighted, so reproducing the readings needs permission first.
@@ -110,7 +112,7 @@ export const everyDay = {
 
 export const storiesTeaser = {
   eyebrow: "Stories",
-  heading: "The People This Is Actually About",
+  heading: "The People Behind the Association",
   lede: "Members, chapters, and the ordinary working life of Catholics in aviation.",
   cta: { label: "Read the Stories", href: "/stories" },
   photos: [
@@ -119,7 +121,7 @@ export const storiesTeaser = {
       alt: "",
     },
     {
-      brief: "A member at work in aviation — ramp, hangar, flight deck or tower.",
+      brief: "A member at work in aviation: ramp, hangar, flight deck or tower.",
       alt: "",
     },
     {
@@ -130,8 +132,8 @@ export const storiesTeaser = {
 };
 
 export const closing = {
-  /** CAA copy — Chairman's letter. */
+  /** CAA copy, from the Chairman's letter. */
   heading: "Come Aboard",
-  lede: "Become a member of our association and become a part of a growing organization that will positively impact our society for the better.",
+  lede: "Become a member of our association and join a growing organization that will change our society for the better.",
   cta: { label: "Join or Renew Your Membership", href: "/participate/join" },
 };

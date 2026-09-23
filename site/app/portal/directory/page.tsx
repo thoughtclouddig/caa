@@ -11,8 +11,8 @@ export default async function DirectoryPage() {
     <>
       <PageHero
         eyebrow="Directory"
-        title="Members"
-        lede="Only members who have opted in appear here, and only at city level."
+        title="Member Directory"
+        lede="Only members who asked to be listed appear here, and only down to the city."
       />
       <section className="section shell">
         <Notice>

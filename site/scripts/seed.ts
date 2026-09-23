@@ -74,19 +74,19 @@ async function main() {
 
   await db.insert(stories).values([
     { slug: "why-a-catholic-aviation-association", title: "Why a Catholic aviation association",
-      excerpt: "Aviation runs on hours that do not match a parish calendar. That is the problem CAA was founded to answer.",
+      excerpt: "Aviation keeps hours no parish calendar was built around. That is the problem CAA was founded to answer.",
       body: "Placeholder. Real member writing replaces this before launch.",
       authorName: "CAA", status: "published", publishedAt: new Date(),
-      photoBrief: "A member at work in aviation — ramp, hangar, flight deck or tower." },
+      photoBrief: "A member at work in aviation: ramp, hangar, flight deck or tower." },
   ]);
 
   await db.insert(resources).values([
     { slug: "catholic-foundations", title: "Catholic Foundations", category: "Formation",
       summary: "The Mass, the Divine Liturgy, and how to pray more deliberately.",
-      body: "Renamed from “Knowledge”, which undersold it and told a visitor nothing.", sortOrder: 1 },
+      body: "", sortOrder: 1 },
     { slug: "airport-chapels", title: "Airport Chapels Directory", category: "Travel",
-      summary: "CAA's own directory of airport chapels. Coverage scope still to be agreed.",
-      body: "Kept as CAA's own directory rather than a link out.", sortOrder: 2 },
+      summary: "CAA's own directory of airport chapels. How much of the world it covers is still to be agreed.",
+      body: "", sortOrder: 2 },
     { slug: "prayer", title: "Prayer", category: "Formation",
       summary: "Prayers for those who fly and those who keep them flying.", body: "", sortOrder: 3 },
   ]);
@@ -98,7 +98,7 @@ async function main() {
 
   await db.insert(sponsors).values([
     { name: "Partner name to be confirmed", tier: "partner",
-      blurb: "Aviation and Catholic-aligned businesses, framed around shared mission.", sortOrder: 1 },
+      blurb: "Aviation and Catholic businesses that support the mission.", sortOrder: 1 },
   ]);
 
   await db.insert(products).values([
@@ -108,7 +108,7 @@ async function main() {
 
   await db.insert(pages).values([
     { slug: "about", title: "About CAA",
-      body: "CAA exists to be a witness for Jesus Christ and the Christian values that are the necessary foundation for a strong and fruitful society. Fidelity to the Magisterium, leadership and history belong on this page." },
+      body: "The Catholic Aviation Association is a nonprofit corporation registered in the state of Indiana and recognized under section 501(c)(3). It was founded by Thomas J. \"Tom\" Beckenbauer to unite the People of God working in every part of aviation. Chapters are being established across the country, and in time internationally. The association holds to fidelity to the Magisterium." },
     { slug: "contact", title: "Contact", body: "A simple contact form and information." },
   ]);
 

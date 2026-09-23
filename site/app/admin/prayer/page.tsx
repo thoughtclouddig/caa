@@ -10,7 +10,7 @@ export default async function AdminPrayer() {
 
   return (
     <>
-      <PageHero eyebrow="Prayer queue" title="Intentions awaiting review"
+      <PageHero eyebrow="Prayer queue" title="Intentions Awaiting Review"
         lede="Nothing appears publicly until it is approved here." />
       <section className="section shell">
         {pending.length === 0 ? <Empty>The queue is clear.</Empty> : (

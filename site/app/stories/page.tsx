@@ -11,7 +11,7 @@ export default async function StoriesPage() {
     <>
       <PageHero
         eyebrow="Stories"
-        title="The people this is actually about"
+        title="The People Behind the Association"
         lede="Members, chapters, and the ordinary working life of Catholics in aviation."
       />
       <section className="section shell">

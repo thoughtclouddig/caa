@@ -12,7 +12,7 @@ export default async function AdminEvents() {
   const rows = await adminListEvents();
   return (
     <>
-      <PageHero eyebrow="Events" title="Event management" />
+      <PageHero eyebrow="Events" title="Event Management" />
       <section className="section shell">
         {rows.length === 0 ? <Empty>No events yet.</Empty> : (
           <Rows>

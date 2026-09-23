@@ -15,7 +15,7 @@ export default async function PortalEventsPage() {
 
   return (
     <>
-      <PageHero eyebrow="Events" title="What is coming up" />
+      <PageHero eyebrow="Events" title="What Is Coming Up" />
       <section className="section shell">
         {events.length === 0 ? <Empty>Nothing scheduled.</Empty> : (
           <Rows>

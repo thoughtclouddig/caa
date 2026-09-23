@@ -12,7 +12,7 @@ export default async function ProfilePage() {
 
   return (
     <>
-      <PageHero eyebrow="Profile" title="Your details" />
+      <PageHero eyebrow="Profile" title="Your Details" />
       <section className="section shell">
         <ProfileForm
           user={{
