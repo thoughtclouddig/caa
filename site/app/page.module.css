@@ -1,0 +1,195 @@
+/* --- hero ---------------------------------------------------------------- */
+
+.hero {
+  padding-block: clamp(3rem, 2rem + 5vw, 6rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.heroInner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+  align-items: center;
+}
+
+.heroHeading {
+  font-size: var(--step-display);
+  margin-top: 0.4rem;
+  max-width: 12ch;
+}
+
+.heroLede {
+  margin-top: 1.8rem;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 2.2rem;
+}
+
+.heroPhoto {
+  max-height: 34rem;
+}
+
+/* --- mission areas ------------------------------------------------------- */
+
+.missionIntro {
+  max-width: 44rem;
+}
+
+.missionLede {
+  margin-top: 1.2rem;
+}
+
+.missionList {
+  margin-top: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+  border-top: 1px solid var(--line);
+}
+
+.missionRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  padding-block: clamp(1.75rem, 1.2rem + 1.5vw, 2.6rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.missionName {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  color: var(--navy);
+  line-height: 1.1;
+}
+
+.missionStatus {
+  display: block;
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  /* on warm/white this is the one place gold earns its keep as type —
+     kept large enough and paired with weight to stay legible */
+  color: #8a6416;
+  margin-top: 0.55rem;
+}
+
+.missionBody h3 {
+  margin-bottom: 0.6rem;
+}
+
+/* --- benefits ------------------------------------------------------------ */
+
+.benefits {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 1.2rem + 3vw, 4rem);
+  align-items: start;
+}
+
+.benefitsLede {
+  margin-top: 1.1rem;
+}
+
+.benefitsList {
+  display: grid;
+  gap: 0;
+}
+
+.benefitItem {
+  padding-block: 1.4rem;
+  border-top: 1px solid var(--line);
+}
+
+.benefitItem:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.benefitItem h3 {
+  margin-bottom: 0.45rem;
+}
+
+/* --- CAA Every Day ------------------------------------------------------- */
+
+.everyDay {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.75rem, 1rem + 3vw, 4rem);
+  align-items: start;
+}
+
+.everyDayBody {
+  display: grid;
+  gap: 1.4rem;
+  justify-items: start;
+}
+
+.note {
+  font-size: 0.88rem;
+  color: #a9bad3;
+  max-width: 42ch;
+}
+
+/* --- stories ------------------------------------------------------------- */
+
+.storiesHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.storiesLede {
+  margin-top: 1rem;
+}
+
+.storiesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: clamp(2rem, 1.4rem + 2vw, 3rem);
+}
+
+/* --- closing ------------------------------------------------------------- */
+
+.closing {
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 1.2rem;
+}
+
+.closingLede {
+  margin: 0 auto;
+}
+
+/* --- breakpoints --------------------------------------------------------- */
+
+@media (min-width: 46rem) {
+  .missionRow {
+    grid-template-columns: minmax(9rem, 14rem) 1fr;
+    gap: 2.5rem;
+  }
+
+  .storiesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 58rem) {
+  .heroInner {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+
+  .benefits {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+
+  .everyDay {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+}

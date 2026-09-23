@@ -1,0 +1,144 @@
+.header {
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 0.7rem;
+}
+
+.brand {
+  display: block;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.logo {
+  height: 80px;
+  width: auto;
+}
+
+/* --- mobile toggle ------------------------------------------------------ */
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.toggleIcon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* --- nav ---------------------------------------------------------------- */
+
+.nav {
+  display: none;
+}
+
+.navOpen {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  padding: 1rem var(--gutter) 1.75rem;
+  box-shadow: 0 18px 28px -26px rgba(8, 45, 91, 0.45);
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.navLink {
+  display: block;
+  padding: 0.8rem 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.navLink:hover {
+  color: var(--navy-deep);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 1.4rem;
+}
+
+.memberLink {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--slate);
+  text-decoration: none;
+}
+
+.memberLink:hover {
+  color: var(--navy);
+}
+
+/*
+  Single breakpoint at 62rem. The whole row — logo, six links, member link and
+  the join button — needs this much room before it can sit on one line. An
+  earlier round of this design squeezed the nav into the gap between "fits"
+  and "hidden" and clipped the button, so the switch happens once, cleanly.
+*/
+@media (min-width: 62rem) {
+  .toggle {
+    display: none;
+  }
+
+  .nav,
+  .navOpen {
+    display: flex;
+    align-items: center;
+    gap: 2.25rem;
+    position: static;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .navList {
+    flex-direction: row;
+    gap: 1.9rem;
+  }
+
+  .navLink {
+    padding: 0;
+    border-bottom: 0;
+    font-size: 0.97rem;
+  }
+
+  .actions {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.4rem;
+    margin-top: 0;
+  }
+}

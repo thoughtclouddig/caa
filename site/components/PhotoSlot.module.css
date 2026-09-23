@@ -1,0 +1,33 @@
+.slot {
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  background: var(--warm);
+  border: 1px solid var(--line);
+  width: 100%;
+  overflow: hidden;
+}
+
+.caption {
+  padding: 1.1rem 1.25rem;
+  display: block;
+}
+
+.label {
+  display: block;
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.brief {
+  display: block;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--slate);
+  max-width: 34ch;
+}

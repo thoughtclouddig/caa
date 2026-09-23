@@ -1,0 +1,15 @@
+run = "cd site && npm run dev"
+entrypoint = "site/app/page.tsx"
+modules = ["nodejs-20"]
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+build = ["sh", "-c", "cd site && npm install && npm run build"]
+run = ["sh", "-c", "cd site && npm run start"]
+deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
