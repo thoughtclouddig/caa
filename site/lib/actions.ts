@@ -177,6 +177,19 @@ export async function setMembershipStatusAction(
   revalidatePath("/admin/members");
 }
 
+/**
+ * Parses a map coordinate. Blank means "no pin", which is a legitimate
+ * state; anything unparseable or out of range is also treated as no pin
+ * rather than being written through to put a chapter in the sea.
+ */
+function coord(raw: FormDataEntryValue | null, limit: number): number | null {
+  const text = String(raw ?? "").trim();
+  if (!text) return null;
+  const n = Number(text);
+  if (!Number.isFinite(n) || Math.abs(n) > limit) return null;
+  return n;
+}
+
 export async function upsertChapterAction(_prev: FormState, form: FormData): Promise<FormState> {
   await requireAdmin();
   const id = String(form.get("id") ?? "");
@@ -188,8 +201,15 @@ export async function upsertChapterAction(_prev: FormState, form: FormData): Pro
     description: String(form.get("description") ?? "").trim() || null,
     meetingSchedule: String(form.get("meetingSchedule") ?? "").trim() || null,
     status: String(form.get("status") ?? "forming") as "forming" | "active" | "dormant",
+    latitude: coord(form.get("latitude"), 90),
+    longitude: coord(form.get("longitude"), 180),
   };
   if (!values.slug || !values.name) return { error: "Name and slug are required." };
+  if (
+    (values.latitude === null) !== (values.longitude === null)
+  ) {
+    return { error: "Give both a latitude and a longitude, or neither." };
+  }
 
   if (id) await db.update(chapters).set(values).where(eq(chapters.id, Number(id)));
   else await db.insert(chapters).values(values);

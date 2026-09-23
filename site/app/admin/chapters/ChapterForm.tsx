@@ -20,6 +20,9 @@ export default function ChapterForm() {
         <Field label="City" name="city" />
         <Field label="State or region" name="region" />
         <Field label="Meeting schedule" name="meetingSchedule" placeholder="Monthly" />
+        <Field label="Latitude" name="latitude" placeholder="39.0997"
+          help="City centre is precise enough. Leave both blank and the chapter is listed without a pin on the map." />
+        <Field label="Longitude" name="longitude" placeholder="-94.5786" />
         <TextArea label="Description" name="description" rows={3} />
         <Select
           label="Status"

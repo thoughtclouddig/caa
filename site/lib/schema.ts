@@ -11,6 +11,7 @@
  */
 
 import {
+  doublePrecision,
   pgTable,
   serial,
   text,
@@ -101,6 +102,14 @@ export const chapters = pgTable(
     meetingSchedule: text("meeting_schedule"),
     status: chapterStatus("status").notNull().default("forming"),
     photoBrief: text("photo_brief"),
+    /**
+     * Where the pin sits on the chapter map. City centre is precise enough
+     * and is all that goes on a public page; a chapter's actual meeting
+     * address belongs in the portal. Stored as text so Postgres numeric
+     * precision is not lost through the driver, and parsed at render.
+     */
+    latitude: doublePrecision("latitude"),
+    longitude: doublePrecision("longitude"),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => [uniqueIndex("chapters_slug_idx").on(t.slug)],

@@ -1,0 +1,124 @@
+.wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+  align-items: start;
+}
+
+.mapCol {
+  min-width: 0;
+}
+
+.frame {
+  position: relative;
+}
+
+.base {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pins {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Gold ring around a navy dot: the two marks the brand already uses, at
+   the one place on the site where a coloured dot carries meaning. */
+/* The map renders at roughly a third of its 975px coordinate space, so
+   these weights are chosen for how they land on screen, not on paper. */
+.halo {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 4;
+  opacity: 0.9;
+}
+
+.dot {
+  fill: var(--navy);
+  stroke: var(--white);
+  stroke-width: 3;
+}
+
+/* Labels sit on the map itself: with three chapters there is room, and it
+   saves the reader pairing dots to a legend. */
+.pinLabel {
+  font-family: var(--sans);
+  font-size: 19px;
+  font-weight: 700;
+  fill: var(--navy);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--white);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+
+.note {
+  margin-top: 0.9rem;
+  font-size: var(--step-small);
+  color: var(--slate);
+}
+
+/* --- the list ------------------------------------------------------------ */
+
+/* Ordered, because it is the accessible equivalent of the pins rather than
+   a decorative repeat of them. */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.list li {
+  border-bottom: 1px solid var(--line);
+}
+
+.listLink {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.listLink:hover .listName {
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.listName {
+  font-family: var(--serif);
+  font-size: var(--step-h3);
+  color: var(--navy);
+}
+
+.listPlace {
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+/* Below this width the labels crowd each other, so the map keeps the pins
+   and the list does the naming. */
+@media (max-width: 40rem) {
+  .pinLabel {
+    display: none;
+  }
+}
+
+@media (min-width: 56rem) {
+  .wrap {
+    grid-template-columns: 1.7fr 1fr;
+  }
+}

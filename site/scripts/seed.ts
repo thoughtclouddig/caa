@@ -27,15 +27,15 @@ async function main() {
   const ch = await db.insert(chapters).values([
     { slug: "caa-dallas", name: "CAA Dallas", city: "Dallas", region: "Texas", status: "active",
       description: "Serving crews, maintenance staff and general aviation across North Texas.",
-      meetingSchedule: "Monthly",
+      meetingSchedule: "Monthly", latitude: 32.7767, longitude: -96.797,
       photoBrief: "CAA Dallas chapter gathering, or a member at work airside." },
     { slug: "caa-indianapolis", name: "CAA Indianapolis", city: "Indianapolis", region: "Indiana", status: "active",
       description: "The chapter nearest CAA headquarters. Currently building a flight simulator from a glider fuselage section.",
-      meetingSchedule: "Monthly",
+      meetingSchedule: "Monthly", latitude: 39.7684, longitude: -86.1581,
       photoBrief: "CAA Indianapolis members at work on the simulator build." },
     { slug: "caa-kansas-city", name: "CAA Kansas City", city: "Kansas City", region: "Missouri", status: "active",
       description: "Catholics across the Kansas City aviation community.",
-      meetingSchedule: "Monthly",
+      meetingSchedule: "Monthly", latitude: 39.0997, longitude: -94.5786,
       photoBrief: "CAA Kansas City chapter members gathered." },
   ]).returning();
 
