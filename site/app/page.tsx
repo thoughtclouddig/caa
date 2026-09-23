@@ -1,6 +1,7 @@
 import Link from "next/link";
-import PhotoSlot from "@/components/PhotoSlot";
+import Image from "next/image";
 import ArticleImage from "@/components/ArticleImage";
+import PrayerWall from "@/components/PrayerWall";
 import {
   hero,
   missionIntro,
@@ -20,34 +21,42 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero — one message, one call to action. No slider: most visitors
-          never see past the first slide, so the page commits to one. */}
+      {/* Hero. The photograph is the ground, not a panel beside the copy:
+          the image was chosen for the room it leaves on the left. A navy
+          scrim carries the type at contrast without flattening the sky. */}
       <section className={styles.hero}>
+        <Image
+          src="/home/hero.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className={styles.heroImage}
+        />
+        <div className={styles.heroScrim} />
         <div className={`shell ${styles.heroInner}`}>
           <div className={styles.heroCopy}>
-            <p className="eyebrow">{hero.eyebrow}</p>
+            <p className={styles.heroEyebrow}>{hero.eyebrow}</p>
             <h1 className={styles.heroHeading}>{hero.heading}</h1>
             {/* CAA's own tagline sits under the headline rather than
                 competing with it. */}
             <p className={styles.heroSubhead}>{hero.subhead}</p>
-            <hr className="rule" />
-            <p className={`lede ${styles.heroLede}`}>{hero.lede}</p>
+            <hr className={styles.heroRule} />
+            <p className={styles.heroLede}>{hero.lede}</p>
             <div className={styles.heroActions}>
               <Link href={hero.cta.href} className="btn btn--primary">
                 {hero.cta.label}
               </Link>
-              <Link href={hero.secondary.href} className="btn btn--ghost">
+              <Link href={hero.secondary.href} className={styles.heroGhost}>
                 {hero.secondary.label}
               </Link>
             </div>
           </div>
-          <PhotoSlot
-            brief={hero.photo.brief}
-            ratio="5 / 6"
-            className={styles.heroPhoto}
-          />
         </div>
       </section>
+
+      {/* Approved public intentions, directly beneath the hero. */}
+      <PrayerWall />
 
       {/* The three mission areas. Rows rather than a bank of cards, so the
           Flying entry can carry its honest status without looking broken. */}

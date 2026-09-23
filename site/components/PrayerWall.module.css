@@ -1,0 +1,113 @@
+.wall {
+  background: var(--navy);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+/* The label doubles as the way in to the prayer page. Gold underline on
+   hover rather than a button, so it does not compete with the hero's CTA
+   sitting directly above it. */
+.label {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 1.1rem clamp(1.25rem, 0.6rem + 3vw, 2.2rem);
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--white);
+  text-decoration: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.label:hover {
+  color: var(--gold);
+}
+
+.label:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: -3px;
+}
+
+/* Masked at both ends so intentions fade rather than being chopped off at
+   the edge of the band. */
+.viewport {
+  flex: 1;
+  overflow: hidden;
+  padding: 1rem 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: marquee 64s linear infinite;
+}
+
+/* Stops for anyone reading one, and for anyone tabbing through. */
+.viewport:hover .track,
+.wall:focus-within .track {
+  animation-play-state: paused;
+}
+
+.run {
+  display: flex;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+.item {
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  color: #eef1f6;
+  margin-right: 2.6rem;
+}
+
+/* The name sits quietly after the intention: the request is the subject,
+   not the person. Gold, which carries on navy where it fails on white. */
+.who {
+  margin-left: 0.6rem;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+  }
+  .viewport {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .run:last-child {
+    display: none;
+  }
+  .item {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .wall {
+    flex-direction: column;
+  }
+  .label {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    padding-bottom: 0.7rem;
+  }
+}
