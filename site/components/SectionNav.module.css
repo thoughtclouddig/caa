@@ -1,0 +1,15 @@
+.nav { background: var(--navy); color: #fff; }
+.inner {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 0.6rem 1.6rem; padding-block: 0.85rem;
+}
+.title {
+  font-family: var(--serif); font-size: 1rem; color: #fff;
+  padding-right: 1.2rem; border-right: 1px solid rgba(255,255,255,0.25);
+}
+.list { display: flex; flex-wrap: wrap; gap: 0.3rem 1.3rem; flex: 1; }
+.list a {
+  color: #dbe4f0; text-decoration: none; font-size: 0.92rem; font-weight: 600;
+  padding-block: 0.3rem;
+}
+.list a:hover { color: #fff; text-decoration: underline; }
