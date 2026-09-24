@@ -1,5 +1,6 @@
 import { requireUser } from "@/lib/auth";
 import { getActiveChapters } from "@/lib/queries";
+import { MEMBER_LOCATIONS } from "@/content/member-locations";
 import { PageHero } from "@/components/ui";
 import ProfileForm from "./ProfileForm";
 
@@ -18,13 +19,14 @@ export default async function ProfilePage() {
           user={{
             name: user.name,
             aviationRole: user.aviationRole,
-            city: user.city,
-            region: user.region,
-            country: user.country,
+            locationSlug: user.locationSlug,
+            designation: user.designation,
+            designationVerified: user.designationVerified,
             chapterId: user.chapterId,
             showInDirectory: user.showInDirectory,
           }}
           chapters={chapters.map((c) => ({ id: c.id, name: c.name }))}
+          locations={MEMBER_LOCATIONS.map((l) => ({ slug: l.slug, label: l.label }))}
         />
       </section>
     </>

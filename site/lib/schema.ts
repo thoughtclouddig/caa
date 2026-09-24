@@ -48,6 +48,21 @@ const customBytea = customType<{ data: Buffer; driverData: Buffer }>({
   dataType: () => "bytea",
 });
 
+/**
+ * A state of life the association recognises, kept separate from giving.
+ *
+ * These were once free membership tiers, which made them look like a
+ * discount on a fee. Membership is free for everyone now, so they are what
+ * they always should have been: a mark of who someone is, carrying no
+ * price and no privilege.
+ */
+export const memberDesignation = pgEnum("member_designation", [
+  "none",
+  "clergy",
+  "religious",
+  "student",
+]);
+
 export const membershipStatus = pgEnum("membership_status", [
   "registered", // joined; basic membership carries no dues
   "active",     // joined and giving at one of the support levels
@@ -157,6 +172,18 @@ export const users = pgTable(
 
     /** Members opt in before appearing in the member directory. */
     showInDirectory: boolean("show_in_directory").notNull().default(false),
+
+    /**
+     * Which listed place a member said they are near. Chosen from a fixed
+     * menu, never geocoded and never an address: enough to draw a map of
+     * CAA's reach, not enough to find anybody. See
+     * content/member-locations.ts.
+     */
+    locationSlug: text("location_slug"),
+
+    designation: memberDesignation("designation").notNull().default("none"),
+    /** Set by staff once a designation has been confirmed. */
+    designationVerified: boolean("designation_verified").notNull().default(false),
 
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   },

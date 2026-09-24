@@ -9,16 +9,17 @@ type Props = {
   user: {
     name: string;
     aviationRole: string | null;
-    city: string | null;
-    region: string | null;
-    country: string | null;
+    locationSlug: string | null;
+    designation: "none" | "clergy" | "religious" | "student";
+    designationVerified: boolean;
     chapterId: number | null;
     showInDirectory: boolean;
   };
   chapters: { id: number; name: string }[];
+  locations: { slug: string; label: string }[];
 };
 
-export default function ProfileForm({ user, chapters }: Props) {
+export default function ProfileForm({ user, chapters, locations }: Props) {
   const [state, action] = useActionState<FormState, FormData>(updateProfileAction, {});
 
   return (
@@ -30,9 +31,33 @@ export default function ProfileForm({ user, chapters }: Props) {
         <Field label="Name" name="name" defaultValue={user.name} required />
         <Field label="Your role in aviation" name="aviationRole" defaultValue={user.aviationRole}
           placeholder="Pilot, mechanic, controller, cabin crew, student…" />
-        <Field label="City" name="city" defaultValue={user.city} />
-        <Field label="State or region" name="region" defaultValue={user.region} />
-        <Field label="Country" name="country" defaultValue={user.country} />
+        <Select
+          label="Nearest city"
+          name="locationSlug"
+          defaultValue={user.locationSlug ?? ""}
+          options={[
+            { value: "", label: "Rather not say" },
+            ...locations.map((l) => ({ value: l.slug, label: l.label })),
+          ]}
+          help="Pick the listed place nearest you. CAA never asks for or stores your address; this is only what puts a mark on the member map."
+        />
+
+        <Select
+          label="Are you clergy, religious, or a student?"
+          name="designation"
+          defaultValue={user.designation}
+          options={[
+            { value: "none", label: "None of these" },
+            { value: "clergy", label: "Clergy" },
+            { value: "religious", label: "Religious" },
+            { value: "student", label: "Student" },
+          ]}
+          help={
+            user.designationVerified
+              ? "Confirmed by CAA. Membership is free for everyone, so this is recognition rather than a rate."
+              : "Membership is free for everyone, so this is recognition rather than a rate. CAA confirms it before it is shown."
+          }
+        />
 
         <Select
           label="Chapter"

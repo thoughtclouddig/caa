@@ -100,7 +100,7 @@ async function main() {
     name: "CAA Administrator", role: "admin",
     membershipStatus: "active", membershipTierId: memberTier.id,
     chapterId: ch[1].id, showInDirectory: false,
-    aviationRole: "Association staff", city: "Carmel", region: "Indiana", country: "United States",
+    aviationRole: "Association staff", locationSlug: "indianapolis-in",
     memberSince: new Date("2012-07-27"),
   }).returning();
 
@@ -110,7 +110,7 @@ async function main() {
     name: "Chapter Leader (example)", role: "chapter_leader",
     membershipStatus: "active", membershipTierId: memberTier.id,
     chapterId: ch[0].id, showInDirectory: true,
-    aviationRole: "Airline pilot", city: "Dallas", region: "Texas", country: "United States",
+    aviationRole: "Airline pilot", locationSlug: "dallas-tx",
     memberSince: new Date("2019-03-01"),
   });
 

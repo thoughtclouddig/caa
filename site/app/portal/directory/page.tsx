@@ -1,8 +1,16 @@
 import { getDirectory } from "@/lib/queries";
+import { findMemberLocation } from "@/content/member-locations";
 import { PageHero, Rows, Row, Empty, Notice } from "@/components/ui";
+import MemberMap from "@/components/MemberMap";
 
 export const metadata = { title: "Member directory" };
 export const dynamic = "force-dynamic";
+
+const DESIGNATION_LABEL = {
+  clergy: "Clergy",
+  religious: "Religious",
+  student: "Student",
+} as const;
 
 export default async function DirectoryPage() {
   const members = await getDirectory();
@@ -12,20 +20,38 @@ export default async function DirectoryPage() {
       <PageHero
         eyebrow="Directory"
         title="Member Directory"
-        lede="Only members who asked to be listed appear here, and only down to the city."
+        lede="Only members who asked to be listed appear here, and only as the nearest city they picked from a list."
       />
       <section className="section shell">
         <Notice>
-          You control whether you are listed. Change it any time under Profile.
+          You control whether you are listed, and which city you are shown
+          near. Change either any time under Profile.
         </Notice>
-        {members.length === 0 ? <Empty>No members have opted in yet.</Empty> : (
+
+        {members.length > 0 && <MemberMap members={members} />}
+
+        {members.length === 0 ? (
+          <Empty>No members have opted in yet.</Empty>
+        ) : (
           <Rows>
-            {members.map((m) => (
-              <Row key={m.id} title={m.name}
-                meta={[m.city, m.region, m.country].filter(Boolean).join(", ")}>
-                <p>{[m.aviationRole, m.chapterName].filter(Boolean).join(" · ")}</p>
-              </Row>
-            ))}
+            {members.map((m) => {
+              const place = findMemberLocation(m.locationSlug);
+              /* A claimed designation is shown only once staff confirm it. */
+              const designation =
+                m.designationVerified && m.designation !== "none"
+                  ? DESIGNATION_LABEL[m.designation]
+                  : null;
+
+              return (
+                <Row key={m.id} title={m.name} meta={place?.label}>
+                  <p>
+                    {[designation, m.aviationRole, m.chapterName]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                </Row>
+              );
+            })}
           </Rows>
         )}
       </section>

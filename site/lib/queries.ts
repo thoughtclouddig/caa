@@ -103,11 +103,18 @@ export async function getPublicPrayerRequests(limit = 20) {
 
 /* ----------------------------- member portal ---------------------------- */
 
-/** Directory shows only members who opted in. City-level location only. */
+/**
+ * The directory, and the data behind the member map.
+ *
+ * Only members who opted in, and location only as the listed place they
+ * chose. No address is selected here because none is stored.
+ */
 export async function getDirectory() {
   return db.select({
     id: users.id, name: users.name, aviationRole: users.aviationRole,
-    city: users.city, region: users.region, country: users.country,
+    locationSlug: users.locationSlug,
+    designation: users.designation,
+    designationVerified: users.designationVerified,
     chapterName: chapters.name,
     showInDirectory: users.showInDirectory,
   })
@@ -166,6 +173,9 @@ export async function adminListMembers() {
     membershipStatus: users.membershipStatus, createdAt: users.createdAt,
     chapterName: chapters.name,
     showInDirectory: users.showInDirectory,
+    designation: users.designation,
+    designationVerified: users.designationVerified,
+    locationSlug: users.locationSlug,
   })
     .from(users)
     .leftJoin(chapters, eq(users.chapterId, chapters.id))

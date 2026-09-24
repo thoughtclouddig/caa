@@ -81,6 +81,28 @@ the sea, so the admin form rejects that; a chapter with no coordinates is
 listed without a pin. Anything outside the United States is listed
 without a pin too, and the map says so.
 
+## Where members are
+
+Members do not type an address and CAA does not store one. They pick the
+nearest place from a fixed list in `content/member-locations.ts`, and the
+member map in the portal pins that. Several members in one city share one
+mark, which is the point: the map shows the association's reach without
+showing where anyone lives. No geocoding service is called, at sign-up or
+anywhere else.
+
+To add a place, add an entry to that file and run:
+
+```
+npm run verify:locations
+```
+
+It projects every entry and checks it falls inside the Census boundary of
+the state it claims, so a transposed digit fails there rather than putting
+a member in the Gulf of Mexico. It also catches duplicate slugs.
+
+Members who pick nothing, or pick "somewhere else", are counted in the
+note under the map rather than dropped.
+
 ## Access model
 
 Three roles: `member`, `chapter_leader`, `admin`.
@@ -106,11 +128,9 @@ signed JWTs, so revoking access is a row delete and takes effect immediately.
   position is a labelled `PhotoSlot` describing the photograph needed, and
   the layout renders that brief rather than cropping in something
   unrelated. No stock imagery.
-- **The member map.** The chapter map is built and public. Its counterpart
-  in the member directory is not, because placing members needs their
-  coordinates, and geocoding a city name means calling an outside service.
-  The options are a bundled Census place file, geocoding once at signup,
-  or having members pick their nearest listed city. The third is the most
-  private and the cheapest. This is a decision, not a missing feature.
+- **Membership pricing.** Basic membership is free. The support levels are
+  benchmarked against comparable aviation bodies but are a recommendation,
+  not a board decision. They live in `membership_tiers` and can be changed
+  without a release.
 - **Daily readings.** The USCCB translation is copyrighted. The design shows
   citations only; displaying full readings needs permission first.

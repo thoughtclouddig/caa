@@ -1,5 +1,9 @@
 import { adminListMembers } from "@/lib/queries";
-import { setMemberRoleAction, setMembershipStatusAction } from "@/lib/actions";
+import {
+  setMemberRoleAction,
+  setMembershipStatusAction,
+  setDesignationVerifiedAction,
+} from "@/lib/actions";
 import { AdminHeader, Table, EmptyState, Pill } from "@/components/admin/AdminUI";
 
 export const metadata = { title: "Members" };
@@ -38,7 +42,7 @@ export default async function AdminMembers() {
       {members.length === 0 ? (
         <EmptyState>No accounts yet.</EmptyState>
       ) : (
-        <Table head={["Name", "Email", "Chapter", "Role", "Membership", "Directory"]}>
+        <Table head={["Name", "Email", "Chapter", "Role", "Membership", "Designation", "Directory"]}>
           {members.map((m) => (
             <tr key={m.id}>
               <td style={{ fontWeight: 600 }}>{m.name}</td>
@@ -63,6 +67,20 @@ export default async function AdminMembers() {
                   </select>
                   <button type="submit" className="admin-apply">Apply</button>
                 </form>
+              </td>
+              <td>
+                {m.designation === "none" ? (
+                  <span style={{ color: "var(--slate)" }}>&mdash;</span>
+                ) : (
+                  <form action={setDesignationVerifiedAction.bind(null, m.id, !m.designationVerified)}>
+                    <span style={{ textTransform: "capitalize", marginRight: "0.5rem" }}>
+                      {m.designation}
+                    </span>
+                    <button type="submit" className="admin-apply">
+                      {m.designationVerified ? "Confirmed" : "Confirm"}
+                    </button>
+                  </form>
+                )}
               </td>
               <td>
                 {m.showInDirectory ? <Pill tone="live">Listed</Pill> : <Pill tone="muted">Hidden</Pill>}

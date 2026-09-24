@@ -10,6 +10,7 @@ import {
 } from "./schema";
 import { sanitizeRichText } from "./richtext";
 import { findEditablePage } from "../content/editable-pages";
+import { findMemberLocation } from "../content/member-locations";
 import {
   authenticate, createSession, destroySession, registerUser,
   currentUser, requireUser, requireAdmin,
@@ -95,12 +96,29 @@ export async function updateProfileAction(_prev: FormState, form: FormData): Pro
 
   const chapterRaw = String(form.get("chapterId") ?? "");
 
+  const DESIGNATIONS = ["none", "clergy", "religious", "student"] as const;
+  const claimed = String(form.get("designation") ?? "none");
+  const designation = (DESIGNATIONS as readonly string[]).includes(claimed)
+    ? (claimed as (typeof DESIGNATIONS)[number])
+    : "none";
+
   await db.update(users).set({
     name: String(form.get("name") ?? user.name).trim() || user.name,
     aviationRole: String(form.get("aviationRole") ?? "").trim() || null,
-    city: String(form.get("city") ?? "").trim() || null,
-    region: String(form.get("region") ?? "").trim() || null,
-    country: String(form.get("country") ?? "").trim() || null,
+    /*
+     * Only a slug from the published list is accepted. Anything else is
+     * stored as no location rather than trusted, so the column cannot end
+     * up holding a typed-in address.
+     */
+    locationSlug: findMemberLocation(String(form.get("locationSlug") ?? "")) ? String(form.get("locationSlug")) : null,
+    /*
+     * A member can say they are clergy, religious or a student. Claiming
+     * it does not confirm it: the verified flag is staff-only, and changing
+     * the claim clears it so a confirmed designation cannot be swapped for
+     * an unconfirmed one while keeping the tick.
+     */
+    designation,
+    designationVerified: designation === user.designation ? user.designationVerified : false,
     chapterId: chapterRaw ? Number(chapterRaw) : null,
     // Opt-in only: members are not listed in the directory unless they say so.
     showInDirectory: form.get("showInDirectory") === "on",
@@ -560,4 +578,20 @@ export async function savePageAction(_prev: FormState, form: FormData): Promise<
   revalidatePath("/admin/pages");
   revalidatePath(`/${slug}`);
   redirect("/admin/pages?saved=1");
+}
+
+/**
+ * Confirms or withdraws a member's designation.
+ *
+ * Anyone can say they are clergy; this is staff saying CAA has checked.
+ * Until it is set, the claim is invisible to other members.
+ */
+export async function setDesignationVerifiedAction(
+  userId: number,
+  verified: boolean,
+): Promise<void> {
+  await requireAdmin();
+  await db.update(users).set({ designationVerified: verified }).where(eq(users.id, userId));
+  revalidatePath("/admin/members");
+  revalidatePath("/portal/directory");
 }
