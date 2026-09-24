@@ -10,8 +10,6 @@ type Props = {
     name: string;
     aviationRole: string | null;
     locationSlug: string | null;
-    designation: "none" | "clergy" | "religious" | "student";
-    designationVerified: boolean;
     chapterId: number | null;
     showInDirectory: boolean;
   };
@@ -42,22 +40,6 @@ export default function ProfileForm({ user, chapters, locations }: Props) {
           help="Pick the listed place nearest you. CAA never asks for or stores your address; this is only what puts a mark on the member map."
         />
 
-        <Select
-          label="Are you clergy, religious, or a student?"
-          name="designation"
-          defaultValue={user.designation}
-          options={[
-            { value: "none", label: "None of these" },
-            { value: "clergy", label: "Clergy" },
-            { value: "religious", label: "Religious" },
-            { value: "student", label: "Student" },
-          ]}
-          help={
-            user.designationVerified
-              ? "Confirmed by CAA. Membership is free for everyone, so this is recognition rather than a rate."
-              : "Membership is free for everyone, so this is recognition rather than a rate. CAA confirms it before it is shown."
-          }
-        />
 
         <Select
           label="Chapter"

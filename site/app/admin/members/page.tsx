@@ -1,9 +1,5 @@
 import { adminListMembers } from "@/lib/queries";
-import {
-  setMemberRoleAction,
-  setMembershipStatusAction,
-  setDesignationVerifiedAction,
-} from "@/lib/actions";
+import { setMemberRoleAction, setMembershipStatusAction } from "@/lib/actions";
 import { AdminHeader, Table, EmptyState, Pill } from "@/components/admin/AdminUI";
 
 export const metadata = { title: "Members" };
@@ -15,10 +11,15 @@ const ROLES = [
   { value: "admin", label: "Administrator" },
 ] as const;
 
+/*
+ * Membership is free, so everyone who joins is a member. These describe
+ * whether someone also gives, which is why the labels say so plainly
+ * rather than using words staff would have to interpret.
+ */
 const STATUSES = [
-  { value: "registered", label: "Registered" },
-  { value: "active", label: "Active" },
-  { value: "lapsed", label: "Lapsed" },
+  { value: "registered", label: "Member" },
+  { value: "active", label: "Member and giving" },
+  { value: "lapsed", label: "Gave previously" },
   { value: "honorary", label: "Honorary" },
 ] as const;
 
@@ -42,7 +43,7 @@ export default async function AdminMembers() {
       {members.length === 0 ? (
         <EmptyState>No accounts yet.</EmptyState>
       ) : (
-        <Table head={["Name", "Email", "Chapter", "Role", "Membership", "Designation", "Directory"]}>
+        <Table head={["Name", "Email", "Chapter", "Role", "Membership", "Directory"]}>
           {members.map((m) => (
             <tr key={m.id}>
               <td style={{ fontWeight: 600 }}>{m.name}</td>
@@ -67,20 +68,6 @@ export default async function AdminMembers() {
                   </select>
                   <button type="submit" className="admin-apply">Apply</button>
                 </form>
-              </td>
-              <td>
-                {m.designation === "none" ? (
-                  <span style={{ color: "var(--slate)" }}>&mdash;</span>
-                ) : (
-                  <form action={setDesignationVerifiedAction.bind(null, m.id, !m.designationVerified)}>
-                    <span style={{ textTransform: "capitalize", marginRight: "0.5rem" }}>
-                      {m.designation}
-                    </span>
-                    <button type="submit" className="admin-apply">
-                      {m.designationVerified ? "Confirmed" : "Confirm"}
-                    </button>
-                  </form>
-                )}
               </td>
               <td>
                 {m.showInDirectory ? <Pill tone="live">Listed</Pill> : <Pill tone="muted">Hidden</Pill>}

@@ -7,6 +7,7 @@ import { eq, and, gt, asc } from "drizzle-orm";
 import { db } from "./db";
 import { hashPassword, verifyPassword } from "./passwords";
 import { users, sessions, membershipTiers, type User } from "./schema";
+import { findMemberLocation } from "../content/member-locations";
 
 const COOKIE = "caa_session";
 const SESSION_DAYS = 30;
@@ -104,8 +105,8 @@ export type RegisterInput = {
   password: string;
   name: string;
   aviationRole?: string;
-  city?: string;
-  country?: string;
+  /** A slug from content/member-locations.ts. Never an address. */
+  locationSlug?: string;
 };
 
 export async function registerUser(
@@ -145,8 +146,10 @@ export async function registerUser(
       passwordHash: await hashPassword(input.password),
       name: input.name.trim(),
       aviationRole: input.aviationRole?.trim() || null,
-      city: input.city?.trim() || null,
-      country: input.country?.trim() || null,
+      // Only a slug from the published list; anything else is no location.
+      locationSlug: findMemberLocation(input.locationSlug ?? null)
+        ? (input.locationSlug as string)
+        : null,
       /*
        * Basic membership is free, so registering is joining. There is no
        * second step and nothing to pay, and the free tier is attached here

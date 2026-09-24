@@ -20,8 +20,6 @@ export default async function ProfilePage() {
             name: user.name,
             aviationRole: user.aviationRole,
             locationSlug: user.locationSlug,
-            designation: user.designation,
-            designationVerified: user.designationVerified,
             chapterId: user.chapterId,
             showInDirectory: user.showInDirectory,
           }}

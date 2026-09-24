@@ -6,12 +6,6 @@ import MemberMap from "@/components/MemberMap";
 export const metadata = { title: "Member directory" };
 export const dynamic = "force-dynamic";
 
-const DESIGNATION_LABEL = {
-  clergy: "Clergy",
-  religious: "Religious",
-  student: "Student",
-} as const;
-
 export default async function DirectoryPage() {
   const members = await getDirectory();
 
@@ -36,18 +30,11 @@ export default async function DirectoryPage() {
           <Rows>
             {members.map((m) => {
               const place = findMemberLocation(m.locationSlug);
-              /* A claimed designation is shown only once staff confirm it. */
-              const designation =
-                m.designationVerified && m.designation !== "none"
-                  ? DESIGNATION_LABEL[m.designation]
-                  : null;
 
               return (
                 <Row key={m.id} title={m.name} meta={place?.label}>
                   <p>
-                    {[designation, m.aviationRole, m.chapterName]
-                      .filter(Boolean)
-                      .join(" · ")}
+                    {[m.aviationRole, m.chapterName].filter(Boolean).join(" · ")}
                   </p>
                 </Row>
               );

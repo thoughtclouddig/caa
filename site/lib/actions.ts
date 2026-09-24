@@ -73,8 +73,7 @@ export async function registerAction(_prev: FormState, form: FormData): Promise<
     password: String(form.get("password") ?? ""),
     name: String(form.get("name") ?? ""),
     aviationRole: String(form.get("aviationRole") ?? ""),
-    city: String(form.get("city") ?? ""),
-    country: String(form.get("country") ?? ""),
+    locationSlug: String(form.get("locationSlug") ?? ""),
   });
 
   if (!result.ok) return { error: result.error };
@@ -580,18 +579,3 @@ export async function savePageAction(_prev: FormState, form: FormData): Promise<
   redirect("/admin/pages?saved=1");
 }
 
-/**
- * Confirms or withdraws a member's designation.
- *
- * Anyone can say they are clergy; this is staff saying CAA has checked.
- * Until it is set, the claim is invisible to other members.
- */
-export async function setDesignationVerifiedAction(
-  userId: number,
-  verified: boolean,
-): Promise<void> {
-  await requireAdmin();
-  await db.update(users).set({ designationVerified: verified }).where(eq(users.id, userId));
-  revalidatePath("/admin/members");
-  revalidatePath("/portal/directory");
-}

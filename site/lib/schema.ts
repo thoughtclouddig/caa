@@ -55,6 +55,13 @@ const customBytea = customType<{ data: Buffer; driverData: Buffer }>({
  * discount on a fee. Membership is free for everyone now, so they are what
  * they always should have been: a mark of who someone is, carrying no
  * price and no privilege.
+ *
+ * PARKED FOR LAUNCH. Nothing reads or writes these columns. Publishing
+ * "clergy" beside a member's name means CAA vouching for it, and members
+ * will approach that person for sacramental and pastoral reasons, so what
+ * counts as confirmation is a board decision rather than a code one. The
+ * columns stay so the decision has somewhere to land. Until then a student
+ * who wants to be found belongs in mentorship, as "seeking".
  */
 export const memberDesignation = pgEnum("member_designation", [
   "none",
@@ -154,9 +161,6 @@ export const users = pgTable(
 
     // aviation identity
     aviationRole: text("aviation_role"),
-    city: text("city"),
-    region: text("region"),
-    country: text("country"),
 
     // membership
     membershipStatus: membershipStatus("membership_status")
