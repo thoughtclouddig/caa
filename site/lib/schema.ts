@@ -534,6 +534,18 @@ export const donations = pgTable(
   (t) => [index("donations_user_idx").on(t.userId)],
 );
 
+/**
+ * The product catalogue.
+ *
+ * CAA prints and ships through Printful rather than holding stock, so a
+ * product here is a listing that points at something Printful makes.
+ * `printfulProductId` is the link between the two; a product without one
+ * is simply not yet connected.
+ *
+ * Prices are held here rather than read from Printful, because what CAA
+ * charges and what printing costs are different numbers and the margin is
+ * CAA's decision.
+ */
 export const products = pgTable(
   "products",
   {
@@ -542,7 +554,13 @@ export const products = pgTable(
     name: text("name").notNull(),
     description: text("description"),
     priceCents: integer("price_cents").notNull(),
+    /** The same upload pipeline as articles: /api/images/:id or /public. */
+    imagePath: text("image_path"),
+    imageAlt: text("image_alt"),
     photoBrief: text("photo_brief"),
+    /** Printful's id for the synced product this listing sells. */
+    printfulProductId: text("printful_product_id"),
+    sortOrder: integer("sort_order").notNull().default(0),
     active: boolean("active").notNull().default(true),
   },
   (t) => [uniqueIndex("products_slug_idx").on(t.slug)],

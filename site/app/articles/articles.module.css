@@ -4,6 +4,9 @@
   padding-top: clamp(3rem, 2rem + 4vw, 6rem);
   padding-bottom: clamp(2rem, 1.4rem + 2vw, 3.5rem);
   max-width: 48rem;
+  /* Inside a centred shell a max-width block centres itself; this keeps
+     it aligned with the full-width content below. */
+  margin-inline: 0 auto;
 }
 
 .mastheadTitle {
@@ -72,6 +75,9 @@
 
 .leadCopy {
   max-width: 46rem;
+  /* Inside a centred shell a max-width block centres itself; this keeps
+     it aligned with the full-width content below. */
+  margin-inline: 0 auto;
 }
 
 .leadTitle {

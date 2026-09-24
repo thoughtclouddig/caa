@@ -1,10 +1,75 @@
 .pageHero {
-  padding-block: clamp(2.5rem, 1.6rem + 3.5vw, 4.5rem);
-  border-bottom: 1px solid var(--line);
-  background: var(--warm);
+  padding-block: clamp(3rem, 2rem + 4vw, 5rem);
+  background: var(--navy);
+  text-align: center;
 }
-.heroLede { margin-top: 1.1rem; }
-.heroActions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
+
+.heroEyebrow {
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.heroTitle {
+  margin-top: 0.7rem;
+  font-size: var(--step-h1);
+  line-height: 1.08;
+  color: var(--white);
+  max-width: 20ch;
+  margin-inline: auto;
+  text-wrap: balance;
+}
+
+/* The one gold mark on the band, holding the title and the lede apart. */
+.heroRule {
+  width: 3.5rem;
+  height: 3px;
+  border: 0;
+  background: var(--gold);
+  margin: 1.4rem auto 0;
+}
+
+.heroLede {
+  margin: 1.4rem auto 0;
+  max-width: 52ch;
+  font-size: var(--step-lede);
+  line-height: 1.55;
+  color: #dbe3ef;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+/* Buttons sit on navy here, so the ghost variant inverts. */
+.heroActions :global(.btn--ghost) {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.heroActions :global(.btn--ghost:hover) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--white);
+}
+
+.heroActions :global(.btn--primary) {
+  background: var(--white);
+  color: var(--navy);
+  border-color: var(--white);
+}
+
+.heroActions :global(.btn--primary:hover) {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
 
 .rows { border-top: 1px solid var(--line); }
 .row {
@@ -63,4 +128,95 @@
 .formCard {
   max-width: 32rem; padding: clamp(1.4rem, 1rem + 1.6vw, 2.2rem);
   border: 1px solid var(--line); background: var(--white);
+}
+
+/* --- cards --------------------------------------------------------------- */
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+/* Cards share hairlines rather than floating apart, so a short list still
+   reads as one block instead of scattered tiles. */
+.card {
+  position: relative;
+  display: block;
+  background: var(--white);
+  padding: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  padding-bottom: 3.2rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: transparent;
+  transition: background 160ms ease;
+}
+
+.card:hover {
+  background: var(--warm);
+}
+
+.card:hover::before {
+  background: var(--gold);
+}
+
+.card:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: -3px;
+}
+
+.cardMeta {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.cardTitle {
+  font-size: var(--step-h3);
+  line-height: 1.25;
+  color: var(--navy);
+}
+
+.cardBody {
+  margin-top: 0.7rem;
+  color: var(--slate);
+  max-width: 44ch;
+}
+
+/* Sits bottom-left so every card ends on the same mark whatever its
+   length. */
+.cardGo {
+  position: absolute;
+  left: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  bottom: 1.4rem;
+  font-size: 1.15rem;
+  color: var(--navy);
+  transition: transform 160ms ease;
+}
+
+.card:hover .cardGo {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card::before, .cardGo { transition: none; }
+  .card:hover .cardGo { transform: none; }
+}
+
+@media (min-width: 42rem) {
+  .cardGrid { grid-template-columns: repeat(2, 1fr); }
 }

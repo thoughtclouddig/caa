@@ -304,3 +304,22 @@ export async function isSubscribed(email: string) {
     .limit(1);
   return row?.status === "subscribed";
 }
+
+/* ------------------------------- resources ------------------------------- */
+
+export async function getResourceBySlug(slug: string) {
+  const [row] = await db.select().from(resources)
+    .where(and(eq(resources.slug, slug), eq(resources.status, "published")))
+    .limit(1);
+  return row ?? null;
+}
+
+export async function adminListResources() {
+  return db.select().from(resources).orderBy(asc(resources.sortOrder), asc(resources.title));
+}
+
+export async function adminGetResource(id: number) {
+  if (!Number.isInteger(id) || id < 1) return null;
+  const [row] = await db.select().from(resources).where(eq(resources.id, id)).limit(1);
+  return row ?? null;
+}

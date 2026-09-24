@@ -1,15 +1,25 @@
 import Link from "next/link";
 import styles from "./ui.module.css";
 
+/**
+ * The head of an interior page.
+ *
+ * Navy, centred, with the gold rule: the sub-hero from the approved
+ * mockup. The earlier version was left-aligned on a warm ground, which
+ * left the right half of every interior page empty and gave the whole site
+ * one weightless opening. This one carries its own colour and sits the
+ * type in the middle of the measure, so nothing is waiting to be filled.
+ */
 export function PageHero({
   eyebrow, title, lede, children,
 }: { eyebrow?: string; title: string; lede?: string; children?: React.ReactNode }) {
   return (
     <header className={styles.pageHero}>
       <div className="shell">
-        {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-        <h1>{title}</h1>
-        {lede && <p className={`lede ${styles.heroLede}`}>{lede}</p>}
+        {eyebrow && <p className={styles.heroEyebrow}>{eyebrow}</p>}
+        <h1 className={styles.heroTitle}>{title}</h1>
+        <hr className={styles.heroRule} />
+        {lede && <p className={styles.heroLede}>{lede}</p>}
         {children && <div className={styles.heroActions}>{children}</div>}
       </div>
     </header>
@@ -36,6 +46,31 @@ export function Row({
   return href
     ? <Link href={href} className={`${styles.row} ${styles.rowLink}`}>{body}</Link>
     : <div className={styles.row}>{body}</div>;
+}
+
+/**
+ * A grid of links with room to say what each one is.
+ *
+ * Replaces a hairline list for the section index pages. No icons and no
+ * numbering: the type and a gold edge on hover do the work, which is what
+ * the brand asks for and what keeps four items from looking like a
+ * dashboard.
+ */
+export function CardGrid({ children }: { children: React.ReactNode }) {
+  return <div className={styles.cardGrid}>{children}</div>;
+}
+
+export function LinkCard({
+  title, body, href, meta,
+}: { title: string; body?: string; href: string; meta?: string }) {
+  return (
+    <Link href={href} className={styles.card}>
+      {meta && <span className={styles.cardMeta}>{meta}</span>}
+      <h3 className={styles.cardTitle}>{title}</h3>
+      {body && <p className={styles.cardBody}>{body}</p>}
+      <span className={styles.cardGo} aria-hidden="true">&rarr;</span>
+    </Link>
+  );
 }
 
 export function Empty({ children }: { children: React.ReactNode }) {

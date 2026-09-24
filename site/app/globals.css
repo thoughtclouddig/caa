@@ -173,6 +173,12 @@ ul {
   max-width: var(--measure);
 }
 
+/* Consecutive paragraphs need air between them. Without this, two <p>
+   elements in a row read as one block of text with a line break. */
+.prose + .prose {
+  margin-top: 1rem;
+}
+
 .section--navy .prose {
   color: #c6d3e8;
 }

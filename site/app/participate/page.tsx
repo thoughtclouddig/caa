@@ -3,7 +3,7 @@ import { PageHero, Rows, Row } from "@/components/ui";
 export const metadata = { title: "Participate" };
 
 const ways = [
-  { title: "Join, Renew or Register", href: "/participate/join", body: "Register free, or join as a dues-paying member. Clergy, religious and students join at no cost." },
+  { title: "Join, Renew or Register", href: "/participate/join", body: "Membership is free. The support levels above it are voluntary, and none of them buys anything a free member does not already have." },
   { title: "Donate to CAA", href: "/participate/donate", body: "Giving, kept separate from membership dues." },
   { title: "Starting a Chapter", href: "/participate/start-a-chapter", body: "The four steps, and what headquarters sends you." },
   { title: "CAA Product Catalog", href: "/participate/store", body: "Association merchandise." },

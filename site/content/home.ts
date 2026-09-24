@@ -25,6 +25,9 @@ export type MissionArea = {
   body: string;
   /** Set when the area varies by place or is not yet running everywhere. */
   status?: string;
+  /** CAA's own photograph of this part of the work. */
+  image: string;
+  imageAlt: string;
 };
 
 export const hero = {
@@ -56,12 +59,16 @@ export const missionAreas: MissionArea[] = [
     heading: "Bringing the Good News to the World of Aviation",
     /** Drawn from the Chairman's letter. */
     body: "CAA was founded to unite the People of God who work in aviation, so that we can support each other and help rebuild the moral foundation of our nation. Aviation keeps hours that no parish calendar was built around. Prayer, the Sacraments and formation have to reach you where the work actually puts you.",
+    image: "/home/faith.jpg",
+    imageAlt: "A priest holding holy water beside an owner and his Aeronca Chief on the grass.",
   },
   {
     name: "Fellowship",
     heading: "Catholics Who Understand Your World",
     /** Drawn from "Come Follow Me" and the chapters page. */
     body: "To act in concert with fellow aviation people on a mission of mercy, to counsel young people, to pray together and to worship together in spirit and in truth. Join a chapter where one exists, start one where none does, or take part as a member at large.",
+    image: "/home/fellowship.jpg",
+    imageAlt: "Tom Beckenbauer and Christian Tombers at the CAA stand, beneath banners reading Faith, Flying and Fellowship.",
   },
   {
     name: "Flying",
@@ -69,6 +76,8 @@ export const missionAreas: MissionArea[] = [
     /** CAA copy, from the chapters page, lightly condensed. */
     body: "Chapters run flight training, teach aviation at Catholic schools, arrange guest speakers and field trips, set up internships, build flight simulators, carry the Sacraments to disaster areas, and help design adaptive tools for the handicapped. For those who believe and strive to love, the sky truly is the limit.",
     status: "Chapter-led, so the work varies by place",
+    image: "/home/flying.jpg",
+    imageAlt: "Three CAA Indianapolis members around a glider fuselage section in a workshop.",
   },
 ];
 

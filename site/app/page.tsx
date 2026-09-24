@@ -69,17 +69,27 @@ export default async function HomePage() {
           </div>
 
           <div className={styles.missionList}>
-            {missionAreas.map((area) => (
-              <article key={area.name} className={styles.missionRow}>
-                <div className={styles.missionName}>
-                  <span>{area.name}</span>
-                  {area.status && (
-                    <span className={styles.missionStatus}>{area.status}</span>
-                  )}
+            {missionAreas.map((area, i) => (
+              <article
+                key={area.name}
+                className={`${styles.missionRow} ${i % 2 === 1 ? styles.missionFlip : ""}`}
+              >
+                <div className={styles.missionPhoto}>
+                  <Image
+                    src={area.image}
+                    alt={area.imageAlt}
+                    fill
+                    sizes="(min-width: 58rem) 46vw, 100vw"
+                    className={styles.missionImage}
+                  />
                 </div>
                 <div className={styles.missionBody}>
-                  <h3>{area.heading}</h3>
-                  <p className="prose">{area.body}</p>
+                  <p className={styles.missionName}>{area.name}</p>
+                  <h3 className={styles.missionHeading}>{area.heading}</h3>
+                  <p className={styles.missionText}>{area.body}</p>
+                  {area.status && (
+                    <p className={styles.missionStatus}>{area.status}</p>
+                  )}
                 </div>
               </article>
             ))}

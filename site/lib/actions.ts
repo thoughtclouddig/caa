@@ -7,7 +7,7 @@ import { eq, and } from "drizzle-orm";
 import { db } from "./db";
 import {
   users, prayerRequests, prayerPledges, eventRsvps, donations,
-  chapters, events, articles, images, pages,
+  chapters, events, articles, images, pages, resources,
   newsletterSubscribers, newsletterIssues, newsletterIssueArticles,
 } from "./schema";
 import { sanitizeRichText } from "./richtext";
@@ -830,4 +830,53 @@ export async function sendIssueAction(id: number): Promise<void> {
 
   revalidatePath("/admin/newsletter");
   revalidatePath("/newsletter");
+}
+
+/* ------------------------------ admin: resources ------------------------- */
+
+export async function saveResourceAction(_prev: FormState, form: FormData): Promise<FormState> {
+  await requireAdmin();
+
+  const id = Number(form.get("id") ?? 0) || null;
+  const title = String(form.get("title") ?? "").trim();
+  const slug = slugify(String(form.get("slug") ?? "") || title);
+  const category = String(form.get("category") ?? "").trim();
+
+  if (!title) return { error: "Give the resource a title.", values: submitted(form) };
+  if (!category) return { error: "Give it a category, so it groups with its kind.", values: submitted(form) };
+  if (!slug) {
+    return { error: "That title does not make a usable web address. Set one by hand.", values: submitted(form) };
+  }
+
+  const clash = await db.select({ id: resources.id }).from(resources)
+    .where(eq(resources.slug, slug)).limit(1);
+  if (clash.length > 0 && clash[0].id !== id) {
+    return { error: `Another resource already uses the address "${slug}".`, values: submitted(form) };
+  }
+
+  const body = sanitizeRichText(String(form.get("body") ?? ""));
+
+  const values = {
+    slug,
+    title,
+    category,
+    summary: String(form.get("summary") ?? "").trim() || null,
+    body: body === "<p></p>" ? null : body,
+    sortOrder: Number(form.get("sortOrder") ?? 0) || 0,
+    status: String(form.get("status") ?? "draft") as "draft" | "published" | "archived",
+  };
+
+  if (id) await db.update(resources).set(values).where(eq(resources.id, id));
+  else await db.insert(resources).values(values);
+
+  revalidatePath("/admin/resources");
+  revalidatePath("/resources");
+  redirect("/admin/resources?saved=1");
+}
+
+export async function deleteResourceAction(id: number): Promise<void> {
+  await requireAdmin();
+  await db.delete(resources).where(eq(resources.id, id));
+  revalidatePath("/admin/resources");
+  revalidatePath("/resources");
 }

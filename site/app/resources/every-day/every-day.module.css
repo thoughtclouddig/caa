@@ -2,6 +2,9 @@
   padding-top: clamp(3rem, 2rem + 4vw, 5rem);
   padding-bottom: clamp(1.8rem, 1.4rem + 1.6vw, 2.6rem);
   max-width: 46rem;
+  /* Inside a centred shell a max-width block centres itself; this keeps
+     it aligned with the full-width content below. */
+  margin-inline: 0 auto;
 }
 
 .title {
