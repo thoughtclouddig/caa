@@ -1,0 +1,234 @@
+/* --- page header --------------------------------------------------------- */
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(1.75rem, 1.2rem + 2vw, 2.75rem) 0 1.5rem;
+  border-bottom: 2px solid var(--navy);
+}
+
+.headerMain {
+  min-width: 0;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate);
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--navy);
+}
+
+.title {
+  font-size: var(--step-h2);
+  line-height: 1.1;
+}
+
+.lede {
+  margin-top: 0.5rem;
+  color: var(--slate);
+  max-width: 56ch;
+}
+
+.headerAction {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* --- flash --------------------------------------------------------------- */
+
+.flash {
+  margin-top: 1.25rem;
+  padding: 0.75rem 1rem;
+  background: #eef6f1;
+  border-left: 3px solid #1f7a4d;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+}
+
+.flashWarn {
+  background: #fdf5e7;
+  border-left-color: #8a6416;
+}
+
+/* --- panels -------------------------------------------------------------- */
+
+.panel {
+  margin-top: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+}
+
+.panelTitle {
+  font-size: var(--step-h3);
+  padding-bottom: 0.6rem;
+  margin-bottom: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* --- table --------------------------------------------------------------- */
+
+/* Wide tables scroll inside their own box rather than pushing the page. */
+.tableWrap {
+  overflow-x: auto;
+  margin-top: 1.25rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+}
+
+.table th {
+  text-align: left;
+  padding: 0 1rem 0.65rem 0;
+  font-size: var(--step-label);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--slate);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.95rem 1rem 0.95rem 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background: var(--warm);
+}
+
+.table th:last-child,
+.table td:last-child {
+  padding-right: 0;
+  text-align: right;
+}
+
+/* --- status pills -------------------------------------------------------- */
+
+.pill {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.live {
+  background: #e4f0ea;
+  color: #14603a;
+}
+
+.draft {
+  background: #f1e9d8;
+  color: #6f4f10;
+}
+
+.muted {
+  background: #eceff4;
+  color: #4b5563;
+}
+
+.alert {
+  background: var(--navy);
+  color: var(--white);
+}
+
+/* --- empty --------------------------------------------------------------- */
+
+.empty {
+  padding: 3rem 0;
+  text-align: center;
+  color: var(--slate);
+  border: 1px dashed var(--line);
+  margin-top: 1.5rem;
+}
+
+.emptyAction {
+  margin-top: 1.25rem;
+}
+
+/* --- toolbar ------------------------------------------------------------- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* --- destructive actions ------------------------------------------------- */
+
+.danger,
+.dangerSolid,
+.quiet {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.danger {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: #8a2222;
+}
+
+.danger:hover {
+  border-color: #8a2222;
+}
+
+.dangerSolid {
+  background: #8a2222;
+  border: 1px solid #8a2222;
+  color: var(--white);
+}
+
+.dangerSolid[disabled] {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.quiet {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--slate);
+}
+
+.quiet:hover {
+  color: var(--navy);
+}
+
+.confirmRow {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.danger:focus-visible,
+.dangerSolid:focus-visible,
+.quiet:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 1px;
+}

@@ -6,14 +6,50 @@ import { eq, and } from "drizzle-orm";
 import { db } from "./db";
 import {
   users, prayerRequests, prayerPledges, eventRsvps, donations,
-  chapters, events, articles,
+  chapters, events, articles, images,
 } from "./schema";
 import {
   authenticate, createSession, destroySession, registerUser,
   currentUser, requireUser, requireAdmin,
 } from "./auth";
 
-export type FormState = { error?: string; ok?: string };
+export type FormState = {
+  error?: string;
+  ok?: string;
+  /**
+   * What was submitted, echoed back on failure.
+   *
+   * React resets an uncontrolled form once its action returns, so without
+   * this a rejected save empties every field. Losing a long article to a
+   * duplicate web address is the kind of thing that stops people trusting
+   * the tool, so every validation failure hands the work back.
+   */
+  values?: Record<string, string>;
+};
+
+/** Everything the form submitted, minus uploaded files. */
+function submitted(form: FormData): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [key, value] of form.entries()) {
+    if (typeof value === "string") out[key] = value;
+  }
+  return out;
+}
+
+/**
+ * Turns a title into a web address. Administrators can override it, but
+ * they should never have to invent one.
+ */
+function slugify(input: string): string {
+  return input
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['\u2019]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
 
 /* --------------------------------- auth --------------------------------- */
 
@@ -162,18 +198,32 @@ export async function moderatePrayerAction(id: number, decision: "approved" | "r
   revalidatePath("/");
 }
 
-export async function setMemberRoleAction(userId: number, role: "member" | "chapter_leader" | "admin"): Promise<void> {
+const ROLES = ["member", "chapter_leader", "admin"] as const;
+const MEMBERSHIP_STATUSES = ["registered", "active", "lapsed", "honorary"] as const;
+
+type Role = (typeof ROLES)[number];
+type MembershipStatus = (typeof MEMBERSHIP_STATUSES)[number];
+
+/**
+ * Both of these read the new value out of the submitted form rather than
+ * taking it bound in the URL, so one select and one button replace a row
+ * of buttons per account.
+ */
+export async function setMemberRoleAction(userId: number, form: FormData): Promise<void> {
   await requireAdmin();
-  await db.update(users).set({ role }).where(eq(users.id, userId));
+  const role = String(form.get("role") ?? "");
+  if (!ROLES.includes(role as Role)) return;
+  await db.update(users).set({ role: role as Role }).where(eq(users.id, userId));
   revalidatePath("/admin/members");
 }
 
-export async function setMembershipStatusAction(
-  userId: number,
-  status: "registered" | "active" | "lapsed" | "honorary",
-): Promise<void> {
+export async function setMembershipStatusAction(userId: number, form: FormData): Promise<void> {
   await requireAdmin();
-  await db.update(users).set({ membershipStatus: status }).where(eq(users.id, userId));
+  const status = String(form.get("status") ?? "");
+  if (!MEMBERSHIP_STATUSES.includes(status as MembershipStatus)) return;
+  await db.update(users)
+    .set({ membershipStatus: status as MembershipStatus })
+    .where(eq(users.id, userId));
   revalidatePath("/admin/members");
 }
 
@@ -190,34 +240,113 @@ function coord(raw: FormDataEntryValue | null, limit: number): number | null {
   return n;
 }
 
-export async function upsertChapterAction(_prev: FormState, form: FormData): Promise<FormState> {
+export async function saveChapterAction(_prev: FormState, form: FormData): Promise<FormState> {
   await requireAdmin();
-  const id = String(form.get("id") ?? "");
+
+  const id = Number(form.get("id") ?? 0) || null;
+  const name = String(form.get("name") ?? "").trim();
+  const slug = slugify(String(form.get("slug") ?? "") || name);
+  if (!name) return { error: "Give the chapter a name.", values: submitted(form) };
+  if (!slug) return { error: "That name does not make a usable web address. Set one by hand.", values: submitted(form) };
+
+  const clash = await db.select({ id: chapters.id }).from(chapters)
+    .where(eq(chapters.slug, slug)).limit(1);
+  if (clash.length > 0 && clash[0].id !== id) {
+    return { error: `Another chapter already uses the address "${slug}".`, values: submitted(form) };
+  }
+
+  const latitude = coord(form.get("latitude"), 90);
+  const longitude = coord(form.get("longitude"), 180);
+  if ((latitude === null) !== (longitude === null)) {
+    return { error: "Give both a latitude and a longitude, or neither.", values: submitted(form) };
+  }
+
   const values = {
-    slug: String(form.get("slug") ?? "").trim(),
-    name: String(form.get("name") ?? "").trim(),
+    slug,
+    name,
     city: String(form.get("city") ?? "").trim() || null,
     region: String(form.get("region") ?? "").trim() || null,
     description: String(form.get("description") ?? "").trim() || null,
     meetingSchedule: String(form.get("meetingSchedule") ?? "").trim() || null,
     status: String(form.get("status") ?? "forming") as "forming" | "active" | "dormant",
-    latitude: coord(form.get("latitude"), 90),
-    longitude: coord(form.get("longitude"), 180),
+    latitude,
+    longitude,
   };
-  if (!values.slug || !values.name) return { error: "Name and slug are required." };
-  if (
-    (values.latitude === null) !== (values.longitude === null)
-  ) {
-    return { error: "Give both a latitude and a longitude, or neither." };
-  }
 
-  if (id) await db.update(chapters).set(values).where(eq(chapters.id, Number(id)));
+  if (id) await db.update(chapters).set(values).where(eq(chapters.id, id));
   else await db.insert(chapters).values(values);
 
   revalidatePath("/admin/chapters");
   revalidatePath("/chapters");
-  return { ok: "Saved." };
+  redirect("/admin/chapters?saved=1");
 }
+
+/**
+ * Removes a chapter. Members who belonged to it keep their accounts and
+ * are simply left without a chapter, which the schema already allows for
+ * members at large.
+ */
+export async function deleteChapterAction(id: number): Promise<void> {
+  await requireAdmin();
+  await db.update(users).set({ chapterId: null }).where(eq(users.chapterId, id));
+  await db.delete(chapters).where(eq(chapters.id, id));
+  revalidatePath("/admin/chapters");
+  revalidatePath("/chapters");
+}
+
+/* -------------------------------------------------------------------------- */
+/* admin: events                                                              */
+/* -------------------------------------------------------------------------- */
+
+export async function saveEventAction(_prev: FormState, form: FormData): Promise<FormState> {
+  await requireAdmin();
+
+  const id = Number(form.get("id") ?? 0) || null;
+  const title = String(form.get("title") ?? "").trim();
+  const slug = slugify(String(form.get("slug") ?? "") || title);
+  const startsAtRaw = String(form.get("startsAt") ?? "").trim();
+
+  if (!title) return { error: "Give the event a title.", values: submitted(form) };
+  if (!slug) return { error: "That title does not make a usable web address. Set one by hand.", values: submitted(form) };
+  if (!startsAtRaw) return { error: "An event needs a date and time.", values: submitted(form) };
+
+  const startsAt = new Date(startsAtRaw);
+  if (Number.isNaN(startsAt.getTime())) return { error: "That date could not be read.", values: submitted(form) };
+
+  const clash = await db.select({ id: events.id }).from(events)
+    .where(eq(events.slug, slug)).limit(1);
+  if (clash.length > 0 && clash[0].id !== id) {
+    return { error: `Another event already uses the address "${slug}".`, values: submitted(form) };
+  }
+
+  const chapterId = Number(form.get("chapterId") ?? 0) || null;
+
+  const values = {
+    slug,
+    title,
+    description: String(form.get("description") ?? "").trim() || null,
+    location: String(form.get("location") ?? "").trim() || null,
+    startsAt,
+    chapterId,
+    isPublic: form.get("isPublic") === "on",
+    status: String(form.get("status") ?? "draft") as "draft" | "published" | "archived",
+  };
+
+  if (id) await db.update(events).set(values).where(eq(events.id, id));
+  else await db.insert(events).values(values);
+
+  revalidatePath("/admin/events");
+  revalidatePath("/events");
+  redirect("/admin/events?saved=1");
+}
+
+export async function deleteEventAction(id: number): Promise<void> {
+  await requireAdmin();
+  await db.delete(events).where(eq(events.id, id));
+  revalidatePath("/admin/events");
+  revalidatePath("/events");
+}
+
 
 /**
  * Marks one article as the homepage lead. Only one can hold it, so this
@@ -262,4 +391,129 @@ export async function setEventStatusAction(
   await db.update(events).set({ status }).where(eq(events.id, id));
   revalidatePath("/admin/events");
   revalidatePath("/events");
+}
+
+/* -------------------------------------------------------------------------- */
+/* admin: images                                                              */
+/* -------------------------------------------------------------------------- */
+
+/** What the browser is allowed to send, and what the site will serve back. */
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
+const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+
+/**
+ * Stores an uploaded image and returns the path to reference it by.
+ *
+ * Alt text is required rather than encouraged. An image with no alt text
+ * is unusable to anyone on a screen reader, and "required at upload" is
+ * the only point where that is cheap to enforce.
+ */
+export async function uploadImageAction(
+  _prev: FormState,
+  form: FormData,
+): Promise<FormState & { imagePath?: string }> {
+  const user = await requireAdmin();
+
+  const file = form.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { error: "Choose an image to upload." };
+  }
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    return { error: "Images must be JPEG, PNG, WebP or AVIF." };
+  }
+  if (file.size > MAX_IMAGE_BYTES) {
+    return { error: `That image is ${(file.size / 1024 / 1024).toFixed(1)}MB. The limit is 8MB.` };
+  }
+
+  const alt = String(form.get("alt") ?? "").trim();
+  if (!alt) {
+    return { error: "Describe the photograph, so it works for anyone who cannot see it." };
+  }
+
+  const bytes = Buffer.from(await file.arrayBuffer());
+  const [row] = await db.insert(images).values({
+    filename: file.name,
+    mimeType: file.type,
+    byteSize: file.size,
+    data: bytes,
+    alt,
+    credit: String(form.get("credit") ?? "").trim() || null,
+    uploadedBy: user.id,
+  }).returning({ id: images.id });
+
+  return { ok: "Image uploaded.", imagePath: `/api/images/${row.id}` };
+}
+
+/* -------------------------------------------------------------------------- */
+/* admin: articles                                                            */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Creates or updates an article.
+ *
+ * Publishing stamps publishedAt the first time only, so correcting a typo
+ * on a published article does not shuffle it back to the top of the
+ * index.
+ */
+export async function saveArticleAction(_prev: FormState, form: FormData): Promise<FormState> {
+  await requireAdmin();
+
+  const id = Number(form.get("id") ?? 0) || null;
+  const title = String(form.get("title") ?? "").trim();
+  const body = String(form.get("body") ?? "").trim();
+  const slug = slugify(String(form.get("slug") ?? "") || title);
+  const status = String(form.get("status") ?? "draft") as "draft" | "published" | "archived";
+
+  if (!title) return { error: "Give the article a title.", values: submitted(form) };
+  if (!body) return { error: "An article needs something in the body.", values: submitted(form) };
+  if (!slug) return { error: "That title does not make a usable web address. Set one by hand.", values: submitted(form) };
+
+  const clash = await db.select({ id: articles.id }).from(articles)
+    .where(eq(articles.slug, slug)).limit(1);
+  if (clash.length > 0 && clash[0].id !== id) {
+    return { error: `Another article already uses the address "${slug}".`, values: submitted(form) };
+  }
+
+  const values = {
+    slug,
+    title,
+    body,
+    excerpt: String(form.get("excerpt") ?? "").trim() || null,
+    authorName: String(form.get("authorName") ?? "").trim() || null,
+    imagePath: String(form.get("imagePath") ?? "").trim() || null,
+    imageAlt: String(form.get("imageAlt") ?? "").trim() || null,
+    imageCredit: String(form.get("imageCredit") ?? "").trim() || null,
+    photoBrief: String(form.get("photoBrief") ?? "").trim() || null,
+    status,
+  };
+
+  if (id) {
+    const [existing] = await db.select({ publishedAt: articles.publishedAt })
+      .from(articles).where(eq(articles.id, id)).limit(1);
+    await db.update(articles).set({
+      ...values,
+      publishedAt:
+        status === "published"
+          ? existing?.publishedAt ?? new Date()
+          : existing?.publishedAt ?? null,
+    }).where(eq(articles.id, id));
+  } else {
+    await db.insert(articles).values({
+      ...values,
+      publishedAt: status === "published" ? new Date() : null,
+    });
+  }
+
+  revalidatePath("/admin/articles");
+  revalidatePath("/articles");
+  revalidatePath("/");
+  redirect("/admin/articles?saved=1");
+}
+
+export async function deleteArticleAction(id: number): Promise<void> {
+  await requireAdmin();
+  await db.delete(articles).where(eq(articles.id, id));
+  revalidatePath("/admin/articles");
+  revalidatePath("/articles");
+  revalidatePath("/");
 }

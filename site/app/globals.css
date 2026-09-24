@@ -289,3 +289,43 @@ button:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* --- admin controls ------------------------------------------------------- */
+
+/* Used inside the admin tables, where a select plus one button replaces a
+   row of buttons per record. */
+.admin-select {
+  font: inherit;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--white);
+  color: var(--ink);
+  max-width: 11rem;
+}
+
+.admin-select:focus-visible,
+.admin-apply:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.admin-apply {
+  margin-left: 0.35rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.admin-apply:hover {
+  border-color: var(--navy);
+  background: var(--warm);
+}

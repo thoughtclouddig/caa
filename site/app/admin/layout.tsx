@@ -9,13 +9,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   // Admin tools are staff-only. Members land back in their own area.
   if (user.role !== "admin") redirect("/portal");
 
+  // Ordered by how often staff need them, not alphabetically.
   const items = [
     { label: "Overview", href: "/admin" },
-    { label: "Members", href: "/admin/members" },
-    { label: "Chapters", href: "/admin/chapters" },
     { label: "Articles", href: "/admin/articles" },
     { label: "Events", href: "/admin/events" },
+    { label: "Chapters", href: "/admin/chapters" },
     { label: "Prayer queue", href: "/admin/prayer" },
+    { label: "Members", href: "/admin/members" },
   ];
 
   return (

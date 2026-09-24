@@ -109,6 +109,7 @@ export async function getDirectory() {
     id: users.id, name: users.name, aviationRole: users.aviationRole,
     city: users.city, region: users.region, country: users.country,
     chapterName: chapters.name,
+    showInDirectory: users.showInDirectory,
   })
     .from(users)
     .leftJoin(chapters, eq(users.chapterId, chapters.id))
@@ -164,6 +165,7 @@ export async function adminListMembers() {
     id: users.id, name: users.name, email: users.email, role: users.role,
     membershipStatus: users.membershipStatus, createdAt: users.createdAt,
     chapterName: chapters.name,
+    showInDirectory: users.showInDirectory,
   })
     .from(users)
     .leftJoin(chapters, eq(users.chapterId, chapters.id))
@@ -174,6 +176,24 @@ export async function adminPendingPrayers() {
   return db.select().from(prayerRequests)
     .where(eq(prayerRequests.status, "pending"))
     .orderBy(desc(prayerRequests.createdAt));
+}
+
+export async function adminGetArticle(id: number) {
+  if (!Number.isInteger(id) || id < 1) return null;
+  const [row] = await db.select().from(articles).where(eq(articles.id, id)).limit(1);
+  return row ?? null;
+}
+
+export async function adminGetChapter(id: number) {
+  if (!Number.isInteger(id) || id < 1) return null;
+  const [row] = await db.select().from(chapters).where(eq(chapters.id, id)).limit(1);
+  return row ?? null;
+}
+
+export async function adminGetEvent(id: number) {
+  if (!Number.isInteger(id) || id < 1) return null;
+  const [row] = await db.select().from(events).where(eq(events.id, id)).limit(1);
+  return row ?? null;
 }
 
 export async function adminListArticles() {

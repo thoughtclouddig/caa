@@ -1,56 +1,76 @@
 import { adminListMembers } from "@/lib/queries";
 import { setMemberRoleAction, setMembershipStatusAction } from "@/lib/actions";
-import { PageHero, Rows, Row, Empty } from "@/components/ui";
+import { AdminHeader, Table, EmptyState, Pill } from "@/components/admin/AdminUI";
 
 export const metadata = { title: "Members" };
 export const dynamic = "force-dynamic";
 
-const ROLES = ["member", "chapter_leader", "admin"] as const;
-const STATUSES = ["registered", "active", "lapsed", "honorary"] as const;
+const ROLES = [
+  { value: "member", label: "Member" },
+  { value: "chapter_leader", label: "Chapter leader" },
+  { value: "admin", label: "Administrator" },
+] as const;
 
+const STATUSES = [
+  { value: "registered", label: "Registered" },
+  { value: "active", label: "Active" },
+  { value: "lapsed", label: "Lapsed" },
+  { value: "honorary", label: "Honorary" },
+] as const;
+
+/**
+ * Accounts.
+ *
+ * Role and status are select menus that submit on change rather than rows
+ * of buttons: with four statuses and three roles, buttons filled the row
+ * with things nobody was about to click.
+ */
 export default async function AdminMembers() {
   const members = await adminListMembers();
 
   return (
-    <>
-      <PageHero eyebrow="Members" title="Accounts and Membership" />
-      <section className="section shell">
-        {members.length === 0 ? <Empty>No accounts yet.</Empty> : (
-          <Rows>
-            {members.map((m) => (
-              <Row key={m.id} title={m.name} meta={m.chapterName ?? "No chapter"}>
-                <p>{m.email}</p>
-                <div style={{ display: "flex", gap: "1.4rem", flexWrap: "wrap", marginTop: "0.6rem" }}>
-                  <span style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap", alignItems: "center" }}>
-                    <strong style={{ fontSize: "0.8rem" }}>Role:</strong>
+    <div className="shell">
+      <AdminHeader
+        title="Members"
+        lede="Every account on the site. Administrators can edit everything here; chapter leaders and members cannot reach these screens at all."
+      />
+
+      {members.length === 0 ? (
+        <EmptyState>No accounts yet.</EmptyState>
+      ) : (
+        <Table head={["Name", "Email", "Chapter", "Role", "Membership", "Directory"]}>
+          {members.map((m) => (
+            <tr key={m.id}>
+              <td style={{ fontWeight: 600 }}>{m.name}</td>
+              <td>{m.email}</td>
+              <td>{m.chapterName ?? "Member at large"}</td>
+              <td>
+                <form action={setMemberRoleAction.bind(null, m.id)}>
+                  <select name="role" defaultValue={m.role} className="admin-select">
                     {ROLES.map((r) => (
-                      <form key={r} action={setMemberRoleAction.bind(null, m.id, r)}>
-                        <button type="submit"
-                          className={m.role === r ? "btn btn--primary" : "btn btn--ghost"}
-                          style={{ padding: "0.3rem 0.7rem", minHeight: "auto", fontSize: "0.78rem" }}>
-                          {r.replace("_", " ")}
-                        </button>
-                      </form>
+                      <option key={r.value} value={r.value}>{r.label}</option>
                     ))}
-                  </span>
-                  <span style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap", alignItems: "center" }}>
-                    <strong style={{ fontSize: "0.8rem" }}>Status:</strong>
+                  </select>
+                  <button type="submit" className="admin-apply">Apply</button>
+                </form>
+              </td>
+              <td>
+                <form action={setMembershipStatusAction.bind(null, m.id)}>
+                  <select name="status" defaultValue={m.membershipStatus} className="admin-select">
                     {STATUSES.map((s) => (
-                      <form key={s} action={setMembershipStatusAction.bind(null, m.id, s)}>
-                        <button type="submit"
-                          className={m.membershipStatus === s ? "btn btn--primary" : "btn btn--ghost"}
-                          style={{ padding: "0.3rem 0.7rem", minHeight: "auto", fontSize: "0.78rem" }}>
-                          {s}
-                        </button>
-                      </form>
+                      <option key={s.value} value={s.value}>{s.label}</option>
                     ))}
-                  </span>
-                </div>
-              </Row>
-            ))}
-          </Rows>
-        )}
-      </section>
-    </>
+                  </select>
+                  <button type="submit" className="admin-apply">Apply</button>
+                </form>
+              </td>
+              <td>
+                {m.showInDirectory ? <Pill tone="live">Listed</Pill> : <Pill tone="muted">Hidden</Pill>}
+              </td>
+            </tr>
+          ))}
+        </Table>
+      )}
+    </div>
   );
 }

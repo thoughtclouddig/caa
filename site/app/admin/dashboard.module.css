@@ -1,0 +1,83 @@
+.tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.tasks li {
+  border-bottom: 1px solid var(--line);
+}
+
+/* Each item is the whole row, so the thing to do is also the thing to
+   click. Gold bar on hover rather than a permanent accent. */
+.task {
+  display: block;
+  padding: 1rem 1rem 1rem 0.9rem;
+  border-left: 3px solid transparent;
+  color: inherit;
+  text-decoration: none;
+}
+
+.task:hover {
+  background: var(--warm);
+  border-left-color: var(--gold);
+}
+
+.taskLabel {
+  display: block;
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.taskDetail {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: var(--sans);
+  font-size: 0.87rem;
+  color: var(--slate);
+}
+
+.clear {
+  padding: 1.5rem 0;
+  color: var(--slate);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 1.5rem;
+  margin: 0;
+}
+
+.stats dt {
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.stats dd {
+  margin: 0.3rem 0 0;
+  font-family: var(--serif);
+  font-size: var(--step-h2);
+  line-height: 1;
+  color: var(--navy);
+}
+
+.caveat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  color: var(--slate);
+  max-width: 62ch;
+}

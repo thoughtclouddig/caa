@@ -11,6 +11,7 @@
  */
 
 import {
+  customType,
   doublePrecision,
   pgTable,
   serial,
@@ -35,6 +36,14 @@ export const userRole = pgEnum("user_role", [
 ]);
 
 /** Free tiers exist for clergy, religious and students; hardship is by request. */
+/**
+ * Drizzle has no first-class bytea, so this maps Postgres bytea to Node
+ * Buffer in both directions.
+ */
+const customBytea = customType<{ data: Buffer; driverData: Buffer }>({
+  dataType: () => "bytea",
+});
+
 export const membershipStatus = pgEnum("membership_status", [
   "registered", // account only, not a dues-paying member
   "active",
@@ -307,6 +316,33 @@ export const articles = pgTable(
   },
   (t) => [uniqueIndex("articles_slug_idx").on(t.slug)],
 );
+
+/**
+ * Uploaded images.
+ *
+ * Bytes live in Postgres rather than on disk. A Replit deployment runs on
+ * an ephemeral filesystem, so anything written next to the app disappears
+ * on the next deploy, and an image an administrator uploaded in October
+ * would quietly vanish in November. The database is the one place on this
+ * stack that persists, and it needs no account with anybody.
+ *
+ * At a few hundred kilobytes each this stays small for a long time. If CAA
+ * ever outgrows it, the swap is a storage service behind the same
+ * /api/images/:id URL, and nothing that references an image changes.
+ */
+export const images = pgTable("images", {
+  id: serial("id").primaryKey(),
+  filename: text("filename").notNull(),
+  mimeType: text("mime_type").notNull(),
+  byteSize: integer("byte_size").notNull(),
+  data: customBytea("data").notNull(),
+  /** Written by whoever uploads it. Required before an image can be used. */
+  alt: text("alt"),
+  /** CAA's photographs are taken by members and are credited by name. */
+  credit: text("credit"),
+  uploadedBy: integer("uploaded_by").references(() => users.id, { onDelete: "set null" }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
 
 /** Resources section: formation and educational material, kept on CAA's own pages. */
 export const resources = pgTable(
