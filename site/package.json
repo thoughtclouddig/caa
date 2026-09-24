@@ -6,7 +6,11 @@
     "dev": "next dev -H 0.0.0.0 -p ${PORT:-3000}",
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p ${PORT:-3000}",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:push": "drizzle-kit push",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:setup": "npm run db:push -- --force && npm run db:seed",
+    "build:map": "tsx scripts/build-us-map.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -31,5 +35,8 @@
     "drizzle-kit": "^0.31.11",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }

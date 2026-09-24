@@ -5,7 +5,27 @@ import * as schema from "./schema";
 /**
  * Replit provisions PostgreSQL and exposes DATABASE_URL automatically, so
  * no configuration is needed there. Locally, fall back to a dev database.
+ *
+ * At runtime in production a missing DATABASE_URL means the database was
+ * never attached. Falling back to localhost there would produce
+ * connection errors on every page and send whoever is debugging it
+ * looking in the wrong place, so fail with the actual cause instead.
+ *
+ * The build is deliberately exempt. `next build` evaluates this module
+ * while collecting page data, and on a first deployment the database may
+ * not be attached yet. Throwing here would turn a fixable setup step into
+ * a failed build with a misleading message.
  */
+const isBuild = process.env.NEXT_PHASE === "phase-production-build";
+
+if (!process.env.DATABASE_URL && process.env.NODE_ENV === "production" && !isBuild) {
+  throw new Error(
+    "DATABASE_URL is not set. Attach a PostgreSQL database to this " +
+      "deployment, then run `npm run db:setup` once to create the schema " +
+      "and seed the starting data.",
+  );
+}
+
 const connectionString =
   process.env.DATABASE_URL ?? "postgres://localhost:5432/caa_dev";
 

@@ -1,3 +1,18 @@
+# Replit configuration.
+#
+# The Next.js app lives in site/ rather than the repository root, because
+# pages/ at the root holds the reference HTML mockups and would collide
+# with the Next.js pages directory.
+#
+# Before the first run, attach a PostgreSQL database from the Replit tools
+# panel, then run this once in the shell:
+#
+#   cd site && npm run db:setup
+#
+# That creates the schema and seeds the tiers, chapters, articles and the
+# starting administrator account. Change that account's password
+# immediately; see site/README.md.
+
 run = "cd site && npm run dev"
 entrypoint = "site/app/page.tsx"
 modules = ["nodejs-20"]
@@ -5,8 +20,13 @@ modules = ["nodejs-20"]
 [nix]
 channel = "stable-24_05"
 
+[env]
+# Keep devDependencies during the deployment build: drizzle-kit and tsx
+# are needed to create the schema and to seed.
+NPM_CONFIG_PRODUCTION = "false"
+
 [deployment]
-build = ["sh", "-c", "cd site && npm install && npm run build"]
+build = ["sh", "-c", "cd site && npm ci --include=dev && npm run build"]
 run = ["sh", "-c", "cd site && npm run start"]
 deploymentTarget = "cloudrun"
 
