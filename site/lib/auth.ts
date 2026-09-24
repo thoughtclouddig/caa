@@ -3,10 +3,10 @@ import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { randomBytes, timingSafeEqual } from "crypto";
-import { eq, and, gt } from "drizzle-orm";
+import { eq, and, gt, asc } from "drizzle-orm";
 import { db } from "./db";
 import { hashPassword, verifyPassword } from "./passwords";
-import { users, sessions, type User } from "./schema";
+import { users, sessions, membershipTiers, type User } from "./schema";
 
 const COOKIE = "caa_session";
 const SESSION_DAYS = 30;
@@ -129,6 +129,15 @@ export async function registerUser(
     return { ok: false, error: "An account with that email already exists." };
   }
 
+  // The free level. Looked up rather than hardcoded, because the board
+  // can rename or re-price the tiers without touching this.
+  const [freeTier] = await db
+    .select({ id: membershipTiers.id })
+    .from(membershipTiers)
+    .where(eq(membershipTiers.amountCents, 0))
+    .orderBy(asc(membershipTiers.sortOrder))
+    .limit(1);
+
   const [created] = await db
     .insert(users)
     .values({
@@ -138,9 +147,15 @@ export async function registerUser(
       aviationRole: input.aviationRole?.trim() || null,
       city: input.city?.trim() || null,
       country: input.country?.trim() || null,
-      // Registering creates an account. It does not make someone a
-      // dues-paying member — that decision is still open.
+      /*
+       * Basic membership is free, so registering is joining. There is no
+       * second step and nothing to pay, and the free tier is attached here
+       * rather than left null so a new member is a member in the data as
+       * well as on the page.
+       */
       membershipStatus: "registered",
+      membershipTierId: freeTier?.id ?? null,
+      memberSince: new Date(),
     })
     .returning({ id: users.id });
 

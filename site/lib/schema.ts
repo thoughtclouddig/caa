@@ -35,7 +35,11 @@ export const userRole = pgEnum("user_role", [
   "admin",
 ]);
 
-/** Free tiers exist for clergy, religious and students; hardship is by request. */
+/**
+ * Basic membership is free, so "registered" and "active" describe the same
+ * person: someone who joined. The distinction is kept because it costs
+ * nothing and because a paid-membership decision could return.
+ */
 /**
  * Drizzle has no first-class bytea, so this maps Postgres bytea to Node
  * Buffer in both directions.
@@ -45,10 +49,10 @@ const customBytea = customType<{ data: Buffer; driverData: Buffer }>({
 });
 
 export const membershipStatus = pgEnum("membership_status", [
-  "registered", // account only, not a dues-paying member
-  "active",
-  "lapsed",
-  "honorary",
+  "registered", // joined; basic membership carries no dues
+  "active",     // joined and giving at one of the support levels
+  "lapsed",     // was giving, no longer
+  "honorary",   // recognised by the board
 ]);
 
 export const chapterStatus = pgEnum("chapter_status", [
@@ -179,12 +183,25 @@ export const sessions = pgTable(
  * Tiers are data, not code, because pricing is unresolved. Amount may be
  * null for tiers that are free by policy (clergy, religious, students).
  */
+/**
+ * Membership levels.
+ *
+ * Basic membership is free. Everything above it is voluntary support, so
+ * these are giving levels rather than gates: nothing on the site is held
+ * back from a member who gives nothing.
+ *
+ * Amounts live here rather than in code so the board can change them
+ * without a release.
+ */
 export const membershipTiers = pgTable("membership_tiers", {
   id: serial("id").primaryKey(),
   slug: text("slug").notNull(),
   name: text("name").notNull(),
   description: text("description"),
+  /** Integer cents. Zero means free; null means no fixed amount. */
   amountCents: integer("amount_cents"),
+  /** How often it is given: "none" for free, "annual", or "once". */
+  cadence: text("cadence").notNull().default("annual"),
   requiresVerification: boolean("requires_verification").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
   active: boolean("active").notNull().default(true),

@@ -15,12 +15,65 @@ import { hashPassword } from "../lib/passwords";
 async function main() {
   console.log("seeding…");
 
+  /*
+   * Membership levels.
+   *
+   * Basic membership is free, by board direction. The support levels are
+   * set against what comparable organisations charge: EAA national
+   * membership is $48 a year and AOPA is $49 digital or $59 standard, with
+   * AOPA Premier at $99. CAA gives fellowship, formation and chapters
+   * rather than magazines, legal services and insurance, so nothing here
+   * sits above that band, and the entry level is free where theirs is not.
+   *
+   * Amounts are read from this table at runtime, so the board can change
+   * any of them without a release.
+   */
   const tiers = await db.insert(membershipTiers).values([
-    { slug: "registered", name: "Registered", description: "An account on the site. Not a dues-paying membership.", amountCents: null, sortOrder: 0 },
-    { slug: "member", name: "CAA Member", description: "Annual dues. Amount pending board confirmation.", amountCents: 3500, sortOrder: 1 },
-    { slug: "clergy-religious", name: "Clergy & Religious", description: "Free by policy.", amountCents: 0, requiresVerification: true, sortOrder: 2 },
-    { slug: "student", name: "Student", description: "Free by policy.", amountCents: 0, requiresVerification: true, sortOrder: 3 },
-    { slug: "hardship", name: "Hardship", description: "Dues waived on request. No one is turned away.", amountCents: 0, requiresVerification: true, sortOrder: 4 },
+    {
+      slug: "member",
+      name: "Member",
+      description:
+        "Free, and the whole of membership. A chapter, the member directory, prayer, events and everything else the association does. Nobody is asked for money to belong.",
+      amountCents: 0,
+      cadence: "none",
+      sortOrder: 0,
+    },
+    {
+      slug: "supporting",
+      name: "Supporting Member",
+      description:
+        "For members who want to carry part of the cost. Roughly what a national aviation membership runs to, given to an apostolate instead.",
+      amountCents: 5000,
+      cadence: "annual",
+      sortOrder: 1,
+    },
+    {
+      slug: "sustaining",
+      name: "Sustaining Member",
+      description:
+        "Pays for the things a chapter cannot fund on its own: materials, travel to start a new chapter, a priest's expenses for an Aviation Mass.",
+      amountCents: 10000,
+      cadence: "annual",
+      sortOrder: 2,
+    },
+    {
+      slug: "founding-patron",
+      name: "Founding Patron",
+      description:
+        "For those building the association in its first years, while the work still depends on a small number of people.",
+      amountCents: 25000,
+      cadence: "annual",
+      sortOrder: 3,
+    },
+    {
+      slug: "life",
+      name: "Life Member",
+      description:
+        "Given once. For members who want their support settled and done with.",
+      amountCents: 100000,
+      cadence: "once",
+      sortOrder: 4,
+    },
   ]).returning();
 
   // The three chapters CAA actually has today, as listed on catholicaviation.org.

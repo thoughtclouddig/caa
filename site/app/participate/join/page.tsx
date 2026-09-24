@@ -1,44 +1,98 @@
 import Link from "next/link";
 import { getMembershipTiers } from "@/lib/queries";
-import { PageHero, Rows, Row, Notice } from "@/components/ui";
+import { PageHero, Notice } from "@/components/ui";
+import styles from "./join.module.css";
 
-export const metadata = { title: "Join or renew" };
+export const metadata = {
+  title: "Join, Renew or Register",
+  description:
+    "Membership of the Catholic Aviation Association is free. Support above that is voluntary.",
+};
 export const dynamic = "force-dynamic";
 
-function price(cents: number | null) {
-  if (cents === null) return "No dues";
+function price(cents: number | null, cadence: string) {
+  if (cents === null) return "Any amount";
   if (cents === 0) return "Free";
-  return `$${(cents / 100).toFixed(0)} / year`;
+  const amount = `$${(cents / 100).toLocaleString("en-US")}`;
+  return cadence === "once" ? `${amount} once` : `${amount} a year`;
 }
 
 export default async function JoinPage() {
   const tiers = await getMembershipTiers();
+  const [free, ...support] = tiers;
 
   return (
     <>
       <PageHero
-        eyebrow="Join or renew"
-        title="Join, Renew or Register"
-        lede="Membership is how CAA is sustained. Nobody is turned away for cost."
+        eyebrow="Join or Renew"
+        title="Membership Is Free"
+        lede="Joining CAA costs nothing and never has to. What follows is for members who want to help carry the cost, and none of it buys anything a free member does not already have."
       >
-        <Link className="btn btn--primary" href="/register">Create an account</Link>
+        <Link className="btn btn--primary" href="/register">
+          Join CAA
+        </Link>
       </PageHero>
 
-      <section className="section shell">
-        <Notice tone="warn">
-          Pricing is not final. These amounts are placeholders pending board confirmation,
-          and the site reads them from the database so they can change without a code release.
-        </Notice>
+      {free && (
+        <section className="section shell">
+          <article className={styles.free}>
+            <div>
+              <p className="eyebrow">Everyone who joins</p>
+              <h2 className={styles.freeName}>{free.name}</h2>
+              <p className={styles.freeBody}>{free.description}</p>
+            </div>
+            <div className={styles.freePrice}>
+              <span>{price(free.amountCents, free.cadence)}</span>
+              <Link className="btn btn--primary" href="/register">
+                Join CAA
+              </Link>
+            </div>
+          </article>
+        </section>
+      )}
 
-        <Rows>
-          {tiers.map((t) => (
-            <Row key={t.id} title={t.name} meta={price(t.amountCents)}>
-              <p>{t.description}</p>
-              {t.requiresVerification && <p>Verification required.</p>}
-            </Row>
-          ))}
-        </Rows>
-      </section>
+      {support.length > 0 && (
+        <section className="section--warm">
+          <div className="section shell">
+            <div className={styles.supportHead}>
+              <h2>Ways to Support the Work</h2>
+              <p className="prose">
+                CAA runs on what members give. These levels exist so that
+                giving has a shape, not so that membership has a price.
+              </p>
+            </div>
+
+            <div className={styles.tiers}>
+              {support.map((t) => (
+                <article key={t.id} className={styles.tier}>
+                  <h3 className={styles.tierName}>{t.name}</h3>
+                  <p className={styles.tierPrice}>
+                    {price(t.amountCents, t.cadence)}
+                  </p>
+                  <p className={styles.tierBody}>{t.description}</p>
+                </article>
+              ))}
+            </div>
+
+            <Notice tone="warn">
+              Giving is not connected yet. CAA has a contract with a payment
+              processor separate from eCatholic, and those account details
+              are still needed before anything can be charged. Until then the
+              giving form records an intention only. Joining, which is free,
+              works today.
+            </Notice>
+
+            <div className={styles.support}>
+              <Link className="btn btn--primary" href="/participate/donate">
+                Give to CAA
+              </Link>
+              <Link className="btn btn--ghost" href="/register">
+                Join for free
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 }

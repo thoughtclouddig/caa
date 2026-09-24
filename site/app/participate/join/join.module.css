@@ -1,0 +1,106 @@
+/* The free level is not one card among five. It is the offer, so it runs
+   full width above the support levels rather than competing with them. */
+.free {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+  align-items: center;
+  padding: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  border: 2px solid var(--navy);
+}
+
+.freeName {
+  margin-top: 0.4rem;
+  font-size: var(--step-h2);
+}
+
+.freeBody {
+  margin-top: 0.9rem;
+  color: var(--slate);
+  max-width: 54ch;
+}
+
+.freePrice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.freePrice span {
+  font-family: var(--serif);
+  font-size: var(--step-h1);
+  line-height: 1;
+  color: var(--navy);
+}
+
+.supportHead {
+  max-width: 48rem;
+  margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+}
+
+.supportHead p {
+  margin-top: 0.8rem;
+}
+
+.tiers {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 2rem;
+}
+
+.tier {
+  background: var(--white);
+  padding: 1.5rem;
+}
+
+.tierName {
+  font-size: var(--step-h3);
+}
+
+/* Gold rule under the amount: gold fails contrast as text on white, so it
+   marks the number rather than colouring it. */
+.tierPrice {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 3px solid var(--gold);
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.tierBody {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--slate);
+}
+
+.support {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 48rem) {
+  .free {
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+  }
+
+  .freePrice {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+@media (min-width: 62rem) {
+  .tiers {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
