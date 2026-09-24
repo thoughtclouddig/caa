@@ -145,23 +145,45 @@ Three roles: `member`, `chapter_leader`, `admin`.
 Sessions are opaque random tokens stored in the `sessions` table rather than
 signed JWTs, so revoking access is a row delete and takes effect immediately.
 
+## What CAA needs to provide
+
+None of these are code problems. Each one blocks something the site is
+otherwise ready to do, and each needs a person at CAA rather than a
+developer.
+
+| What | Blocks | Who |
+| --- | --- | --- |
+| A Resend account, with `catholicaviation.org` verified as a sending domain (DKIM and SPF DNS records) | Sending the newsletter. Subscribing and the archive already work. | CAA, with whoever holds the DNS |
+| Payment processor account details, for the processor CAA contracted separately from eCatholic | Charging anything. Donation and dues forms record intent only. | CAA |
+| Board sign-off on the membership support levels | Nothing technically, but the figures shown are a recommendation | Board |
+| A decision on what confirms a clergy or religious designation | The parked designations. See `memberDesignation` in `lib/schema.ts` | Board |
+| Photographs: Jessica Cox at AirVenture, and chapter photographs | Those articles run on a written brief instead of an image | CAA |
+| A decision on the existing newsletter list, if one exists on eCatholic | Importing it. A new sending domain has no reputation, so a large first send is the most reliable way into spam folders | CAA |
+
 ## What is deliberately not finished
 
-- **Payments.** CAA has a processor contract separate from eCatholic and we
-  do not have those account details. Donation and dues forms record intent
-  to the `donations` table with status `pending` and an empty `processorRef`;
-  nothing is charged. Wire the processor, then reconcile those rows.
-- **Membership pricing.** Amounts live in `membership_tiers` and are read at
-  runtime, so the board can change them without a code release. The figures
-  currently seeded are placeholders.
+- **Payments.** Donation and dues forms write to `donations` with status
+  `pending` and an empty `processorRef`; nothing is charged. Wire the
+  processor, then reconcile those rows.
+- **Membership pricing.** Basic membership is free. The support levels are
+  benchmarked against comparable aviation bodies but are a recommendation,
+  not a board decision. They live in `membership_tiers` and are read at
+  runtime, so the board can change them without a release.
 - **Photography.** CAA's own photographs are in `public/`, attached to the
   articles and pages they belong to. Where one has not been supplied the
   position is a labelled `PhotoSlot` describing the photograph needed, and
   the layout renders that brief rather than cropping in something
   unrelated. No stock imagery.
-- **Membership pricing.** Basic membership is free. The support levels are
-  benchmarked against comparable aviation bodies but are a recommendation,
-  not a board decision. They live in `membership_tiers` and can be changed
-  without a release.
+- **Clergy, religious and student designations.** The columns exist and
+  nothing reads or writes them. Publishing "clergy" beside a name means CAA
+  vouching for it, and members will approach that person for sacramental
+  and pastoral reasons, so what counts as confirmation is a board decision.
 - **Daily readings.** The USCCB translation is copyrighted. The design shows
   citations only; displaying full readings needs permission first.
+- **Uploaded images are never cleaned up.** Removing an image from an
+  article leaves its bytes in the `images` table. Harmless at this size,
+  but there is no screen showing what is stored or removing what nothing
+  uses.
+- **The member map is United States only.** Members elsewhere are counted
+  but not pinned, and the map says so. A worldwide association will
+  eventually need a world map and a wider list of places.
