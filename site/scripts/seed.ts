@@ -320,9 +320,37 @@ async function main() {
       memberOffer: "Both books free to paid members" },
   ]);
 
+  /*
+   * The eight items from CAA's own Merchandise Guide. Prices are
+   * provisional: they are a sensible retail on Printful's blank costs, not
+   * a decision anyone has made, and they live in this table so the board
+   * can change them without a release.
+   */
   await db.insert(products).values([
-    { slug: "caa-lapel-pin", name: "CAA lapel pin", description: "The compact mark in enamel.",
-      priceCents: 1200, photoBrief: "Product photograph of the pin on a neutral ground." },
+    { slug: "caa-cap", name: "CAA Cap", priceCents: 2800, sortOrder: 1,
+      description: "Embroidered, structured, navy. One size, adjustable.",
+      imagePath: "/store/cap.jpg", imageAlt: "A navy cap embroidered with the CAA logo." },
+    { slug: "caa-polo-shirt", name: "CAA Polo Shirt", priceCents: 4500, sortOrder: 2,
+      description: "Embroidered on the chest, navy. Sizes S to XXL.",
+      imagePath: "/store/polo-shirt.jpg", imageAlt: "A navy polo shirt embroidered with the CAA logo." },
+    { slug: "caa-t-shirt", name: "CAA T-Shirt", priceCents: 2800, sortOrder: 3,
+      description: "Screen printed, heather grey. Sizes S to XXL.",
+      imagePath: "/store/t-shirt.jpg", imageAlt: "A grey t-shirt screen printed with the CAA logo." },
+    { slug: "caa-jacket", name: "CAA Jacket", priceCents: 7500, sortOrder: 4,
+      description: "Embroidered, full zip, navy. Sizes S to XXL.",
+      imagePath: "/store/jacket.jpg", imageAlt: "A navy full-zip jacket embroidered with the CAA logo." },
+    { slug: "caa-fleece-vest", name: "CAA Fleece Vest", priceCents: 6500, sortOrder: 5,
+      description: "Embroidered, navy. Sizes S to XXL.",
+      imagePath: "/store/fleece-vest.jpg", imageAlt: "A navy fleece vest embroidered with the CAA logo." },
+    { slug: "caa-tumbler", name: "CAA Tumbler", priceCents: 3200, sortOrder: 6,
+      description: "Laser engraved, insulated, 20oz.",
+      imagePath: "/store/tumbler.jpg", imageAlt: "An insulated black tumbler carrying the CAA logo." },
+    { slug: "caa-flight-bag", name: "CAA Flight Bag", priceCents: 8500, sortOrder: 7,
+      description: "Embroidered, navy, with room for headset, charts and a tablet.",
+      imagePath: "/store/flight-bag.jpg", imageAlt: "A navy flight bag embroidered with the CAA logo." },
+    { slug: "caa-challenge-coin", name: "CAA Challenge Coin", priceCents: 1500, sortOrder: 8,
+      description: "Die struck and enamelled. Faith, Flight, Mission.",
+      imagePath: "/store/challenge-coin.jpg", imageAlt: "A die struck challenge coin reading Faith, Flight, Mission." },
   ]);
 
   /*

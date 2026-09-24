@@ -77,7 +77,7 @@ export async function getSponsors() {
 }
 
 export async function getProducts() {
-  return db.select().from(products).where(eq(products.active, true)).orderBy(asc(products.name));
+  return db.select().from(products).where(eq(products.active, true)).orderBy(asc(products.sortOrder), asc(products.name));
 }
 
 export async function getMembershipTiers() {

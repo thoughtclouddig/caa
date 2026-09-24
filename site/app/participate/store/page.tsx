@@ -23,8 +23,9 @@ export default async function StorePage() {
 
       <section className="section shell">
         <Notice>
-          Checkout is not connected yet. Items are listed, but nothing can be
-          bought here today.
+          This is the catalogue, not a shop yet. Checkout needs a payment
+          processor, which CAA is still setting up, so nothing can be bought
+          here today and the prices shown are provisional.
         </Notice>
 
         {products.length === 0 ? (
