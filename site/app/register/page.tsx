@@ -3,7 +3,7 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { registerAction, type FormState } from "@/lib/actions";
 import { MEMBER_LOCATIONS } from "@/content/member-locations";
-import { PageHero, Field, Select, Notice, FormCard } from "@/components/ui";
+import { PageHero, Field, Select, Checkbox, Notice, FormCard } from "@/components/ui";
 import SubmitButton from "@/components/SubmitButton";
 
 export default function RegisterPage() {
@@ -38,6 +38,12 @@ export default function RegisterPage() {
                 ...MEMBER_LOCATIONS.map((l) => ({ value: l.slug, label: l.label })),
               ]}
               help="Optional. CAA never asks for your address. This is only what puts a mark on the member map, and you can change or clear it any time."
+            />
+
+            <Checkbox
+              label="Send me the CAA newsletter"
+              name="newsletterConsent"
+              help="Chapter news and what the association is doing, a few times a year. Unticked by default: joining CAA is not the same as asking to be written to, and you can change this any time. Every issue carries a link to leave."
             />
 
             <SubmitButton>Join CAA</SubmitButton>

@@ -1,5 +1,6 @@
 "use server";
 
+import { randomBytes } from "crypto";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { eq, and } from "drizzle-orm";
@@ -7,8 +8,12 @@ import { db } from "./db";
 import {
   users, prayerRequests, prayerPledges, eventRsvps, donations,
   chapters, events, articles, images, pages,
+  newsletterSubscribers, newsletterIssues, newsletterIssueArticles,
 } from "./schema";
 import { sanitizeRichText } from "./richtext";
+import { sendBroadcast } from "./email";
+import { renderIssueHtml } from "./newsletter-html";
+import { getIssueArticles, getActiveSubscribers } from "./queries";
 import { findEditablePage } from "../content/editable-pages";
 import { findMemberLocation } from "../content/member-locations";
 import {
@@ -77,6 +82,22 @@ export async function registerAction(_prev: FormState, form: FormData): Promise<
   });
 
   if (!result.ok) return { error: result.error };
+
+  /*
+   * Only when they asked. The checkbox is unticked by default and nothing
+   * here infers consent from the act of joining.
+   */
+  if (form.get("newsletterConsent") === "on") {
+    const email = String(form.get("email") ?? "").trim().toLowerCase();
+    await db.insert(newsletterSubscribers).values({
+      email,
+      name: String(form.get("name") ?? "").trim() || null,
+      userId: result.userId,
+      token: randomBytes(24).toString("base64url"),
+      source: "joined CAA",
+      status: "subscribed",
+    }).onConflictDoNothing();
+  }
 
   await createSession(result.userId);
   redirect("/portal");
@@ -579,3 +600,234 @@ export async function savePageAction(_prev: FormState, form: FormData): Promise<
   redirect("/admin/pages?saved=1");
 }
 
+
+/* -------------------------------------------------------------------------- */
+/* newsletter                                                                 */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Adds an address to the newsletter list.
+ *
+ * Re-subscribing someone who previously left is allowed and simply sets
+ * them back to subscribed; the alternative is telling a person they may
+ * not have what they just asked for.
+ *
+ * The same reply comes back whether or not the address was already on the
+ * list, so the form cannot be used to find out who is subscribed.
+ */
+export async function subscribeAction(_prev: FormState, form: FormData): Promise<FormState> {
+  const email = String(form.get("email") ?? "").trim().toLowerCase();
+  const name = String(form.get("name") ?? "").trim() || null;
+
+  if (!email.includes("@") || email.length < 5) {
+    return { error: "Enter a valid email address.", values: submitted(form) };
+  }
+  // Consent is the point of the checkbox; without it there is nothing to do.
+  if (form.get("consent") !== "on") {
+    return {
+      error: "Tick the box to confirm you want CAA to write to you.",
+      values: submitted(form),
+    };
+  }
+
+  const existing = await db.select({ id: newsletterSubscribers.id })
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.email, email))
+    .limit(1);
+
+  if (existing.length > 0) {
+    await db.update(newsletterSubscribers)
+      .set({ status: "subscribed", unsubscribedAt: null, name })
+      .where(eq(newsletterSubscribers.id, existing[0].id));
+  } else {
+    await db.insert(newsletterSubscribers).values({
+      email,
+      name,
+      token: randomBytes(24).toString("base64url"),
+      source: String(form.get("source") ?? "website"),
+      status: "subscribed",
+    });
+  }
+
+  return { ok: "You are on the list. Every issue carries a link to leave it." };
+}
+
+/**
+ * Removes an address, by the secret in its own unsubscribe link.
+ *
+ * No sign-in, no confirmation step: someone who wants out should get out
+ * on one click, which is what the one-click header in every issue
+ * promises.
+ */
+export async function unsubscribeByToken(token: string): Promise<boolean> {
+  if (!token || token.length < 16) return false;
+
+  const result = await db.update(newsletterSubscribers)
+    .set({ status: "unsubscribed", unsubscribedAt: new Date() })
+    .where(eq(newsletterSubscribers.token, token))
+    .returning({ id: newsletterSubscribers.id });
+
+  return result.length > 0;
+}
+
+/** A member turning the newsletter on or off from their profile. */
+export async function setNewsletterConsentAction(consent: boolean): Promise<void> {
+  const user = await requireUser();
+
+  const existing = await db.select({ id: newsletterSubscribers.id })
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.email, user.email))
+    .limit(1);
+
+  if (consent) {
+    if (existing.length > 0) {
+      await db.update(newsletterSubscribers)
+        .set({ status: "subscribed", unsubscribedAt: null, userId: user.id })
+        .where(eq(newsletterSubscribers.id, existing[0].id));
+    } else {
+      await db.insert(newsletterSubscribers).values({
+        email: user.email,
+        name: user.name,
+        userId: user.id,
+        token: randomBytes(24).toString("base64url"),
+        source: "member profile",
+        status: "subscribed",
+      });
+    }
+  } else if (existing.length > 0) {
+    await db.update(newsletterSubscribers)
+      .set({ status: "unsubscribed", unsubscribedAt: new Date() })
+      .where(eq(newsletterSubscribers.id, existing[0].id));
+  }
+
+  revalidatePath("/portal/profile");
+}
+
+/* ----------------------------- newsletter: admin ------------------------- */
+
+export async function saveIssueAction(_prev: FormState, form: FormData): Promise<FormState> {
+  await requireAdmin();
+
+  const id = Number(form.get("id") ?? 0) || null;
+  const title = String(form.get("title") ?? "").trim();
+  const slug = slugify(String(form.get("slug") ?? "") || title);
+  const status = String(form.get("status") ?? "draft") as "draft" | "published" | "sent";
+
+  if (!title) return { error: "Give the issue a title.", values: submitted(form) };
+  if (!slug) {
+    return { error: "That title does not make a usable web address. Set one by hand.", values: submitted(form) };
+  }
+
+  const clash = await db.select({ id: newsletterIssues.id }).from(newsletterIssues)
+    .where(eq(newsletterIssues.slug, slug)).limit(1);
+  if (clash.length > 0 && clash[0].id !== id) {
+    return { error: `Another issue already uses the address "${slug}".`, values: submitted(form) };
+  }
+
+  const intro = sanitizeRichText(String(form.get("intro") ?? ""));
+  // Checkbox names carry the article id; their order comes from the number
+  // beside each one.
+  const chosen: { articleId: number; sortOrder: number }[] = [];
+  for (const [key, value] of form.entries()) {
+    if (!key.startsWith("article-")) continue;
+    if (value !== "on") continue;
+    const articleId = Number(key.slice("article-".length));
+    if (!Number.isInteger(articleId)) continue;
+    const order = Number(form.get(`order-${articleId}`) ?? 0);
+    chosen.push({ articleId, sortOrder: Number.isFinite(order) ? order : 0 });
+  }
+
+  if (chosen.length === 0) {
+    return { error: "Choose at least one article for the issue.", values: submitted(form) };
+  }
+
+  let issueId = id;
+
+  if (issueId) {
+    const [existing] = await db.select({ publishedAt: newsletterIssues.publishedAt })
+      .from(newsletterIssues).where(eq(newsletterIssues.id, issueId)).limit(1);
+    await db.update(newsletterIssues).set({
+      slug, title, intro: intro === "<p></p>" ? null : intro, status,
+      publishedAt:
+        status === "draft"
+          ? existing?.publishedAt ?? null
+          : existing?.publishedAt ?? new Date(),
+    }).where(eq(newsletterIssues.id, issueId));
+  } else {
+    const [created] = await db.insert(newsletterIssues).values({
+      slug, title, intro: intro === "<p></p>" ? null : intro, status,
+      publishedAt: status === "draft" ? null : new Date(),
+    }).returning({ id: newsletterIssues.id });
+    issueId = created.id;
+  }
+
+  // Replace the contents wholesale: simpler than reconciling, and an issue
+  // is small.
+  await db.delete(newsletterIssueArticles).where(eq(newsletterIssueArticles.issueId, issueId));
+  await db.insert(newsletterIssueArticles).values(
+    chosen
+      .sort((a, b) => a.sortOrder - b.sortOrder)
+      .map((c, index) => ({ issueId: issueId!, articleId: c.articleId, sortOrder: index })),
+  );
+
+  revalidatePath("/admin/newsletter");
+  revalidatePath("/newsletter");
+  redirect("/admin/newsletter?saved=1");
+}
+
+export async function deleteIssueAction(id: number): Promise<void> {
+  await requireAdmin();
+  await db.delete(newsletterIssues).where(eq(newsletterIssues.id, id));
+  revalidatePath("/admin/newsletter");
+  revalidatePath("/newsletter");
+}
+
+/**
+ * Sends an issue to everyone on the list.
+ *
+ * Refuses to send twice. An issue that has gone out is marked sent, and
+ * the guard is here rather than only in the interface because a second
+ * copy of the same newsletter is the kind of mistake that costs
+ * subscribers.
+ */
+export async function sendIssueAction(id: number): Promise<void> {
+  await requireAdmin();
+
+  const issue = await db.select().from(newsletterIssues)
+    .where(eq(newsletterIssues.id, id)).limit(1);
+  if (issue.length === 0) return;
+  if (issue[0].sentAt) return;
+
+  const [items, recipients] = await Promise.all([
+    getIssueArticles(id),
+    getActiveSubscribers(),
+  ]);
+
+  if (items.length === 0 || recipients.length === 0) return;
+
+  const result = await sendBroadcast({
+    subject: issue[0].title,
+    recipients,
+    html: (unsubscribe) =>
+      renderIssueHtml({
+        title: issue[0].title,
+        introHtml: issue[0].intro ?? "",
+        articles: items,
+        unsubscribe,
+      }),
+  });
+
+  // A skipped send means no mail provider is configured. Nothing is marked
+  // as sent, so it can go out properly once one is.
+  if (result.skipped) return;
+
+  await db.update(newsletterIssues).set({
+    status: "sent",
+    sentAt: new Date(),
+    recipientCount: result.sent,
+    publishedAt: issue[0].publishedAt ?? new Date(),
+  }).where(eq(newsletterIssues.id, id));
+
+  revalidatePath("/admin/newsletter");
+  revalidatePath("/newsletter");
+}

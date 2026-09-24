@@ -1,9 +1,10 @@
 import "server-only";
 
-import { eq, and, desc, asc, gte, sql, count } from "drizzle-orm";
+import { eq, and, desc, asc, gte, sql, count, inArray } from "drizzle-orm";
 import { db } from "./db";
 import {
   users, chapters, events, eventRsvps, articles, resources,
+  newsletterIssues, newsletterIssueArticles, newsletterSubscribers,
   prayerRequests, prayerPledges, sponsors, products, pages,
   membershipTiers, donations, mentorshipProfiles,
 } from "./schema";
@@ -220,4 +221,86 @@ export async function adminDonationTotals() {
     n: count(),
   }).from(donations).where(eq(donations.status, "paid"));
   return row;
+}
+
+/* ------------------------------ newsletter ------------------------------ */
+
+export async function getPublishedIssues(limit = 50) {
+  return db.select().from(newsletterIssues)
+    .where(inArray(newsletterIssues.status, ["published", "sent"]))
+    .orderBy(desc(newsletterIssues.publishedAt))
+    .limit(limit);
+}
+
+export async function getIssueBySlug(slug: string) {
+  const [row] = await db.select().from(newsletterIssues)
+    .where(and(
+      eq(newsletterIssues.slug, slug),
+      inArray(newsletterIssues.status, ["published", "sent"]),
+    ))
+    .limit(1);
+  return row ?? null;
+}
+
+/** The articles in an issue, in the order the editor put them. */
+export async function getIssueArticles(issueId: number) {
+  return db.select({
+    id: articles.id,
+    slug: articles.slug,
+    title: articles.title,
+    excerpt: articles.excerpt,
+    body: articles.body,
+    imagePath: articles.imagePath,
+    imageAlt: articles.imageAlt,
+    imageCredit: articles.imageCredit,
+    photoBrief: articles.photoBrief,
+    sortOrder: newsletterIssueArticles.sortOrder,
+  })
+    .from(newsletterIssueArticles)
+    .innerJoin(articles, eq(articles.id, newsletterIssueArticles.articleId))
+    .where(eq(newsletterIssueArticles.issueId, issueId))
+    .orderBy(asc(newsletterIssueArticles.sortOrder));
+}
+
+export async function adminListIssues() {
+  return db.select().from(newsletterIssues).orderBy(desc(newsletterIssues.createdAt));
+}
+
+export async function adminGetIssue(id: number) {
+  if (!Number.isInteger(id) || id < 1) return null;
+  const [row] = await db.select().from(newsletterIssues)
+    .where(eq(newsletterIssues.id, id)).limit(1);
+  return row ?? null;
+}
+
+/** Everyone the next issue would actually reach. */
+export async function getActiveSubscribers() {
+  return db.select({
+    email: newsletterSubscribers.email,
+    token: newsletterSubscribers.token,
+  })
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.status, "subscribed"))
+    .orderBy(asc(newsletterSubscribers.email));
+}
+
+export async function adminListSubscribers() {
+  return db.select().from(newsletterSubscribers)
+    .orderBy(desc(newsletterSubscribers.createdAt));
+}
+
+export async function countActiveSubscribers() {
+  const [row] = await db.select({ n: count() })
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.status, "subscribed"));
+  return Number(row?.n ?? 0);
+}
+
+/** Whether this member has asked for the newsletter. */
+export async function isSubscribed(email: string) {
+  const [row] = await db.select({ status: newsletterSubscribers.status })
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.email, email))
+    .limit(1);
+  return row?.status === "subscribed";
 }

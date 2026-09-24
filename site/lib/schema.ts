@@ -422,6 +422,94 @@ export const pages = pgTable(
 );
 
 /* -------------------------------------------------------------------------- */
+/* newsletter                                                                 */
+/* -------------------------------------------------------------------------- */
+
+export const subscriberStatus = pgEnum("subscriber_status", [
+  "subscribed",
+  "unsubscribed",
+  "bounced",
+]);
+
+/**
+ * The newsletter list.
+ *
+ * Kept here rather than only at the sending provider, so CAA owns its list
+ * outright and changing provider never means asking for the data back.
+ *
+ * Joining the association does not put anyone on this list. Consent to be
+ * a member is not consent to be written to, and conflating the two is both
+ * discourteous and the fastest route to a spam folder.
+ */
+export const newsletterSubscribers = pgTable(
+  "newsletter_subscribers",
+  {
+    id: serial("id").primaryKey(),
+    email: text("email").notNull(),
+    name: text("name"),
+    /** Set when a member subscribes, so unsubscribing cannot orphan them. */
+    userId: integer("user_id").references(() => users.id, { onDelete: "set null" }),
+    status: subscriberStatus("status").notNull().default("subscribed"),
+    /**
+     * Secret in the unsubscribe link. Random per subscriber, so one link
+     * can never remove anybody else.
+     */
+    token: text("token").notNull(),
+    /** Where they signed up, for when someone asks why they are on the list. */
+    source: text("source"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    unsubscribedAt: timestamp("unsubscribed_at", { withTimezone: true }),
+  },
+  (t) => [
+    uniqueIndex("newsletter_subscribers_email_idx").on(t.email),
+    uniqueIndex("newsletter_subscribers_token_idx").on(t.token),
+  ],
+);
+
+export const issueStatus = pgEnum("issue_status", ["draft", "published", "sent"]);
+
+/**
+ * A newsletter issue, assembled from articles.
+ *
+ * An issue never copies an article's text. It references the articles, so
+ * a correction made to an article after the issue is published shows in
+ * the archive too. The email that went out is of course fixed at the
+ * moment of sending, which is why sentAt is recorded separately.
+ */
+export const newsletterIssues = pgTable(
+  "newsletter_issues",
+  {
+    id: serial("id").primaryKey(),
+    slug: text("slug").notNull(),
+    title: text("title").notNull(),
+    /** Rich text, written in the admin editor. */
+    intro: text("intro"),
+    status: issueStatus("status").notNull().default("draft"),
+    publishedAt: timestamp("published_at", { withTimezone: true }),
+    sentAt: timestamp("sent_at", { withTimezone: true }),
+    /** How many addresses it actually reached. */
+    recipientCount: integer("recipient_count"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [uniqueIndex("newsletter_issues_slug_idx").on(t.slug)],
+);
+
+export const newsletterIssueArticles = pgTable(
+  "newsletter_issue_articles",
+  {
+    id: serial("id").primaryKey(),
+    issueId: integer("issue_id")
+      .notNull()
+      .references(() => newsletterIssues.id, { onDelete: "cascade" }),
+    articleId: integer("article_id")
+      .notNull()
+      .references(() => articles.id, { onDelete: "cascade" }),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => [uniqueIndex("newsletter_issue_article_idx").on(t.issueId, t.articleId)],
+);
+
+/* -------------------------------------------------------------------------- */
 /* giving and store                                                           */
 /* -------------------------------------------------------------------------- */
 

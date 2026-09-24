@@ -103,6 +103,37 @@ a member in the Gulf of Mexico. It also catches duplicate slugs.
 Members who pick nothing, or pick "somewhere else", are counted in the
 note under the map rather than dropped.
 
+## Newsletter
+
+Issues are assembled from published articles rather than written twice.
+An issue references its articles, so a correction to an article shows in
+the archive too; the email that went out is of course fixed at the moment
+of sending.
+
+Publishing an issue puts it in the public archive at `/newsletter`.
+Sending it to the list is a second, deliberate step, and an issue that has
+been sent cannot be sent again.
+
+Sending goes through [Resend](https://resend.com). Set `RESEND_API_KEY`,
+`NEWSLETTER_FROM` (an address on a domain verified in Resend) and
+`SITE_URL` (used for links and images, which cannot be relative in email).
+Without them the site runs normally: people subscribe, issues publish, and
+only sending waits. The admin says so rather than failing quietly.
+
+The provider lives behind `sendBroadcast` in `lib/email.ts`. Changing
+provider means rewriting that one file.
+
+### Consent
+
+Joining CAA does not subscribe anyone. The checkbox at registration is
+unticked, the signup form refuses without it, and the list is kept in
+`newsletter_subscribers` here rather than only at the provider, so CAA
+owns it outright.
+
+Every issue carries a per-subscriber unsubscribe link and the
+`List-Unsubscribe` headers that let a mail client offer its own button.
+Leaving takes one click, with no sign-in and no confirmation step.
+
 ## Access model
 
 Three roles: `member`, `chapter_leader`, `admin`.

@@ -1,0 +1,85 @@
+.count {
+  margin-left: 0.6rem;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
+
+.list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.list li:last-child { border-bottom: 0; }
+
+/* Chosen rows carry a gold edge, so the shape of the issue is readable at
+   a glance rather than by reading every checkbox. */
+.on {
+  background: var(--warm);
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.row input[type="checkbox"] {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--navy);
+  flex-shrink: 0;
+}
+
+.name {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.date {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--slate);
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.order {
+  font: inherit;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  width: 4rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.order:disabled {
+  opacity: 0.4;
+}
+
+.order:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 1px;
+}

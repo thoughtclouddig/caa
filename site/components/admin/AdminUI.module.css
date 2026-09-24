@@ -232,3 +232,43 @@
   outline: 3px solid var(--gold);
   outline-offset: 1px;
 }
+
+/* --- sending ------------------------------------------------------------- */
+
+.send,
+.sendSolid {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.send {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--navy);
+}
+
+.send:hover {
+  border-color: var(--navy);
+}
+
+.sendSolid {
+  background: var(--navy);
+  border: 1px solid var(--navy);
+  color: var(--white);
+}
+
+.sendSolid[disabled] {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.send:focus-visible,
+.sendSolid:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 1px;
+}
