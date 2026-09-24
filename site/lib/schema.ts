@@ -135,8 +135,20 @@ export const chapters = pgTable(
     /** Public pages show city only; precise addresses stay in the portal. */
     description: text("description"),
     meetingSchedule: text("meeting_schedule"),
+    /**
+     * Each chapter takes a patron, as on catholicaviation.org: Dallas is
+     * the Cupertino Chapter, Indianapolis the Loreto Chapter, Kansas City
+     * the St. Padre Pio Chapter.
+     */
+    patronName: text("patron_name"),
+    /** The chapter's own line, e.g. "Flight and faith in the Lone Star state." */
+    tagline: text("tagline"),
+    /** What the chapter is doing. Rich text, written in the admin editor. */
+    body: text("body"),
     status: chapterStatus("status").notNull().default("forming"),
     photoBrief: text("photo_brief"),
+    imagePath: text("image_path"),
+    imageAlt: text("image_alt"),
     /**
      * Where the pin sits on the chapter map. City centre is precise enough
      * and is all that goes on a public page; a chapter's actual meeting
@@ -572,6 +584,8 @@ export const sponsors = pgTable("sponsors", {
   tier: sponsorTier("tier").notNull().default("friend"),
   url: text("url"),
   blurb: text("blurb"),
+  /** What a CAA member actually gets, where there is something. */
+  memberOffer: text("member_offer"),
   active: boolean("active").notNull().default(true),
   sortOrder: integer("sort_order").notNull().default(0),
 });

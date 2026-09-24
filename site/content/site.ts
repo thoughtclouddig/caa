@@ -62,6 +62,7 @@ export const footerNav: { heading: string; items: NavItem[] }[] = [
       { label: "Articles", href: "/articles" },
       { label: "Events", href: "/events" },
       { label: "Newsletter", href: "/newsletter" },
+      { label: "Photo Gallery", href: "/gallery" },
     ],
   },
   {
@@ -69,8 +70,9 @@ export const footerNav: { heading: string; items: NavItem[] }[] = [
     items: [
       { label: "About CAA", href: "/about" },
       { label: "Where We Stand", href: "/about#where-we-stand" },
+      { label: "Letter from the Chairman", href: "/about/letter-from-the-chairman" },
       { label: "Our Patron Saints", href: "/about/patron-saints" },
-      { label: "Sponsors & Partners", href: "/sponsors" },
+      { label: "Corporate Partners", href: "/sponsors" },
       { label: "Contact", href: "/contact" },
     ],
   },

@@ -1,0 +1,74 @@
+.group + .group {
+  margin-top: clamp(2.5rem, 1.8rem + 2.4vw, 4rem);
+}
+
+.groupHeading {
+  font-size: var(--step-h3);
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.groupHeading::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  background: var(--gold);
+  margin-top: 0.7rem;
+  margin-bottom: -0.85rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-top: 0;
+}
+
+.card {
+  position: relative;
+  display: block;
+  background: var(--white);
+  padding: 1.5rem 1.5rem 3.2rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card:hover { background: var(--warm); }
+
+.card:hover .cardTitle {
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.cardTitle {
+  font-size: var(--step-h3);
+  line-height: 1.25;
+  color: var(--navy);
+}
+
+.cardBody {
+  margin-top: 0.7rem;
+  color: var(--slate);
+  max-width: 42ch;
+}
+
+.go {
+  position: absolute;
+  left: 1.5rem;
+  bottom: 1.4rem;
+  font-size: 1.15rem;
+  color: var(--navy);
+}
+
+@media (min-width: 46rem) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 68rem) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}

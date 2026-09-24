@@ -77,19 +77,54 @@ async function main() {
   ]).returning();
 
   // The three chapters CAA actually has today, as listed on catholicaviation.org.
+  // The three chapters CAA actually has, with the patron each has taken
+  // and what each is doing, from catholicaviation.org.
   const ch = await db.insert(chapters).values([
-    { slug: "caa-dallas", name: "CAA Dallas", city: "Dallas", region: "Texas", status: "active",
+    {
+      slug: "caa-dallas", name: "CAA Dallas",
+      patronName: "Cupertino Chapter",
+      tagline: "Flight and faith in the Lone Star state.",
+      city: "Dallas", region: "Texas", status: "active",
       description: "Serving crews, maintenance staff and general aviation across North Texas.",
+      body:
+        "<p>The Dallas chapter is both a CAA affiliate and a Cupertino Flying Club.</p>" +
+        "<p>God has allowed us to use our aviation skills this year, as in past years, to deliver priests for Sacramental support. Those involved have encountered Christ in ways too profound to express in words.</p>" +
+        "<p>We maintain a low profile, and do not post these experiences to social media. If you would like to join us and get involved, we would love to hear from you. In our chapter, we prefer people bring their skills and time to serve Christ in aviation in lieu of donations.</p>" +
+        "<p>What may Christ be calling you to do?</p>",
       meetingSchedule: "Monthly", latitude: 32.7767, longitude: -96.797,
-      photoBrief: "CAA Dallas chapter gathering, or a member at work airside." },
-    { slug: "caa-indianapolis", name: "CAA Indianapolis", city: "Indianapolis", region: "Indiana", status: "active",
-      description: "The chapter nearest CAA headquarters. Currently building a flight simulator from a glider fuselage section.",
+      photoBrief: "CAA Dallas members, or a priest being flown for Sacramental support.",
+    },
+    {
+      slug: "caa-indianapolis", name: "CAA Indianapolis",
+      patronName: "Loreto Chapter",
+      tagline: "Faith, flying and fellowship at the Crossroads of America.",
+      city: "Indianapolis", region: "Indiana", status: "active",
+      description: "The chapter nearest CAA headquarters, and the one building the flight simulator.",
+      body:
+        "<h2>What is happening</h2>" +
+        "<ul>" +
+        "<li>The flight simulator is nearly finished.</li>" +
+        "<li>The dressing hook design for Jessica Cox's Rightfooted Foundation is ready for production and distribution. A chapter member's manufacturing background was applied to help improve the design and the manufacturing method.</li>" +
+        "<li>We provided a tour for the local high school aviation class at Vincennes University's Aviation Tech Center, a guest speaker from the National Weather Service, and arranged a spring semester internship for two students at an area FBO.</li>" +
+        "</ul>",
       meetingSchedule: "Monthly", latitude: 39.7684, longitude: -86.1581,
-      photoBrief: "CAA Indianapolis members at work on the simulator build." },
-    { slug: "caa-kansas-city", name: "CAA Kansas City", city: "Kansas City", region: "Missouri", status: "active",
+      imagePath: "/gallery/flight-simulator-build.jpg",
+      imageAlt: "CAA Indianapolis members at work on the flight simulator in a workshop.",
+    },
+    {
+      slug: "caa-kansas-city", name: "CAA Kansas City",
+      patronName: "St. Padre Pio Chapter",
+      tagline: "City of fountains, flight and faith.",
+      city: "Kansas City", region: "Missouri", status: "active",
       description: "Catholics across the Kansas City aviation community.",
+      body:
+        "<p>The Kansas City chapter is both a CAA affiliate and a Cupertino Flying Club.</p>" +
+        "<p>We meet at Lumen Christi Monastery, the Community of the Lamb, for six o'clock Mass followed by fellowship at Callsign Brewing.</p>" +
+        "<h2>The Cupertino Aviation Club</h2>" +
+        "<p>Our affiliated club at St. Michael the Archangel High School has had a good year. In March students toured Millennium International Avionics and learned about the repair and overhaul of avionics systems. In April they visited EAA Chapter 91 at Lee's Summit Airport. In May they went to Summit Flight Academy and Midwest Avionics, and in June to the control tower at Johnson County Executive.</p>",
       meetingSchedule: "Monthly", latitude: 39.0997, longitude: -94.5786,
-      photoBrief: "CAA Kansas City chapter members gathered." },
+      photoBrief: "CAA Kansas City members, or the Cupertino Aviation Club on a field trip.",
+    },
   ]).returning();
 
   const memberTier = tiers.find((t) => t.slug === "member")!;
@@ -235,13 +270,19 @@ async function main() {
 
   await db.insert(resources).values([
     { slug: "catholic-foundations", title: "Catholic Foundations", category: "Formation",
-      summary: "The Mass, the Divine Liturgy, and how to pray more deliberately.",
-      body: "", sortOrder: 1 },
+      summary: "The Mass, the Sacraments, and how to pray more deliberately.", sortOrder: 1 },
+    { slug: "prayer-page", title: "CAA Prayer Page", category: "Formation",
+      summary: "Prayers for those who fly and those who keep them flying.", sortOrder: 2 },
+    { slug: "apologetics", title: "Ask the Apologist", category: "Formation",
+      summary: "Answers to the questions members actually get asked in a crew room.", sortOrder: 3 },
+    { slug: "become-a-catholic", title: "Become a Catholic", category: "Formation",
+      summary: "For anyone reading who is not Catholic, or who has been away a while.", sortOrder: 4 },
     { slug: "airport-chapels", title: "Airport Chapels Directory", category: "Travel",
-      summary: "CAA's own directory of airport chapels. How much of the world it covers is still to be agreed.",
-      body: "", sortOrder: 2 },
-    { slug: "prayer", title: "Prayer", category: "Formation",
-      summary: "Prayers for those who fly and those who keep them flying.", body: "", sortOrder: 3 },
+      summary: "CAA's own directory. Most large airports have a chapel and almost nobody knows where.", sortOrder: 5 },
+    { slug: "caa-youth", title: "CAA Youth", category: "Youth",
+      summary: "Internships, tours, guest speakers and the Cupertino flying clubs.", sortOrder: 6 },
+    { slug: "caa-media", title: "CAA Media", category: "Media",
+      summary: "Talks, recordings and where CAA has appeared.", sortOrder: 7 },
   ]);
 
   await db.insert(prayerRequests).values([
@@ -249,9 +290,34 @@ async function main() {
     { displayName: "Anne", intention: "For my father, who is unwell.", isPublic: true, status: "approved" },
   ]);
 
+  /*
+   * CAA's real corporate partners. Their framing, from the existing site:
+   * partnership is about organisations that demonstrate fidelity to
+   * Catholic teaching and offer members an alternative to companies
+   * funding abortion. The discount is the practical part, not the point.
+   */
   await db.insert(sponsors).values([
-    { name: "Partner name to be confirmed", tier: "partner",
-      blurb: "Aviation and Catholic businesses that support the mission.", sortOrder: 1 },
+    { name: "Avemco Insurance Company", tier: "partner", sortOrder: 1,
+      blurb: "The only direct aircraft insurance carrier. Avemco cuts out the middleman, which lets them offer straightforward, reliable cover at competitive rates.",
+      memberOffer: "5% discount for CAA members" },
+    { name: "Charity Mobile", tier: "partner", sortOrder: 2,
+      blurb: "The pro-life phone company.",
+      memberOffer: "A percentage of your monthly charge rebated to CAA" },
+    { name: "King Schools", tier: "partner", sortOrder: 3,
+      blurb: "The King Study Method is not about memorising answers to pass a test. You come away understanding the concepts and the terminology, which makes you a better and a safer pilot.",
+      memberOffer: "At least 20% off all King Schools courses" },
+    { name: "EveryLife", tier: "partner", sortOrder: 4,
+      blurb: "Infant diapers, pants and bath and body products. Unlike the major producers, who donate to Planned Parenthood, EveryLife is entirely pro-life.",
+      memberOffer: "25% off and free shipping" },
+    { name: "Purdue University", tier: "partner", sortOrder: 5,
+      blurb: "Home to 27 US astronauts, more than any other university. Degree programmes in Aviation Management and Professional Pilot among 150 programmes.",
+      memberOffer: "20% or more off 150 Purdue programmes" },
+    { name: "Angel Flight NE", tier: "partner", sortOrder: 6,
+      blurb: "Free medical air transportation. For nearly thirty years their volunteer pilots, ground crew and airline partners have flown patients to specialist care across the country at no cost to the patient. CAA encourages members to give time, talent and aircraft.",
+      memberOffer: null },
+    { name: "Presence of God Encounters", tier: "friend", sortOrder: 7,
+      blurb: "After a near-fatal car accident in 2017, FedEx pilot and CAA board member Ed Jozsa tells his own account of an encounter with God, and the journey of faith that followed.",
+      memberOffer: "Both books free to paid members" },
   ]);
 
   await db.insert(products).values([
@@ -259,10 +325,33 @@ async function main() {
       priceCents: 1200, photoBrief: "Product photograph of the pin on a neutral ground." },
   ]);
 
+  /*
+   * Editable page copy. Every slug here is registered in
+   * content/editable-pages.ts, so staff can find and change each one.
+   * The Chairman's letter is carried over word for word.
+   */
   await db.insert(pages).values([
     { slug: "about", title: "About CAA",
-      body: "The Catholic Aviation Association is a nonprofit corporation registered in the state of Indiana and recognized under section 501(c)(3). It was founded by Thomas J. \"Tom\" Beckenbauer to unite the People of God working in every part of aviation. Chapters are being established across the country, and in time internationally. The association holds to fidelity to the Magisterium." },
-    { slug: "contact", title: "Contact", body: "A simple contact form and information." },
+      body: "<p>The Catholic Aviation Association is a nonprofit corporation registered in the state of Indiana and recognized under section 501(c)(3). It was founded by Thomas J. \"Tom\" Beckenbauer to unite the People of God working in every part of aviation. Chapters are being established across the country, and in time internationally. The association holds to fidelity to the Magisterium.</p>" },
+    { slug: "contact", title: "Contact",
+      body: "<p>Write to us and someone will come back to you. We are a volunteer association, so please allow a few days for a reply.</p><p>Tell us where you are and what part of aviation you work in, and we will point you to the nearest chapter.</p>" },
+    { slug: "letter-from-the-chairman", title: "Letter from the Chairman",
+      body:
+        "<p>Dear Brothers and Sisters in Christ,</p>" +
+        "<p>God has placed a burden on my heart to bring the good news of JESUS CHRIST to the world of aviation! Our world is on a cultural decline, and this has affected our economy, our youth and the Church. There is a decay that is affecting the roots of our society, including the aviation industry. It is my desire to unite the People of God involved in all aspects of aviation so that we may support each other, help stop this decay, and rebuild the moral foundation of our nation.</p>" +
+        "<p>To this end, I started the Catholic Aviation Association (CAA), a nonprofit corporation registered in the state of Indiana, to help transform hearts and minds within the world of aviation through FAITH, FLYING &amp; FELLOWSHIP!</p>" +
+        "<p>An enthusiastic Board is actively planning projects and activities that will edify all CAA members and be a positive witness to those around us. Chapters are being establishing around the country (and eventually internationally) to bring the People of God together.</p>" +
+        "<p>To continue this mission we need your prayers and financial support.</p>" +
+        "<p>Become a member of our association and become a part of a growing organization that will positively impact our society for the better.</p>" +
+        "<p>May God bless you now and forevermore,</p>" +
+        "<p><strong>Thomas J. \"Tom\" Beckenbauer</strong><br />Chairman of the Board, Catholic Aviation Association</p>" },
+    { slug: "come-follow-me", title: "Come Follow Me",
+      body:
+        "<p>Few things compare to the impulse some feel with their first flight that leads to a flying vocation. Or a fine weld on chromalloy steel on an airframe. Or to watch the first moon walk, or an airshow. Or a SpaceX first stage rocket being recaptured, or a space walk. All evoke emotions of awe and a kind of satisfaction for being present at a special time in life and sometimes, history.</p>" +
+        "<p>And to change your life by responding to grace is also deeply satisfying. To help a friend in distress, to forgive and let go of chronic anger, or to see a loved one come back to their Catholic faith. To act in concert with fellow aviation people on a mission of mercy, to counsel young people, or to pray together, to worship together \"in spirit and in truth\" (John 4:24).</p>" +
+        "<p>The possibilities are literally limitless.</p>" +
+        "<p>We combine some of life's deepest emotional events and missions into a single organization, and then we share them with one another.</p>" +
+        "<p>We want you to be a part of this, and more.</p>" },
   ]);
 
   console.log(`seeded: ${ch.length} chapters, ${tiers.length} tiers, admin=${admin.email}`);

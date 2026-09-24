@@ -1,0 +1,115 @@
+.opening {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
+  align-items: start;
+}
+
+.heading {
+  font-size: var(--step-h2);
+  padding-bottom: 0.7rem;
+  margin-bottom: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.heading::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 3px;
+  background: var(--gold);
+  margin-top: 0.7rem;
+  margin-bottom: -0.85rem;
+}
+
+.headingSpaced { margin-top: 2.5rem; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.figure { margin: 0; }
+
+.frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--warm);
+}
+
+.image { object-fit: cover; }
+
+.caption {
+  margin-top: 0.6rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--slate);
+}
+
+/* --- board --------------------------------------------------------------- */
+
+.board {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.member {
+  background: var(--white);
+  padding: 1.4rem;
+}
+
+.memberName {
+  display: block;
+  font-family: var(--serif);
+  font-size: var(--step-h3);
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+.memberRole {
+  display: block;
+  margin-top: 0.5rem;
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+/* --- positions ----------------------------------------------------------- */
+
+/* Two columns on a wide screen: these are long and a single column of
+   this length reads as a wall. */
+.positions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
+  margin-top: 2rem;
+}
+
+.positionHeading {
+  font-size: var(--step-h3);
+  padding-bottom: 0.6rem;
+  margin-bottom: 1rem;
+  border-bottom: 3px solid var(--gold);
+}
+
+@media (min-width: 58rem) {
+  .opening { grid-template-columns: 1.15fr 0.85fr; }
+  .board { grid-template-columns: repeat(4, 1fr); }
+  .positions { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 40rem) and (max-width: 57.99rem) {
+  .board { grid-template-columns: repeat(2, 1fr); }
+}

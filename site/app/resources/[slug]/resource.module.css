@@ -1,0 +1,42 @@
+.moreHeading {
+  font-size: var(--step-h3);
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.more {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.more li { border-bottom: 1px solid var(--line); }
+
+.moreLink {
+  display: block;
+  padding: 1.1rem 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.moreLink:hover .moreName {
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.moreName {
+  display: block;
+  font-family: var(--serif);
+  font-size: var(--step-h3);
+  color: var(--navy);
+}
+
+.moreSummary {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  color: var(--slate);
+}
