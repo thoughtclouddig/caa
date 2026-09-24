@@ -323,3 +323,44 @@ export async function adminGetResource(id: number) {
   const [row] = await db.select().from(resources).where(eq(resources.id, id)).limit(1);
   return row ?? null;
 }
+
+/* ---------------------------- admin: commerce ---------------------------- */
+
+export async function adminListProducts() {
+  return db.select().from(products).orderBy(asc(products.sortOrder), asc(products.name));
+}
+
+export async function adminGetProduct(id: number) {
+  if (!Number.isInteger(id) || id < 1) return null;
+  const [row] = await db.select().from(products).where(eq(products.id, id)).limit(1);
+  return row ?? null;
+}
+
+export async function adminListPartners() {
+  return db.select().from(sponsors).orderBy(asc(sponsors.sortOrder), asc(sponsors.name));
+}
+
+export async function adminGetPartner(id: number) {
+  if (!Number.isInteger(id) || id < 1) return null;
+  const [row] = await db.select().from(sponsors).where(eq(sponsors.id, id)).limit(1);
+  return row ?? null;
+}
+
+/** Everything recorded through the giving form. Nothing here was charged. */
+export async function adminListDonations() {
+  return db.select({
+    id: donations.id,
+    donorName: donations.donorName,
+    donorEmail: donations.donorEmail,
+    amountCents: donations.amountCents,
+    kind: donations.kind,
+    status: donations.status,
+    processorRef: donations.processorRef,
+    note: donations.note,
+    createdAt: donations.createdAt,
+    userName: users.name,
+  })
+    .from(donations)
+    .leftJoin(users, eq(donations.userId, users.id))
+    .orderBy(desc(donations.createdAt));
+}

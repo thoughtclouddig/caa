@@ -1,0 +1,51 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  margin-top: 2rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Square, because merchandise photographs are square far more often than
+   not and a mixed catalogue should still line up. */
+.frame {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--warm);
+}
+
+.image { object-fit: cover; }
+
+.name {
+  margin-top: 1rem;
+  font-size: var(--step-h3);
+  line-height: 1.25;
+}
+
+.blurb {
+  margin-top: 0.5rem;
+  color: var(--slate);
+  font-size: 0.95rem;
+}
+
+.price {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+@media (min-width: 42rem) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 62rem) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}

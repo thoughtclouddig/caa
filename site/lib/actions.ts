@@ -7,7 +7,7 @@ import { eq, and } from "drizzle-orm";
 import { db } from "./db";
 import {
   users, prayerRequests, prayerPledges, eventRsvps, donations,
-  chapters, events, articles, images, pages, resources,
+  chapters, events, articles, images, pages, resources, products, sponsors,
   newsletterSubscribers, newsletterIssues, newsletterIssueArticles,
 } from "./schema";
 import { sanitizeRichText } from "./richtext";
@@ -879,4 +879,92 @@ export async function deleteResourceAction(id: number): Promise<void> {
   await db.delete(resources).where(eq(resources.id, id));
   revalidatePath("/admin/resources");
   revalidatePath("/resources");
+}
+
+/* ------------------------- admin: products & partners -------------------- */
+
+export async function saveProductAction(_prev: FormState, form: FormData): Promise<FormState> {
+  await requireAdmin();
+
+  const id = Number(form.get("id") ?? 0) || null;
+  const name = String(form.get("name") ?? "").trim();
+  const slug = slugify(String(form.get("slug") ?? "") || name);
+  const dollars = Number(form.get("price") ?? NaN);
+
+  if (!name) return { error: "Give the item a name.", values: submitted(form) };
+  if (!slug) return { error: "That name does not make a usable web address.", values: submitted(form) };
+  if (!Number.isFinite(dollars) || dollars < 0) {
+    return { error: "Give a price, in dollars.", values: submitted(form) };
+  }
+
+  const clash = await db.select({ id: products.id }).from(products)
+    .where(eq(products.slug, slug)).limit(1);
+  if (clash.length > 0 && clash[0].id !== id) {
+    return { error: `Another item already uses the address "${slug}".`, values: submitted(form) };
+  }
+
+  const values = {
+    slug,
+    name,
+    description: String(form.get("description") ?? "").trim() || null,
+    // Money is stored in integer cents, never a float.
+    priceCents: Math.round(dollars * 100),
+    imagePath: String(form.get("imagePath") ?? "").trim() || null,
+    imageAlt: String(form.get("imageAlt") ?? "").trim() || null,
+    photoBrief: String(form.get("photoBrief") ?? "").trim() || null,
+    printfulProductId: String(form.get("printfulProductId") ?? "").trim() || null,
+    sortOrder: Number(form.get("sortOrder") ?? 0) || 0,
+    active: form.get("active") === "on",
+  };
+
+  if (id) await db.update(products).set(values).where(eq(products.id, id));
+  else await db.insert(products).values(values);
+
+  revalidatePath("/admin/store");
+  revalidatePath("/participate/store");
+  redirect("/admin/store?saved=1");
+}
+
+export async function deleteProductAction(id: number): Promise<void> {
+  await requireAdmin();
+  await db.delete(products).where(eq(products.id, id));
+  revalidatePath("/admin/store");
+  revalidatePath("/participate/store");
+}
+
+export async function savePartnerAction(_prev: FormState, form: FormData): Promise<FormState> {
+  await requireAdmin();
+
+  const id = Number(form.get("id") ?? 0) || null;
+  const name = String(form.get("name") ?? "").trim();
+  if (!name) return { error: "Give the partner a name.", values: submitted(form) };
+
+  const url = String(form.get("url") ?? "").trim();
+  if (url && !/^https?:\/\//i.test(url)) {
+    return { error: "A web address needs to start with http:// or https://", values: submitted(form) };
+  }
+
+  const values = {
+    name,
+    url: url || null,
+    blurb: String(form.get("blurb") ?? "").trim() || null,
+    memberOffer: String(form.get("memberOffer") ?? "").trim() || null,
+    tier: String(form.get("tier") ?? "friend") as "friend" | "partner" | "supporter",
+    sortOrder: Number(form.get("sortOrder") ?? 0) || 0,
+    active: form.get("active") === "on",
+  };
+
+  if (id) await db.update(sponsors).set(values).where(eq(sponsors.id, id));
+  else await db.insert(sponsors).values(values);
+
+  revalidatePath("/admin/partners");
+  revalidatePath("/sponsors");
+  redirect("/admin/partners?saved=1");
+}
+
+export async function deletePartnerAction(id: number): Promise<void> {
+  await requireAdmin();
+  await db.delete(sponsors).where(eq(sponsors.id, id));
+  revalidatePath("/admin/partners");
+  revalidatePath("/sponsors");
 }
