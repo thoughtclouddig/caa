@@ -152,21 +152,18 @@
   text-decoration: none;
 }
 
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 3px;
-  background: transparent;
-  transition: background 160ms ease;
-}
-
 .card:hover {
   background: var(--warm);
 }
 
-.card:hover::before {
-  background: var(--gold);
+/* Hover marks the title, the same gold underline articles and chapters
+   already use. The site has one hover idiom; a card should not invent a
+   second one. */
+.card:hover .cardTitle {
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
 .card:focus-visible {
@@ -213,7 +210,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card::before, .cardGo { transition: none; }
+  .cardGo { transition: none; }
   .card:hover .cardGo { transform: none; }
 }
 
