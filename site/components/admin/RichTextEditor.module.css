@@ -1,0 +1,184 @@
+.wrap {
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--white);
+}
+
+/* --- toolbar ------------------------------------------------------------- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--warm);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* Grouped by what they do, separated by a hairline rather than by space,
+   so the row stays compact when it wraps on a narrow screen. */
+.group {
+  display: flex;
+  gap: 0.25rem;
+  padding-right: 0.45rem;
+  margin-right: 0.15rem;
+  border-right: 1px solid var(--line);
+}
+
+.group:last-of-type {
+  border-right: 0;
+}
+
+.btn {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  line-height: 1;
+  padding: 0.45rem 0.6rem;
+  min-width: 2rem;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--white);
+  border-color: var(--line);
+}
+
+/* Navy fill for on, not just a tint: whether a style is active has to be
+   readable at a glance and without relying on colour alone, so the
+   contrast is heavy. */
+.btnOn {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--white);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 1px;
+}
+
+/* --- link entry ---------------------------------------------------------- */
+
+.linkRow {
+  display: flex;
+  gap: 0.4rem;
+  flex-basis: 100%;
+  margin-top: 0.4rem;
+}
+
+.linkInput {
+  font: inherit;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--white);
+}
+
+.linkInput:focus-visible,
+.linkApply:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.linkApply {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--navy);
+  border-radius: 3px;
+  background: var(--navy);
+  color: var(--white);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* --- writing surface ----------------------------------------------------- */
+
+/* Set in the face and measure the article will be read in, so what staff
+   see while writing is close to what a visitor gets. */
+.surface {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ink);
+  padding: 1.25rem;
+  min-height: 22rem;
+  outline: none;
+}
+
+.surface:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: -3px;
+}
+
+.surface p {
+  margin: 0 0 1.05rem;
+}
+
+.surface p:last-child {
+  margin-bottom: 0;
+}
+
+.surface h2 {
+  font-size: 1.4rem;
+  line-height: 1.25;
+  margin: 1.8rem 0 0.7rem;
+}
+
+.surface h3 {
+  font-size: 1.15rem;
+  line-height: 1.3;
+  margin: 1.5rem 0 0.6rem;
+}
+
+.surface h2:first-child,
+.surface h3:first-child {
+  margin-top: 0;
+}
+
+.surface ul,
+.surface ol {
+  margin: 0 0 1.05rem;
+  padding-left: 1.4rem;
+}
+
+.surface li {
+  margin-bottom: 0.35rem;
+}
+
+.surface blockquote {
+  margin: 0 0 1.05rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--gold);
+  color: var(--slate);
+}
+
+.surface a {
+  color: var(--navy);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 3px;
+}
+
+/* Tiptap marks the empty document; without this the field looks broken
+   rather than empty. */
+.surface p.is-editor-empty:first-child::before {
+  content: "Write here.";
+  color: var(--slate);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

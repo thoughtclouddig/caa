@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import Link from "next/link";
 import { saveArticleAction, type FormState } from "@/lib/actions";
 import ImagePicker from "./ImagePicker";
+import RichTextEditor from "./RichTextEditor";
 import SubmitButton from "@/components/SubmitButton";
 import styles from "./Form.module.css";
 
@@ -28,7 +29,14 @@ type Article = {
  * author asks for it, because for a new article it is noise and for a
  * published one it is something to change carefully.
  */
-export default function ArticleForm({ article }: { article?: Article }) {
+export default function ArticleForm({
+  article,
+  bodyHtml = "",
+}: {
+  article?: Article;
+  /** The stored body as HTML, converted server-side if it predates the editor. */
+  bodyHtml?: string;
+}) {
   const [state, action] = useActionState<FormState, FormData>(saveArticleAction, {});
   const [showSlug, setShowSlug] = useState(Boolean(article));
 
@@ -91,17 +99,12 @@ export default function ArticleForm({ article }: { article?: Article }) {
             placeholder="One or two sentences. Shown under the headline and on the articles index."
           />
 
-          <label className={styles.label} htmlFor="body">Article</label>
-          <textarea
-            id="body"
+          <p className={styles.label}>Article</p>
+          <RichTextEditor
             name="body"
-            className={styles.body}
-            rows={18}
-            defaultValue={v?.body ?? article?.body}
-            placeholder={"Write the article here.\n\nLeave a blank line between paragraphs."}
-            required
+            initialHtml={v?.body ?? bodyHtml}
+            ariaLabel="Article body"
           />
-          <p className={styles.help}>Leave a blank line between paragraphs.</p>
         </div>
 
         <aside className={styles.side}>

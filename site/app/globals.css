@@ -329,3 +329,47 @@ button:focus-visible {
   border-color: var(--navy);
   background: var(--warm);
 }
+
+/* --- staff-written rich text ---------------------------------------------- */
+
+/* Applied wherever page copy written in the admin editor is rendered. The
+   editor's own surface is styled to match, so staff see roughly what a
+   visitor will. */
+.rich h2 {
+  font-size: var(--step-h3);
+  margin: 2rem 0 0.7rem;
+}
+
+.rich h3 {
+  font-size: 1.1rem;
+  margin: 1.6rem 0 0.6rem;
+}
+
+.rich p + p {
+  margin-top: 1rem;
+}
+
+.rich ul,
+.rich ol {
+  margin: 0 0 1.1rem;
+  padding-left: 1.5rem;
+}
+
+.rich li {
+  margin-bottom: 0.4rem;
+}
+
+.rich blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1.2rem;
+  border-left: 3px solid var(--gold);
+  color: var(--slate);
+}
+
+.rich a {
+  color: var(--navy);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}

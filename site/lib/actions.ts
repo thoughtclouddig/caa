@@ -6,8 +6,10 @@ import { eq, and } from "drizzle-orm";
 import { db } from "./db";
 import {
   users, prayerRequests, prayerPledges, eventRsvps, donations,
-  chapters, events, articles, images,
+  chapters, events, articles, images, pages,
 } from "./schema";
+import { sanitizeRichText } from "./richtext";
+import { findEditablePage } from "../content/editable-pages";
 import {
   authenticate, createSession, destroySession, registerUser,
   currentUser, requireUser, requireAdmin,
@@ -460,12 +462,17 @@ export async function saveArticleAction(_prev: FormState, form: FormData): Promi
 
   const id = Number(form.get("id") ?? 0) || null;
   const title = String(form.get("title") ?? "").trim();
-  const body = String(form.get("body") ?? "").trim();
+  // Whatever the editor produced is cleaned to the allowlist before it is
+  // stored, so a paste from Word cannot bring fonts and tables with it.
+  const body = sanitizeRichText(String(form.get("body") ?? ""));
   const slug = slugify(String(form.get("slug") ?? "") || title);
   const status = String(form.get("status") ?? "draft") as "draft" | "published" | "archived";
 
   if (!title) return { error: "Give the article a title.", values: submitted(form) };
-  if (!body) return { error: "An article needs something in the body.", values: submitted(form) };
+  // An empty editor still emits "<p></p>".
+  if (!body || body === "<p></p>") {
+    return { error: "An article needs something in the body.", values: submitted(form) };
+  }
   if (!slug) return { error: "That title does not make a usable web address. Set one by hand.", values: submitted(form) };
 
   const clash = await db.select({ id: articles.id }).from(articles)
@@ -516,4 +523,41 @@ export async function deleteArticleAction(id: number): Promise<void> {
   revalidatePath("/admin/articles");
   revalidatePath("/articles");
   revalidatePath("/");
+}
+
+/* -------------------------------------------------------------------------- */
+/* admin: page copy                                                           */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Saves one block of editable page copy.
+ *
+ * The slug must be one the site actually reads, so a typo cannot create a
+ * row that renders nowhere and leaves someone wondering why their edit did
+ * not appear.
+ */
+export async function savePageAction(_prev: FormState, form: FormData): Promise<FormState> {
+  await requireAdmin();
+
+  const slug = String(form.get("slug") ?? "").trim();
+  const known = findEditablePage(slug);
+  if (!known) return { error: "That is not a page this site edits." };
+
+  const body = sanitizeRichText(String(form.get("body") ?? ""));
+  if (!body || body === "<p></p>") {
+    return { error: "There is nothing to save.", values: submitted(form) };
+  }
+
+  const existing = await db.select({ id: pages.id }).from(pages)
+    .where(eq(pages.slug, slug)).limit(1);
+
+  if (existing.length > 0) {
+    await db.update(pages).set({ body, updatedAt: new Date() }).where(eq(pages.slug, slug));
+  } else {
+    await db.insert(pages).values({ slug, title: known.title, body });
+  }
+
+  revalidatePath("/admin/pages");
+  revalidatePath(`/${slug}`);
+  redirect("/admin/pages?saved=1");
 }

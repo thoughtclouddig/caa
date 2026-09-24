@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getPage } from "@/lib/queries";
 import { org } from "@/content/site";
 import { PageHero } from "@/components/ui";
+import { bodyToHtml } from "@/lib/richtext";
 
 export const metadata = { title: "About" };
 export const dynamic = "force-dynamic";
@@ -61,7 +62,12 @@ export default async function AboutPage() {
         {page?.body && (
           <>
             <h2 style={{ marginTop: "3rem" }}>Who We Are</h2>
-            <p className="prose" style={{ maxWidth: "none" }}>{page.body}</p>
+            {/* Sanitised on save; see lib/richtext.ts. */}
+            <div
+              className="prose rich"
+              style={{ maxWidth: "none" }}
+              dangerouslySetInnerHTML={{ __html: bodyToHtml(page.body) }}
+            />
           </>
         )}
 

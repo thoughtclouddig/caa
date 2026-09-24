@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getArticleBySlug, getPublishedArticles } from "@/lib/queries";
 import ArticleImage from "@/components/ArticleImage";
+import { bodyToHtml, toPlainText } from "@/lib/richtext";
 import styles from "./article.module.css";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +15,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
   if (!article) return { title: "Article" };
-  return { title: article.title, description: article.excerpt ?? undefined };
+  return {
+    title: article.title,
+    description: article.excerpt ?? toPlainText(article.body, 160),
+  };
 }
 
 function formatDate(date: Date | null) {
@@ -62,11 +66,15 @@ export default async function ArticlePage({
         />
       </div>
 
-      <article className={`shell ${styles.body}`}>
-        {article.body.split("\n\n").map((para, i) => (
-          <p key={i}>{para}</p>
-        ))}
-      </article>
+      {/*
+        Already sanitised: rich text is cleaned to the allowlist on save,
+        and a plain-text body written before the editor existed is escaped
+        on conversion. See lib/richtext.ts.
+      */}
+      <article
+        className={`shell ${styles.body}`}
+        dangerouslySetInnerHTML={{ __html: bodyToHtml(article.body) }}
+      />
 
       {more.length > 0 && (
         <section className={`shell ${styles.more}`}>

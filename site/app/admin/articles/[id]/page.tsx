@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { adminGetArticle } from "@/lib/queries";
 import { AdminHeader } from "@/components/admin/AdminUI";
 import ArticleForm from "@/components/admin/ArticleForm";
+import { bodyToHtml } from "@/lib/richtext";
 
 export const metadata = { title: "Edit article" };
 export const dynamic = "force-dynamic";
@@ -21,7 +22,7 @@ export default async function EditArticle({
         title="Edit Article"
         back={{ href: "/admin/articles", label: "All articles" }}
       />
-      <ArticleForm article={article} />
+      <ArticleForm article={article} bodyHtml={bodyToHtml(article.body)} />
     </div>
   );
 }
