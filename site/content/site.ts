@@ -36,6 +36,7 @@ export const org = {
  * Participate rather than competing for room in the header.
  */
 export const primaryNav: NavItem[] = [
+  { label: "Join", href: "/participate/join" },
   { label: "Participate", href: "/participate" },
   { label: "Resources", href: "/resources" },
   { label: "Chapters", href: "/chapters" },

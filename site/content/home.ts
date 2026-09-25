@@ -129,6 +129,7 @@ export const articlesTeaser = {
 export const closing = {
   /** CAA copy, from the Chairman's letter. */
   heading: "Come Aboard",
-  lede: "Become a member of our association and join a growing organization that will change our society for the better.",
-  cta: { label: "Join or Renew Your Membership", href: "/participate/join" },
+  lede: "Membership is free and always will be. Become a member of our association and join a growing organization that will change our society for the better.",
+  cta: { label: "Join CAA, Free", href: "/register" },
+  secondary: { label: "See the Support Levels", href: "/participate/join" },
 };

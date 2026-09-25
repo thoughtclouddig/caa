@@ -1,11 +1,15 @@
 "use client";
 
-import { useActionState } from "react";
+import { Suspense, useActionState } from "react";
+import { useSearchParams } from "next/navigation";
 import { recordDonationIntentAction, type FormState } from "@/lib/actions";
 import { PageHero, Field, TextArea, Select, Notice, FormCard } from "@/components/ui";
 import SubmitButton from "@/components/SubmitButton";
 
-export default function DonatePage() {
+function DonateForm() {
+  const params = useSearchParams();
+  const amount = params.get("amount") ?? "";
+  const tier = params.get("tier") ?? "";
   const [state, action] = useActionState<FormState, FormData>(recordDonationIntentAction, {});
 
   return (
@@ -28,10 +32,11 @@ export default function DonatePage() {
             {state.error && <Notice tone="warn">{state.error}</Notice>}
             {state.ok && <Notice tone="ok">{state.ok}</Notice>}
 
-            <Field label="Amount (USD)" name="amount" type="number" required placeholder="50" />
+            <Field label="Amount (USD)" name="amount" type="number" required placeholder="50" defaultValue={amount} />
             <Select
               label="What the gift is for"
               name="kind"
+              defaultValue={tier ? "dues" : "gift"}
               options={[
                 { value: "gift", label: "Wherever it is needed most" },
                 { value: "chapter_support", label: "Chapter support" },
@@ -48,5 +53,17 @@ export default function DonatePage() {
         </FormCard>
       </section>
     </>
+  );
+}
+
+/**
+ * useSearchParams needs a Suspense boundary, because the page is
+ * prerendered and the query string is only known in the browser.
+ */
+export default function DonatePage() {
+  return (
+    <Suspense fallback={null}>
+      <DonateForm />
+    </Suspense>
   );
 }

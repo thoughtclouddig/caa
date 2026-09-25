@@ -70,6 +70,18 @@ export default async function JoinPage() {
                     {price(t.amountCents, t.cadence)}
                   </p>
                   <p className={styles.tierBody}>{t.description}</p>
+                  {/* Every level is actionable. Reading an amount with
+                      nothing to click is how a price list becomes a
+                      dead end. */}
+                  {/* The amount rides in the URL so the giving form opens
+                      filled in. Arriving at an empty box after choosing a
+                      level is its own kind of dead end. */}
+                  <Link
+                    href={`/participate/donate?amount=${(t.amountCents ?? 0) / 100}&tier=${t.slug}`}
+                    className={styles.tierCta}
+                  >
+                    Give at this level
+                  </Link>
                 </article>
               ))}
             </div>

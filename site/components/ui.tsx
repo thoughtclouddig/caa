@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./ui.module.css";
 
 /**
@@ -61,14 +62,34 @@ export function CardGrid({ children }: { children: React.ReactNode }) {
 }
 
 export function LinkCard({
-  title, body, href, meta,
-}: { title: string; body?: string; href: string; meta?: string }) {
+  title, body, href, meta, image, imageAlt,
+}: {
+  title: string;
+  body?: string;
+  href: string;
+  meta?: string;
+  image?: string;
+  imageAlt?: string;
+}) {
   return (
     <Link href={href} className={styles.card}>
-      {meta && <span className={styles.cardMeta}>{meta}</span>}
-      <h3 className={styles.cardTitle}>{title}</h3>
-      {body && <p className={styles.cardBody}>{body}</p>}
-      <span className={styles.cardGo} aria-hidden="true">&rarr;</span>
+      {image && (
+        <div className={styles.cardFrame}>
+          <Image
+            src={image}
+            alt={imageAlt ?? ""}
+            fill
+            sizes="(min-width: 62rem) 30vw, (min-width: 42rem) 48vw, 100vw"
+            className={styles.cardImage}
+          />
+        </div>
+      )}
+      <div className={styles.cardCopy}>
+        {meta && <span className={styles.cardMeta}>{meta}</span>}
+        <h3 className={styles.cardTitle}>{title}</h3>
+        {body && <p className={styles.cardBody}>{body}</p>}
+        <span className={styles.cardGo} aria-hidden="true">&rarr;</span>
+      </div>
     </Link>
   );
 }

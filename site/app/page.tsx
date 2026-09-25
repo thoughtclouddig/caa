@@ -198,9 +198,14 @@ export default async function HomePage() {
         <div className={`shell shell--narrow ${styles.closing}`}>
           <h2>{closing.heading}</h2>
           <p className={`lede ${styles.closingLede}`}>{closing.lede}</p>
-          <Link href={closing.cta.href} className="btn btn--primary">
-            {closing.cta.label}
-          </Link>
+          <div className={styles.closingActions}>
+            <Link href={closing.cta.href} className="btn btn--primary">
+              {closing.cta.label}
+            </Link>
+            <Link href={closing.secondary.href} className="btn btn--ghost">
+              {closing.secondary.label}
+            </Link>
+          </div>
         </div>
       </section>
     </>

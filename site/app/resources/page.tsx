@@ -1,5 +1,7 @@
 import { getResources } from "@/lib/queries";
 import { PageHero, Empty } from "@/components/ui";
+import PhotoSlot from "@/components/PhotoSlot";
+import Image from "next/image";
 import styles from "./resources.module.css";
 import Link from "next/link";
 
@@ -39,9 +41,24 @@ export default async function ResourcesPage() {
               <div className={styles.grid}>
                 {items.map((r) => (
                   <Link key={r.id} href={`/resources/${r.slug}`} className={styles.card}>
-                    <h3 className={styles.cardTitle}>{r.title}</h3>
-                    {r.summary && <p className={styles.cardBody}>{r.summary}</p>}
-                    <span className={styles.go} aria-hidden="true">&rarr;</span>
+                    {r.imagePath ? (
+                      <div className={styles.frame}>
+                        <Image
+                          src={r.imagePath}
+                          alt={r.imageAlt ?? ""}
+                          fill
+                          sizes="(min-width: 68rem) 30vw, (min-width: 46rem) 48vw, 100vw"
+                          className={styles.image}
+                        />
+                      </div>
+                    ) : (
+                      <PhotoSlot brief={r.photoBrief ?? ""} ratio="3 / 2" />
+                    )}
+                    <div className={styles.copy}>
+                      <h3 className={styles.cardTitle}>{r.title}</h3>
+                      {r.summary && <p className={styles.cardBody}>{r.summary}</p>}
+                      <span className={styles.go} aria-hidden="true">&rarr;</span>
+                    </div>
                   </Link>
                 ))}
               </div>

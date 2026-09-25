@@ -29,11 +29,36 @@
 
 .card {
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: var(--white);
-  padding: 1.5rem 1.5rem 3.2rem;
   color: inherit;
   text-decoration: none;
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--warm);
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 500ms ease;
+}
+
+.card:hover .image { transform: scale(1.03); }
+
+@media (prefers-reduced-motion: reduce) {
+  .image { transition: none; }
+  .card:hover .image { transform: none; }
+}
+
+.copy {
+  flex: 1;
+  position: relative;
+  padding: 1.4rem 1.4rem 3.2rem;
 }
 
 .card:hover { background: var(--warm); }
@@ -59,7 +84,7 @@
 
 .go {
   position: absolute;
-  left: 1.5rem;
+  left: 1.4rem;
   bottom: 1.4rem;
   font-size: 1.15rem;
   color: var(--navy);
