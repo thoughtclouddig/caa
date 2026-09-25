@@ -107,6 +107,8 @@ export type RegisterInput = {
   aviationRole?: string;
   /** A slug from content/member-locations.ts. Never an address. */
   locationSlug?: string;
+  /** The membership level being taken out. Falls back to the free one. */
+  tierSlug?: string;
 };
 
 export async function registerUser(
@@ -130,14 +132,27 @@ export async function registerUser(
     return { ok: false, error: "An account with that email already exists." };
   }
 
-  // The free level. Looked up rather than hardcoded, because the board
-  // can rename or re-price the tiers without touching this.
+  /*
+   * The level they chose, or the free one. Looked up rather than
+   * hardcoded, because the board can rename or re-price the tiers without
+   * touching this.
+   */
   const [freeTier] = await db
     .select({ id: membershipTiers.id })
     .from(membershipTiers)
     .where(eq(membershipTiers.amountCents, 0))
     .orderBy(asc(membershipTiers.sortOrder))
     .limit(1);
+
+  let chosenTierId = freeTier?.id ?? null;
+  if (input.tierSlug) {
+    const [chosen] = await db
+      .select({ id: membershipTiers.id })
+      .from(membershipTiers)
+      .where(eq(membershipTiers.slug, input.tierSlug))
+      .limit(1);
+    if (chosen) chosenTierId = chosen.id;
+  }
 
   const [created] = await db
     .insert(users)
@@ -157,7 +172,7 @@ export async function registerUser(
        * well as on the page.
        */
       membershipStatus: "registered",
-      membershipTierId: freeTier?.id ?? null,
+      membershipTierId: chosenTierId,
       memberSince: new Date(),
     })
     .returning({ id: users.id });

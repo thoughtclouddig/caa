@@ -145,7 +145,10 @@
 /* --- mission areas ------------------------------------------------------- */
 
 .missionIntro {
-  max-width: 44rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.75rem, 1.2rem + 2.4vw, 3.5rem);
+  align-items: center;
 }
 
 .missionLede {
@@ -421,6 +424,11 @@
 }
 
 @media (min-width: 58rem) {
+  /* Vision and mission beside the film. */
+  .missionIntro {
+    grid-template-columns: 1.05fr 0.95fr;
+  }
+
   .benefits {
     grid-template-columns: 0.85fr 1.15fr;
   }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ArticleImage from "@/components/ArticleImage";
 import PrayerWall from "@/components/PrayerWall";
+import VideoSlot from "@/components/VideoSlot";
 import {
   hero,
   missionIntro,
@@ -62,10 +63,19 @@ export default async function HomePage() {
           Flying entry can carry its honest status without looking broken. */}
       <section className="section">
         <div className="shell">
+          {/* Vision and mission on the left, the film on the right. The
+              right half of this row was empty. */}
           <div className={styles.missionIntro}>
-            <p className="eyebrow">{missionIntro.eyebrow}</p>
-            <h2>{missionIntro.heading}</h2>
-            <p className={`lede ${styles.missionLede}`}>{missionIntro.lede}</p>
+            <div>
+              <p className="eyebrow">{missionIntro.eyebrow}</p>
+              <h2>{missionIntro.heading}</h2>
+              <p className={`lede ${styles.missionLede}`}>{missionIntro.lede}</p>
+            </div>
+            <VideoSlot
+              src={missionIntro.video.src}
+              poster={missionIntro.video.poster}
+              brief={missionIntro.video.brief}
+            />
           </div>
 
           <div className={styles.missionList}>

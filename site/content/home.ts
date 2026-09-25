@@ -51,6 +51,15 @@ export const missionIntro = {
   heading: "The Meeting Place for Catholics in Aviation",
   /** CAA copy, from the published mission statement. */
   lede: "Our vision is to be a witness for Jesus Christ and the Christian values that are the necessary foundation for a strong and fruitful society. Our mission is to connect Catholics involved in any aspect of aviation, and to support one another as we journey through these challenging times.",
+  /**
+   * Set src to a file under /public once CAA supplies the film. Until
+   * then the brief describes what belongs here.
+   */
+  video: {
+    src: undefined as string | undefined,
+    poster: undefined as string | undefined,
+    brief: "A short film from the Chairman on what CAA is for. Around a minute.",
+  },
 };
 
 export const missionAreas: MissionArea[] = [

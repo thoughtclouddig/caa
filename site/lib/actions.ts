@@ -79,6 +79,7 @@ export async function registerAction(_prev: FormState, form: FormData): Promise<
     name: String(form.get("name") ?? ""),
     aviationRole: String(form.get("aviationRole") ?? ""),
     locationSlug: String(form.get("locationSlug") ?? ""),
+    tierSlug: String(form.get("tier") ?? ""),
   });
 
   if (!result.ok) return { error: result.error };
