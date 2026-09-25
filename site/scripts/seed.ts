@@ -401,6 +401,49 @@ async function main() {
    * The Chairman's letter is carried over word for word.
    */
   await db.insert(pages).values([
+    { slug: "catholic-foundations", title: "Catholic Foundations",
+      body:
+        "<p>If you attended Catholic school or religious education in the sixties through the eighties, it is not in dispute that the quality of learning about the Catholic faith was frequently deficient.</p>" +
+        "<p>There are now so many resources for learning on the internet that we have no wish to be yet another source duplicating what has already been done well. There is no need to re-invent the wheel. But now and then we feel there are gaps we can fill, especially as regards the Mass, or if you are Eastern Catholic the Divine Liturgy, and how to pray the Mass more effectively.</p>" +
+        "<p>There is so much we do by rote, and often we do not know why we do what we do. This section attempts to correct that. Alongside liturgy, we publish other topics of particular merit as we encounter them.</p>" +
+        "<h2>Liturgy of the Word</h2><p>To come.</p>" +
+        "<h2>Liturgy of the Eucharist</h2><p>To come.</p>" },
+    { slug: "apologetics", title: "Ask the Apologist",
+      body:
+        "<blockquote><p>There are not one hundred people in the United States who hate the Catholic Church, but there are millions who hate what they wrongly perceive the Catholic Church to be.</p></blockquote>" +
+        "<p><strong>Bishop Fulton J. Sheen</strong></p>" +
+        "<blockquote><p>To be deep in history is to cease to be Protestant.</p></blockquote>" +
+        "<p><strong>St. John Henry Newman</strong></p>" +
+        "<p>Catholic apologetics is the process of giving a reasoned, logical answer, grounded in truth and charity, to a question about Catholic beliefs and practices.</p>" +
+        "<p>Staff apologist Steve O'Keefe and others have written at length on topics which explain, clearly and accessibly, what Catholics believe, and which take apart a good many fallacies about what Catholics believe.</p>" +
+        "<h2>Who this is for</h2>" +
+        "<ul>" +
+        "<li>Catholics who want to become proficient in defending their faith, in both scriptural and non-scriptural arguments.</li>" +
+        "<li>Catholics who simply want to know their faith better.</li>" +
+        "<li>Non-Catholics, who are often given bad or inaccurate information about what Catholics believe. We would rather you heard it accurately.</li>" +
+        "<li>Non-Catholics who have begun to question their own beliefs after meeting Scripture passages that friends and clergy could not answer satisfactorily. Many have become Catholic by that road.</li>" +
+        "</ul>" },
+    { slug: "become-a-catholic", title: "Become a Catholic",
+      body:
+        "<p>This section comes in two parts: reasons to believe in the triune God, and reasons to be Catholic.</p>" +
+        "<p>It will be added to and refined over time. For Catholics, it may serve as a reminder of why we believe at all.</p>" +
+        "<h2>Reasons to believe, and to become Catholic</h2>" +
+        "<ul>" +
+        "<li>The way the New Testament mirrors the Old. The Old Testament prefigures and prophesies the coming of Christ, and holds types and shadows, the Passover lamb, the Exodus, that wait on their fulfilment.</li>" +
+        "<li>The accuracy of the Old Testament prophets, Isaiah above all. Micah named the exact place the Messiah would be born. Zechariah foretold his entry into Jerusalem on a donkey, his betrayal for thirty pieces of silver, and the money buying a potter's field.</li>" +
+        "<li>The historical fact of Jesus Christ, whose existence and actions are attested outside Scripture as well as within it.</li>" +
+        "</ul>" +
+        "<p>Taken with the apologetics pages, you can believe, and you can become Catholic. Pray about it.</p>" },
+    { slug: "prayer-page", title: "CAA Prayer Page",
+      body:
+        "<p>America is engaged in a great spiritual war, one in which the enemy wishes to capture and devour its soul: something far worse than the physical occupation of a people or a city. The war is waged by invisible forces, and its effects are entirely visible.</p>" +
+        "<p>It begins with abortion, understanding that Saint Pope John Paul II taught that all rights, without exception, are subordinate to the right to life. And that is not the only front.</p>" +
+        "<p>We pray for our country, for those who fly, and for those who keep them flying.</p>" },
+    { slug: "airport-chapels", title: "Airport Chapels Directory",
+      body:
+        "<p>The first airport chapel was established in 1950 at Logan International in Boston by the late Cardinal Cushing. A chapel opened at Idlewild in New York the following year, now John F. Kennedy International. From those beginnings came sixty-five airport chapels in thirty nations.</p>" +
+        "<p>This is a list of airport chapels with a specifically Catholic presence, ranging from a space set aside for prayer to chapels with Mass and adoration.</p>" +
+        "<p>Help us keep it current. If you find something out of date here, or an airport that should be added, tell us through the contact form.</p>" },
     { slug: "about", title: "About CAA",
       body: "<p>The Catholic Aviation Association is a nonprofit corporation registered in the state of Indiana and recognized under section 501(c)(3). It was founded by Thomas J. \"Tom\" Beckenbauer to unite the People of God working in every part of aviation. Chapters are being established across the country, and in time internationally. The association holds to fidelity to the Magisterium.</p>" },
     { slug: "contact", title: "Contact",
