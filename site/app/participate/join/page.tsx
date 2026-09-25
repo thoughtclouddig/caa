@@ -25,7 +25,7 @@ export default async function JoinPage() {
       <PageHero
         eyebrow="Join or Renew"
         title="Choose Your Membership"
-        lede="Every level is a full membership. The free one is not a trial and the paid ones buy no privilege; they carry more of the cost. Join at whichever fits."
+        lede="The free level is a real membership, not a trial, and it stays free. The levels above it carry more of the cost and include more in return. Open any one to see what it holds."
       />
 
       <section className="section shell">
@@ -52,6 +52,25 @@ export default async function JoinPage() {
                 >
                   Join
                 </Link>
+
+                {/*
+                  A native details element: keyboard operable, announced as
+                  expandable, and open by default for anyone who has asked
+                  the browser to find text on the page. No JavaScript, and
+                  it works before hydration.
+                */}
+                {t.benefits.length > 0 && (
+                  <details className={styles.more}>
+                    <summary className={styles.summary}>
+                      What you get
+                    </summary>
+                    <ul className={styles.benefits}>
+                      {t.benefits.map((b) => (
+                        <li key={b}>{b}</li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
               </li>
             );
           })}

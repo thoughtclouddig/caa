@@ -34,9 +34,16 @@ async function main() {
       slug: "member",
       name: "Member",
       description:
-        "Free, and the whole of membership. A chapter, the member directory, prayer, events and everything else the association does. Nobody is asked for money to belong.",
+        "Free, and a real membership. A chapter, the member directory, the map, prayer and everything the association does in public. Nobody is asked for money to belong.",
       amountCents: 0,
       cadence: "none",
+      benefits: [
+        "The member directory and the worldwide member map",
+        "The chapter directory, and a chapter to join near you",
+        "The airport chapel and Mass finder",
+        "Prayer requests, member stories and the forum",
+        "The newsletter",
+      ],
       sortOrder: 0,
     },
     {
@@ -46,6 +53,12 @@ async function main() {
         "For members who want to carry part of the cost. Roughly what a national aviation membership runs to, given to an apostolate instead.",
       amountCents: 5000,
       cadence: "annual",
+      benefits: [
+        "Everything in the free membership",
+        "Mentorship matching, by role and by what you actually fly or fix",
+        "Corporate partner discounts: Avemco, King Schools, EveryLife, Purdue and the rest",
+        "The Catholic Airman, CAA's publication",
+      ],
       sortOrder: 1,
     },
     {
@@ -55,6 +68,11 @@ async function main() {
         "Pays for the things a chapter cannot fund on its own: materials, travel to start a new chapter, a priest's expenses for an Aviation Mass.",
       amountCents: 10000,
       cadence: "annual",
+      benefits: [
+        "Everything in Supporting Member",
+        "Your giving is directed to a named chapter if you want it to be",
+        "An invitation to the annual members' meeting",
+      ],
       sortOrder: 2,
     },
     {
@@ -64,6 +82,11 @@ async function main() {
         "For those building the association in its first years, while the work still depends on a small number of people.",
       amountCents: 25000,
       cadence: "annual",
+      benefits: [
+        "Everything in Sustaining Member",
+        "A voice in how the association is governed",
+        "Founding recognition, permanently",
+      ],
       sortOrder: 3,
     },
     {
@@ -73,6 +96,10 @@ async function main() {
         "Given once. For members who want their support settled and done with.",
       amountCents: 100000,
       cadence: "once",
+      benefits: [
+        "Everything in Founding Patron",
+        "No renewal, ever",
+      ],
       sortOrder: 4,
     },
   ]).returning();

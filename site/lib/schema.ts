@@ -245,6 +245,12 @@ export const membershipTiers = pgTable("membership_tiers", {
   amountCents: integer("amount_cents"),
   /** How often it is given: "none" for free, "annual", or "once". */
   cadence: text("cadence").notNull().default("annual"),
+  /**
+   * What the level actually includes, one line each. Data rather than
+   * markup, so the board can change what a membership carries without a
+   * release, the same as the amounts.
+   */
+  benefits: text("benefits").array().notNull().default([]),
   requiresVerification: boolean("requires_verification").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
   active: boolean("active").notNull().default(true),
