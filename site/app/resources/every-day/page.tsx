@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getPublicPrayerRequests, getPublishedArticles } from "@/lib/queries";
+import { getReadings, getLiturgicalDay } from "@/lib/readings";
 import { Notice } from "@/components/ui";
 import styles from "./every-day.module.css";
 
@@ -11,9 +12,11 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function EveryDayPage() {
-  const [intentions, articles] = await Promise.all([
+  const [intentions, articles, readings, day] = await Promise.all([
     getPublicPrayerRequests(6),
     getPublishedArticles(4),
+    getReadings(),
+    getLiturgicalDay(),
   ]);
 
   const today = new Date().toLocaleDateString("en-US", {
@@ -28,6 +31,18 @@ export default async function EveryDayPage() {
       <header className={`shell ${styles.head}`}>
         <p className="eyebrow">CAA Every Day</p>
         <h1 className={styles.title}>{today}</h1>
+        {day?.title && (
+          <p className={styles.liturgical}>
+            {day.title}
+            {day.colour && (
+              <span
+                className={styles.colour}
+                data-colour={day.colour}
+                title={`Liturgical colour: ${day.colour}`}
+              />
+            )}
+          </p>
+        )}
         <p className={`lede ${styles.lede}`}>
           A reason to come back tomorrow. The day&rsquo;s Scripture, what the
           association is asking of us, and the intentions members have put
@@ -39,17 +54,58 @@ export default async function EveryDayPage() {
         <main className={styles.main}>
           <section>
             <h2 className={styles.sectionHeading}>Today&rsquo;s Readings</h2>
-            {/*
-              Citations only. The USCCB lectionary translation is under
-              copyright, so the full text cannot be reproduced here without
-              permission. The citation feed itself is not connected yet.
-            */}
-            <Notice tone="info">
-              The daily reading citations are not connected yet. Reproducing
-              the reading text needs permission from the USCCB, so this page
-              will carry the citations and CAA&rsquo;s own reflection rather
-              than the translated text.
-            </Notice>
+
+            {readings ? (
+              <>
+                <dl className={styles.readings}>
+                  {readings.firstReading && (
+                    <div>
+                      <dt>First reading</dt>
+                      <dd>{readings.firstReading}</dd>
+                    </div>
+                  )}
+                  {readings.psalm && (
+                    <div>
+                      <dt>Responsorial psalm</dt>
+                      <dd>{readings.psalm}</dd>
+                    </div>
+                  )}
+                  {readings.secondReading && (
+                    <div>
+                      <dt>Second reading</dt>
+                      <dd>{readings.secondReading}</dd>
+                    </div>
+                  )}
+                  {readings.gospel && (
+                    <div>
+                      <dt>Gospel</dt>
+                      <dd>{readings.gospel}</dd>
+                    </div>
+                  )}
+                </dl>
+
+                {/*
+                  Citations here, text there. The reference is a fact; the
+                  translation is the USCCB's, and reproducing it needs
+                  their permission.
+                */}
+                {readings.usccbLink && (
+                  <p className={styles.readingsNote}>
+                    <a href={readings.usccbLink} rel="noopener noreferrer">
+                      Read the passages at the USCCB
+                    </a>
+                    . CAA shows the references; the text of the readings
+                    belongs to the bishops&rsquo; conference.
+                  </p>
+                )}
+              </>
+            ) : (
+              <Notice tone="warn">
+                The readings could not be fetched just now. They will be
+                back shortly; in the meantime the USCCB publishes them at
+                bible.usccb.org.
+              </Notice>
+            )}
           </section>
 
           <section className={styles.block}>

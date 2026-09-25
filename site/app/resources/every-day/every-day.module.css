@@ -7,10 +7,96 @@
   margin-inline: 0 auto;
 }
 
+/* Sized to hold a long date on one line. "Wednesday, September 23, 2026"
+   at the h1 step broke across two, which made the page open on a
+   fragment. */
 .title {
   margin-top: 0.6rem;
-  font-size: var(--step-h1);
-  line-height: 1.1;
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.2rem);
+  line-height: 1.15;
+}
+
+@media (min-width: 34rem) {
+  .title {
+    white-space: nowrap;
+  }
+}
+
+.liturgical {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--slate);
+}
+
+/* The day's liturgical colour, as a mark rather than as the page's
+   colour: the site stays navy and gold whatever the season. */
+.colour {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.colour[data-colour="green"] { background: #2f6b46; }
+.colour[data-colour="violet"] { background: #5b3a7e; }
+.colour[data-colour="red"] { background: #9b2226; }
+.colour[data-colour="white"] { background: #ffffff; }
+.colour[data-colour="rose"] { background: #d98ba6; }
+.colour[data-colour="black"] { background: #1a1a1a; }
+
+/* --- readings ------------------------------------------------------------ */
+
+.readings {
+  margin: 1.5rem 0 0;
+}
+
+.readings > div {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.15rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.readings > div:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.readings dt {
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.readings dd {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--navy);
+}
+
+.readingsNote {
+  margin-top: 1.1rem;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--slate);
+}
+
+@media (min-width: 30rem) {
+  .readings > div {
+    grid-template-columns: 11rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
 }
 
 .lede {
