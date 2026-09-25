@@ -63,9 +63,12 @@
 }
 
 .heroSubhead {
-  margin-top: 0.9rem;
+  margin-top: 1rem;
   font-family: var(--serif);
-  font-size: var(--step-h3);
+  /* Sits between the display headline and the lede, so it scales with the
+     viewport rather than sitting at a fixed heading step. */
+  font-size: clamp(1.4rem, 1.05rem + 1.3vw, 2.1rem);
+  line-height: 1.2;
   font-style: italic;
   color: var(--gold);
 }
