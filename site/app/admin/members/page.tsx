@@ -1,6 +1,7 @@
 import { adminListMembers } from "@/lib/queries";
 import { setMemberRoleAction, setMembershipStatusAction } from "@/lib/actions";
 import { AdminHeader, Table, EmptyState, Pill } from "@/components/admin/AdminUI";
+import { MEMBERSHIP_STATUS, ROLE, label } from "@/lib/labels";
 
 export const metadata = { title: "Members" };
 export const dynamic = "force-dynamic";

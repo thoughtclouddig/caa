@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PAYMENT_STATUS, DONATION_KIND, label } from "@/lib/labels";
 import { requireUser } from "@/lib/auth";
 import { getMyDonations } from "@/lib/queries";
 import { PageHero, Rows, Row, Empty, Notice } from "@/components/ui";
@@ -25,8 +26,8 @@ export default async function GivingPage() {
         {rows.length === 0 ? <Empty>Nothing recorded yet.</Empty> : (
           <Rows>
             {rows.map((d) => (
-              <Row key={d.id} title={`$${(d.amountCents / 100).toFixed(2)} · ${d.kind.replace("_", " ")}`}
-                meta={`${fmt.format(d.createdAt)} · ${d.status}`}>
+              <Row key={d.id} title={`$${(d.amountCents / 100).toFixed(2)} · ${label(DONATION_KIND, d.kind)}`}
+                meta={`${fmt.format(d.createdAt)} · ${label(PAYMENT_STATUS, d.status)}`}>
                 {d.note && <p>{d.note}</p>}
               </Row>
             ))}

@@ -1,17 +1,11 @@
 import { adminListDonations } from "@/lib/queries";
 import { AdminHeader, Flash, Table, Pill, EmptyState } from "@/components/admin/AdminUI";
+import { PAYMENT_STATUS, DONATION_KIND, label } from "@/lib/labels";
 
 export const metadata = { title: "Giving" };
 export const dynamic = "force-dynamic";
 
 const fmt = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" });
-
-const KIND = {
-  gift: "Wherever needed",
-  chapter_support: "Chapter support",
-  scholarship: "Scholarship fund",
-  dues: "Membership",
-} as const;
 
 /**
  * Recorded giving.
@@ -51,11 +45,11 @@ export default async function AdminGiving() {
                 )}
               </td>
               <td>${(d.amountCents / 100).toFixed(2)}</td>
-              <td>{KIND[d.kind as keyof typeof KIND] ?? d.kind}</td>
+              <td>{label(DONATION_KIND, d.kind)}</td>
               <td>
                 {d.status === "pending"
                   ? <Pill tone="draft">Not charged</Pill>
-                  : <Pill tone="live">{d.status}</Pill>}
+                  : <Pill tone="live">{label(PAYMENT_STATUS, d.status)}</Pill>}
               </td>
               <td style={{ maxWidth: "20rem" }}>{d.note ?? "—"}</td>
             </tr>

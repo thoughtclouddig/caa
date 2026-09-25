@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { getMyRsvps, getPublicPrayerRequests } from "@/lib/queries";
 import { PageHero, Rows, Row, Empty, StatRow, Stat } from "@/components/ui";
+import { MEMBERSHIP_STATUS, ROLE, RSVP_STATUS, label } from "@/lib/labels";
 
 export const metadata = { title: "Member dashboard" };
 export const dynamic = "force-dynamic";
@@ -21,9 +22,9 @@ export default async function PortalHome() {
 
       <section className="section shell">
         <StatRow>
-          <Stat label="Membership" value={user.membershipStatus} />
+          <Stat label="Membership" value={label(MEMBERSHIP_STATUS, user.membershipStatus)} />
           <Stat label="Events booked" value={rsvps.length} />
-          <Stat label="Role" value={user.role.replace("_", " ")} />
+          <Stat label="Role" value={label(ROLE, user.role)} />
         </StatRow>
 
         <h2 style={{ marginTop: "2.5rem" }}>Your next events</h2>
@@ -33,7 +34,7 @@ export default async function PortalHome() {
           <Rows>
             {rsvps.map((r) => (
               <Row key={r.event.id} title={r.event.title} meta={fmt.format(r.event.startsAt)}>
-                <p>{r.status}</p>
+                <p>{label(RSVP_STATUS, r.status)}</p>
               </Row>
             ))}
           </Rows>
