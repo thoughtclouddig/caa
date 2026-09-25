@@ -11,7 +11,9 @@
     "db:seed": "tsx scripts/seed.ts",
     "db:setup": "npm run db:push -- --force && npm run db:seed",
     "build:map": "tsx scripts/build-us-map.ts",
-    "verify:locations": "tsx scripts/verify-locations.ts"
+    "verify:locations": "tsx scripts/verify-locations.ts",
+    "db:demo": "tsx scripts/demo-data.ts",
+    "db:demo:clear": "tsx scripts/demo-data.ts clear"
   },
   "dependencies": {
     "@tiptap/extension-link": "^3.31.3",
