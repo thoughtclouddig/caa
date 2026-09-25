@@ -9,6 +9,7 @@ import { db } from "../lib/db";
 import {
   users, chapters, membershipTiers, events, articles, resources,
   prayerRequests, sponsors, products, pages,
+  newsletterIssues, newsletterIssueArticles,
 } from "../lib/schema";
 import { hashPassword } from "../lib/passwords";
 
@@ -381,6 +382,32 @@ async function main() {
         "<p>We combine some of life's deepest emotional events and missions into a single organization, and then we share them with one another.</p>" +
         "<p>We want you to be a part of this, and more.</p>" },
   ]);
+
+  /*
+   * A first newsletter issue, assembled from the articles above rather
+   * than written separately. Published to the archive but deliberately
+   * not marked sent: nothing has gone to anybody, and sentAt is what
+   * records that it did.
+   */
+  const [issue] = await db.insert(newsletterIssues).values({
+    slug: "caa-update-autumn-2026",
+    title: "CAA Update, Autumn 2026",
+    intro:
+      "<p>A short one to begin with. The drive is on, the Indianapolis simulator is nearly finished, and there is an aircraft blessed on the grass at the bottom of this letter.</p>" +
+      "<p>If you know one person in aviation who ought to be with us, this is the month to ask them.</p>",
+    status: "published",
+    publishedAt: daysAgo(2),
+  }).returning();
+
+  const issueArticles = ["bring-one", "indianapolis-flight-simulator", "blessing-of-an-aircraft", "caa-at-ncyc"];
+  const chosen = await db.select({ id: articles.id, slug: articles.slug }).from(articles);
+  await db.insert(newsletterIssueArticles).values(
+    issueArticles.map((slug, index) => ({
+      issueId: issue.id,
+      articleId: chosen.find((a) => a.slug === slug)!.id,
+      sortOrder: index,
+    })),
+  );
 
   console.log(`seeded: ${ch.length} chapters, ${tiers.length} tiers, admin=${admin.email}`);
   process.exit(0);
