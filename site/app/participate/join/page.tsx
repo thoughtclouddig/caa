@@ -40,15 +40,17 @@ export default async function JoinPage() {
             const isFree = t.amountCents === 0;
             return (
               <li key={t.id} className={styles.tier}>
-                {isFree && <p className={styles.flag}>Start here</p>}
-                <h2 className={styles.name}>{t.name}</h2>
-                <p className={styles.price}>{price(t.amountCents, t.cadence)}</p>
+                <div className={styles.head}>
+                  <h2 className={styles.name}>{t.name}</h2>
+                  <p className={styles.price}>{price(t.amountCents, t.cadence)}</p>
+                  {isFree && <p className={styles.flag}>Start here</p>}
+                </div>
                 <p className={styles.body}>{t.description}</p>
                 <Link
                   href={isFree ? "/register" : `/register?tier=${t.slug}`}
                   className={`btn ${isFree ? "btn--primary" : "btn--ghost"} ${styles.cta}`}
                 >
-                  {isFree ? "Join free" : "Join at this level"}
+                  Join
                 </Link>
               </li>
             );

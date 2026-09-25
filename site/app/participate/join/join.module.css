@@ -1,69 +1,80 @@
-/* One row of equals. The minimum is set so all five fit on a full-width
-   shell rather than leaving the last one stranded on a second row, and
-   auto-fit reflows them to three and then two below that. */
+/* Rows, not columns. Five tiers across a shell left every name and every
+   button wrapping onto two lines; a row gives the name, the amount, the
+   description and the action each enough width to sit on one. */
 .tiers {
   list-style: none;
   margin: 0 0 2.5rem;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
+  border-top: 1px solid var(--line);
 }
 
 .tier {
-  display: flex;
-  flex-direction: column;
-  background: var(--white);
-  padding: clamp(1.4rem, 1.1rem + 1vw, 1.9rem);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+  align-items: center;
+  padding-block: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.head {
+  min-width: 0;
+}
+
+.name {
+  font-size: var(--step-h3);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Gold fails contrast as type on white, so it rules the amount rather
+   than colouring it. */
+.price {
+  display: inline-block;
+  margin-top: 0.45rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 3px solid var(--gold);
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
 }
 
 /* The free level is marked, not magnified. */
 .flag {
+  margin-top: 0.6rem;
   font-family: var(--sans);
   font-size: var(--step-label);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #8a6416;
-  margin-bottom: 0.5rem;
-}
-
-.name {
-  font-size: var(--step-h3);
-  line-height: 1.2;
-  text-wrap: balance;
-}
-
-/* Gold fails contrast as type on white, so it rules the amount instead of
-   colouring it. */
-.price {
-  display: inline-block;
-  margin-top: 0.7rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 3px solid var(--gold);
-  font-family: var(--sans);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--navy);
 }
 
 .body {
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.92rem;
-  line-height: 1.6;
   color: var(--slate);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 52ch;
 }
 
-/* Pushed to the foot so every button lines up across the row whatever the
-   length of the description above it. */
 .cta {
-  margin-top: auto;
-  align-self: flex-start;
+  justify-self: start;
+  white-space: nowrap;
 }
 
 .footnote {
   margin-top: 1.75rem;
+}
+
+@media (min-width: 46rem) {
+  .tier {
+    grid-template-columns: minmax(11rem, 14rem) 1fr auto;
+    gap: clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
+  }
+
+  .cta {
+    justify-self: end;
+  }
 }
