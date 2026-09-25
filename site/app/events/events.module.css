@@ -1,0 +1,77 @@
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.event {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(1.1rem, 0.8rem + 1.2vw, 2rem);
+  align-items: start;
+  padding-block: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  border-bottom: 1px solid var(--line);
+}
+
+/* Navy block, gold month: the date has to be legible from across the
+   room, which is the one thing the old grey timestamp was not. */
+.date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: clamp(4.5rem, 4rem + 2vw, 5.5rem);
+  padding: 0.7rem 0.4rem 0.8rem;
+  background: var(--navy);
+  color: var(--white);
+  text-align: center;
+}
+
+.month {
+  font-family: var(--sans);
+  font-size: var(--step-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.day {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 1.5rem + 1.2vw, 2.4rem);
+  line-height: 1.05;
+  margin-top: 0.2rem;
+}
+
+.year {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: #cfd9e8;
+  margin-top: 0.15rem;
+}
+
+.detail {
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--step-h3);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.when {
+  margin-top: 0.4rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.body {
+  margin-top: 0.6rem;
+  color: var(--slate);
+  max-width: 56ch;
+}

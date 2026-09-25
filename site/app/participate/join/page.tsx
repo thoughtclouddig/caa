@@ -6,7 +6,7 @@ import styles from "./join.module.css";
 export const metadata = {
   title: "Join, Renew or Register",
   description:
-    "Membership of the Catholic Aviation Association is free. Support above that is voluntary.",
+    "Membership of the Catholic Aviation Association is free. You can also join at a level that helps carry the cost.",
 };
 export const dynamic = "force-dynamic";
 
@@ -19,93 +19,55 @@ function price(cents: number | null, cadence: string) {
 
 export default async function JoinPage() {
   const tiers = await getMembershipTiers();
-  const [free, ...support] = tiers;
 
   return (
     <>
       <PageHero
         eyebrow="Join or Renew"
-        title="Membership Is Free"
-        lede="Joining CAA costs nothing and never has to. You can also join at a level that helps carry the cost, though none of them buys anything a free member does not already have."
-      >
-        <Link className="btn btn--primary" href="/register">
-          Join CAA
-        </Link>
-      </PageHero>
+        title="Choose Your Membership"
+        lede="Every level is a full membership. The free one is not a trial and the paid ones buy no privilege; they carry more of the cost. Join at whichever fits."
+      />
 
-      {free && (
-        <section className="section shell">
-          <article className={styles.free}>
-            <div>
-              <p className="eyebrow">Everyone who joins</p>
-              <h2 className={styles.freeName}>{free.name}</h2>
-              <p className={styles.freeBody}>{free.description}</p>
-            </div>
-            <div className={styles.freePrice}>
-              <span>{price(free.amountCents, free.cadence)}</span>
-              <Link className="btn btn--primary" href="/register">
-                Join CAA
-              </Link>
-            </div>
-          </article>
-        </section>
-      )}
+      <section className="section shell">
+        {/*
+          All five levels at one weight. The free tier used to run full
+          width above the rest, which made the others read as an
+          afterthought at the bottom of the page. Free is a choice among
+          the choices, not a different kind of thing.
+        */}
+        <ul className={styles.tiers}>
+          {tiers.map((t) => {
+            const isFree = t.amountCents === 0;
+            return (
+              <li key={t.id} className={styles.tier}>
+                {isFree && <p className={styles.flag}>Start here</p>}
+                <h2 className={styles.name}>{t.name}</h2>
+                <p className={styles.price}>{price(t.amountCents, t.cadence)}</p>
+                <p className={styles.body}>{t.description}</p>
+                <Link
+                  href={isFree ? "/register" : `/register?tier=${t.slug}`}
+                  className={`btn ${isFree ? "btn--primary" : "btn--ghost"} ${styles.cta}`}
+                >
+                  {isFree ? "Join free" : "Join at this level"}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
 
-      {support.length > 0 && (
-        <section className="section--warm">
-          <div className="section shell">
-            <div className={styles.supportHead}>
-              <h2>Membership Levels</h2>
-              <p className="prose">
-                CAA runs on what members contribute. Join at whichever
-                level fits: the association is the same for all of them,
-                and the free one is a full membership, not a trial.
-              </p>
-            </div>
+        <Notice tone="warn">
+          Dues cannot be collected yet. CAA has a contract with a payment
+          processor separate from eCatholic, and those account details are
+          still needed. Join at any level today and your membership is
+          recorded; CAA will be in touch about dues once the processor is
+          connected. Free membership is unaffected.
+        </Notice>
 
-            <div className={styles.tiers}>
-              {support.map((t) => (
-                <article key={t.id} className={styles.tier}>
-                  <h3 className={styles.tierName}>{t.name}</h3>
-                  <p className={styles.tierPrice}>
-                    {price(t.amountCents, t.cadence)}
-                  </p>
-                  <p className={styles.tierBody}>{t.description}</p>
-                  {/* Every level is actionable. Reading an amount with
-                      nothing to click is how a price list becomes a
-                      dead end. */}
-                  {/* Joining at a level, not donating at one. The chosen
-                      level rides in the URL so registration knows which
-                      membership is being taken out. */}
-                  <Link
-                    href={`/register?tier=${t.slug}`}
-                    className={styles.tierCta}
-                  >
-                    Join at this level
-                  </Link>
-                </article>
-              ))}
-            </div>
-
-            <Notice tone="warn">
-              Dues cannot be collected yet. CAA has a contract with a payment
-              processor separate from eCatholic, and those account details
-              are still needed. Join at any level today and your membership
-              is recorded; CAA will be in touch about dues once the
-              processor is connected. Free membership is unaffected.
-            </Notice>
-
-            <div className={styles.support}>
-              <Link className="btn btn--primary" href="/register">
-                Join for free
-              </Link>
-              <Link className="btn btn--ghost" href="/participate/donate">
-                Make a one-off gift instead
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
+        <p className={`prose ${styles.footnote}`}>
+          Prefer to give without taking out a membership?{" "}
+          <Link href="/participate/donate">Make a one-off gift</Link>.
+        </p>
+      </section>
     </>
   );
 }
