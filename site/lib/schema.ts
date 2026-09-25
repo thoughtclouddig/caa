@@ -442,6 +442,33 @@ export const pages = pgTable(
   (t) => [uniqueIndex("pages_slug_idx").on(t.slug)],
 );
 
+export const messageStatus = pgEnum("message_status", ["new", "read", "replied", "spam"]);
+
+/**
+ * Messages sent through the contact form.
+ *
+ * Kept in the database rather than emailed onward, because no mail
+ * provider is connected yet and an enquiry that vanishes is worse than
+ * one that waits. Once Resend is configured a notification can be added
+ * without changing where the message itself lives.
+ */
+export const contactMessages = pgTable(
+  "contact_messages",
+  {
+    id: serial("id").primaryKey(),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    /** What it is about, chosen from a fixed list so staff can triage. */
+    topic: text("topic"),
+    message: text("message").notNull(),
+    /** Where they said they are, if they said. Never an address. */
+    locationSlug: text("location_slug"),
+    status: messageStatus("status").notNull().default("new"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("contact_status_idx").on(t.status)],
+);
+
 /* -------------------------------------------------------------------------- */
 /* newsletter                                                                 */
 /* -------------------------------------------------------------------------- */

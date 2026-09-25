@@ -325,10 +325,12 @@ async function main() {
       sortOrder: 7 },
   ]);
 
-  await db.insert(prayerRequests).values([
-    { displayName: "Michael", intention: "For safe travel for all crews this week.", isPublic: true, status: "approved" },
-    { displayName: "Anne", intention: "For my father, who is unwell.", isPublic: true, status: "approved" },
-  ]);
+  /*
+   * No prayer intentions are seeded. They are written by members, and a
+   * live site opening with invented ones attributed to people who do not
+   * exist would be a lie on the most personal page there is. Sample
+   * intentions for a walkthrough live in scripts/demo-data.ts.
+   */
 
   /*
    * CAA's real corporate partners. Their framing, from the existing site:

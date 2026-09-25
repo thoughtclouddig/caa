@@ -17,7 +17,7 @@ import {
   prayerRequests, articles, newsletterSubscribers, users, chapters,
   membershipTiers, mentorshipProfiles, eventRsvps, events, donations,
 } from "../lib/schema";
-import { eq, like, inArray } from "drizzle-orm";
+import { like, inArray } from "drizzle-orm";
 import { randomBytes } from "crypto";
 import { hashPassword } from "../lib/passwords";
 
@@ -117,6 +117,18 @@ async function add() {
 
   await db.insert(prayerRequests).values([
     {
+      displayName: "Michael",
+      intention: "For safe travel for all crews this week.",
+      isPublic: true,
+      status: "approved",
+    },
+    {
+      displayName: "Anne",
+      intention: "For my father, who is unwell.",
+      isPublic: true,
+      status: "approved",
+    },
+    {
       displayName: "Stephen",
       intention: "For my check ride on Thursday, and for a steady head.",
       isPublic: true,
@@ -150,7 +162,7 @@ async function add() {
 
   console.log(
     `demo data added: ${made.length} members, 3 mentorship profiles, ` +
-      "2 prayer intentions pending, 1 draft article, 3 subscribers",
+      "2 intentions published and 2 waiting in the queue, 1 draft article, 3 subscribers",
   );
   console.log(`sign in as a member: member${DEMO_EMAIL_DOMAIN} / changeme-in-production`);
 }
@@ -166,7 +178,8 @@ async function clear() {
   }
   await db.delete(newsletterSubscribers).where(like(newsletterSubscribers.email, `%${DEMO_EMAIL_DOMAIN}`));
   await db.delete(articles).where(like(articles.slug, "demo-%"));
-  await db.delete(prayerRequests).where(eq(prayerRequests.status, "pending"));
+  // Every intention is demo data: the seed creates none.
+  await db.delete(prayerRequests);
   console.log("demo data cleared");
 }
 

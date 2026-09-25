@@ -40,11 +40,34 @@ export default async function PortalHome() {
           </Rows>
         )}
 
-        <h2 style={{ marginTop: "2.5rem" }}>Prayer intentions</h2>
-        {prayers.length === 0 ? <Empty>No intentions yet.</Empty> : (
+        {/*
+          These are the association's public intentions, not this member's
+          own. The old heading said "Prayer intentions" on a personal
+          dashboard, which read as if they belonged to whoever was signed
+          in.
+        */}
+        <h2 style={{ marginTop: "2.5rem" }}>Pray for one another</h2>
+        <p className="prose" style={{ marginTop: "0.6rem" }}>
+          Intentions members have asked the association to carry.{" "}
+          <Link href="/portal/prayer">Add yours, or say you are praying</Link>.
+        </p>
+        {prayers.length === 0 ? (
+          <Empty>
+            No intentions have been published yet.{" "}
+            <Link href="/portal/prayer">Be the first to ask</Link>.
+          </Empty>
+        ) : (
           <Rows>
             {prayers.map((p) => (
-              <Row key={p.id} title={p.intention} meta={`${p.displayName} · ${p.pledges} praying`} />
+              <Row
+                key={p.id}
+                title={p.intention}
+                meta={
+                  p.pledges === 0
+                    ? p.displayName
+                    : `${p.displayName} · ${p.pledges} praying`
+                }
+              />
             ))}
           </Rows>
         )}

@@ -1,0 +1,38 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 1.4rem + 2.4vw, 4rem);
+  align-items: start;
+}
+
+.formCol {
+  min-width: 0;
+}
+
+/* Hairline rather than a filled panel, so the form keeps the weight. */
+.aside {
+  min-width: 0;
+}
+
+.asideHeading {
+  font-size: var(--step-h3);
+  margin-top: 2rem;
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.asideHeading:first-child {
+  margin-top: 0;
+}
+
+@media (min-width: 58rem) {
+  .layout {
+    grid-template-columns: 1.25fr 0.75fr;
+  }
+
+  .aside {
+    padding-left: clamp(1.5rem, 1rem + 2vw, 3rem);
+    border-left: 1px solid var(--line);
+  }
+}

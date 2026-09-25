@@ -1,0 +1,24 @@
+.form {
+  max-width: 38rem;
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 1rem;
+}
+
+/* Off-screen rather than hidden: some bots skip anything not rendered. */
+.trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media (min-width: 34rem) {
+  .pair {
+    grid-template-columns: 1fr 1fr;
+  }
+}

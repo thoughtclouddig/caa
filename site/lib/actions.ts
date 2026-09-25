@@ -8,6 +8,7 @@ import { db } from "./db";
 import {
   users, prayerRequests, prayerPledges, eventRsvps, donations,
   chapters, events, articles, images, pages, resources, products, sponsors,
+  contactMessages,
   newsletterSubscribers, newsletterIssues, newsletterIssueArticles,
 } from "./schema";
 import { sanitizeRichText } from "./richtext";
@@ -16,6 +17,7 @@ import { renderIssueHtml } from "./newsletter-html";
 import { getIssueArticles, getActiveSubscribers } from "./queries";
 import { findEditablePage } from "../content/editable-pages";
 import { findMemberLocation } from "../content/member-locations";
+import { CONTACT_TOPICS } from "../content/contact-topics";
 import {
   authenticate, createSession, destroySession, registerUser,
   currentUser, requireUser, requireAdmin,
@@ -968,4 +970,74 @@ export async function deletePartnerAction(id: number): Promise<void> {
   await db.delete(sponsors).where(eq(sponsors.id, id));
   revalidatePath("/admin/partners");
   revalidatePath("/sponsors");
+}
+
+/* -------------------------------------------------------------------------- */
+/* contact                                                                    */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Receives a message from the contact form.
+ *
+ * It is stored, not emailed: no mail provider is connected yet, and an
+ * enquiry that disappears is worse than one that waits in a queue
+ * somebody can see. When Resend is configured, a notification is an
+ * addition here rather than a change to where the message lives.
+ */
+export async function sendContactMessageAction(
+  _prev: FormState,
+  form: FormData,
+): Promise<FormState> {
+  /*
+   * Honeypot. A field positioned off-screen and hidden from assistive
+   * technology, so a person never sees it and a bot fills it in. Anything
+   * that fills it is dropped silently, because telling a bot it failed
+   * only teaches whoever wrote it.
+   */
+  if (String(form.get("website") ?? "").trim() !== "") {
+    return { ok: "Thank you. Your message has been sent." };
+  }
+
+  const name = String(form.get("name") ?? "").trim();
+  const email = String(form.get("email") ?? "").trim().toLowerCase();
+  const message = String(form.get("message") ?? "").trim();
+
+  if (!name) return { error: "Tell us your name.", values: submitted(form) };
+  if (!email.includes("@") || email.length < 5) {
+    return { error: "Enter an email address we can reply to.", values: submitted(form) };
+  }
+  if (message.length < 10) {
+    return { error: "Tell us a little more, so we can point you to the right person.", values: submitted(form) };
+  }
+
+  const topic = String(form.get("topic") ?? "").trim();
+  const locationSlug = String(form.get("locationSlug") ?? "").trim();
+
+  await db.insert(contactMessages).values({
+    name,
+    email,
+    message,
+    topic: (CONTACT_TOPICS as readonly string[]).includes(topic) ? topic : null,
+    locationSlug: findMemberLocation(locationSlug) ? locationSlug : null,
+  });
+
+  revalidatePath("/admin/messages");
+  return {
+    ok: "Thank you. Your message has reached us, and someone will come back to you.",
+  };
+}
+
+export async function setMessageStatusAction(
+  id: number,
+  status: "new" | "read" | "replied" | "spam",
+): Promise<void> {
+  await requireAdmin();
+  await db.update(contactMessages).set({ status }).where(eq(contactMessages.id, id));
+  revalidatePath("/admin/messages");
+}
+
+export async function deleteMessageAction(id: number): Promise<void> {
+  await requireAdmin();
+  await db.delete(contactMessages).where(eq(contactMessages.id, id));
+  revalidatePath("/admin/messages");
 }

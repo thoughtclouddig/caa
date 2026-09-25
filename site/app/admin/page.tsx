@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { adminStats, adminDonationTotals, adminPendingPrayers, adminListArticles } from "@/lib/queries";
+import {
+  adminStats, adminDonationTotals, adminPendingPrayers, adminListArticles,
+  countNewMessages,
+} from "@/lib/queries";
 import { AdminHeader, Panel, Pill } from "@/components/admin/AdminUI";
 import styles from "./dashboard.module.css";
 
@@ -14,11 +17,12 @@ export const dynamic = "force-dynamic";
  * unpublished, articles with no photograph. Numbers follow underneath.
  */
 export default async function AdminHome() {
-  const [stats, giving, pending, articles] = await Promise.all([
+  const [stats, giving, pending, articles, newMessages] = await Promise.all([
     adminStats(),
     adminDonationTotals(),
     adminPendingPrayers(),
     adminListArticles(),
+    countNewMessages(),
   ]);
 
   const drafts = articles.filter((a) => a.status === "draft");
@@ -26,6 +30,11 @@ export default async function AdminHome() {
   const featured = articles.find((a) => a.isFeatured && a.status === "published");
 
   const tasks = [
+    newMessages > 0 && {
+      href: "/admin/messages",
+      label: `${newMessages} unread ${newMessages === 1 ? "message" : "messages"}`,
+      detail: "Sent through the contact form. Nothing is forwarded by email yet.",
+    },
     pending.length > 0 && {
       href: "/admin/prayer",
       label: `${pending.length} prayer ${pending.length === 1 ? "intention" : "intentions"} waiting`,

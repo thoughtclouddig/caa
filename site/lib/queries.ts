@@ -4,7 +4,7 @@ import { eq, and, desc, asc, gte, sql, count, inArray } from "drizzle-orm";
 import { db } from "./db";
 import {
   users, chapters, events, eventRsvps, articles, resources,
-  newsletterIssues, newsletterIssueArticles, newsletterSubscribers,
+  newsletterIssues, newsletterIssueArticles, newsletterSubscribers, contactMessages,
   prayerRequests, prayerPledges, sponsors, products, pages,
   membershipTiers, donations, mentorshipProfiles,
 } from "./schema";
@@ -363,4 +363,17 @@ export async function adminListDonations() {
     .from(donations)
     .leftJoin(users, eq(donations.userId, users.id))
     .orderBy(desc(donations.createdAt));
+}
+
+/* -------------------------------- messages ------------------------------- */
+
+export async function adminListMessages() {
+  return db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
+}
+
+export async function countNewMessages() {
+  const [row] = await db.select({ n: count() })
+    .from(contactMessages)
+    .where(eq(contactMessages.status, "new"));
+  return Number(row?.n ?? 0);
 }
