@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { org, primaryNav, primaryCta, memberArea } from "@/content/site";
@@ -8,6 +9,40 @@ import styles from "./SiteHeader.module.css";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname() ?? "";
+
+  /*
+   * Inside the member area and the admin tools, the public navigation is
+   * noise: two full navigations stacked, and a "Member Login" link and a
+   * "Join" button offered to somebody already signed in. The header
+   * collapses to the mark and one way back out, and the section
+   * navigation underneath does the work.
+   */
+  const signedInArea =
+    pathname === "/portal" || pathname.startsWith("/portal/") ||
+    pathname === "/admin" || pathname.startsWith("/admin/");
+
+  if (signedInArea) {
+    return (
+      <header className={`${styles.header} ${styles.headerQuiet}`}>
+        <div className={`shell ${styles.bar}`}>
+          <Link href="/" className={styles.brand} aria-label={`${org.name} — home`}>
+            <Image
+              src="/brand/caa-logo-compact.svg"
+              alt={org.name}
+              width={1072}
+              height={755}
+              className={styles.logo}
+              priority
+            />
+          </Link>
+          <Link href="/" className={styles.exit}>
+            View the public site
+          </Link>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className={styles.header}>
